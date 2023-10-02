@@ -31,7 +31,7 @@ public class ResellerServiceImpl implements ResellerService {
     private CollectionHistoryRepository collectionHistoryRepository;
 
     @Override
-    public Contract createContract(Long resellerId, Long clientId, BigDecimal dueAmount) {
+    public Contract createContract(Long resellerId, Long clientId, String username, String itemName, BigDecimal dueAmount, Long fullPrice, Boolean isPaid) {
         Reseller reseller = resellerRepository.findById(resellerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reseller not found with id: " + resellerId));
 
@@ -41,8 +41,11 @@ public class ResellerServiceImpl implements ResellerService {
         Contract contract = new Contract();
         contract.setReseller(reseller);
         contract.setClient(client);
+        contract.setUsername(username);
+        contract.setItemName(itemName);
         contract.setDueAmount(dueAmount);
-        contract.setPaid(false);
+        contract.setFullPrice(fullPrice);
+        contract.setPaid(isPaid);
 
         // Save the contract and return it
         return contractRepository.save(contract);
@@ -115,6 +118,11 @@ public class ResellerServiceImpl implements ResellerService {
     @Override
     public Optional<Reseller> getResellerById(Long id) {
         return resellerRepository.findById(id);
+    }
+
+    @Override
+    public Iterable<Reseller> getReseller() {
+        return resellerRepository.findAll();
     }
 }
 

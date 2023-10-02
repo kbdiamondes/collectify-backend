@@ -18,6 +18,7 @@ public interface ClientService {
     List<Contract> getClientContracts(Long clientId);
 
     Iterable<Client> getClient();
+
     ResponseEntity deleteClient(Long client_id);
     ResponseEntity updateClient(Long client_id, Client client);
 

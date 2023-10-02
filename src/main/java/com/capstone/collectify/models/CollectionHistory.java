@@ -1,5 +1,9 @@
 package com.capstone.collectify.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,6 +19,7 @@ public class CollectionHistory {
     // Other collection history-specific attributes
 
     @ManyToOne
+    @JsonBackReference("reseller_collectionHistory")
     private Reseller reseller;
 
     // Getters and setters

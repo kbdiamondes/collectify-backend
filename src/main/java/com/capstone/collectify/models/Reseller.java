@@ -1,5 +1,9 @@
 package com.capstone.collectify.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -23,9 +27,11 @@ public class Reseller {
     // Other reseller-specific attributes and relationships
 
     @OneToMany(mappedBy = "reseller")
+    @JsonManagedReference("reseller-contracts")
     private List<Contract> contracts;
 
     @OneToMany(mappedBy = "reseller")
+    @JsonManagedReference("reseller_collectionHistory")
     private List<CollectionHistory> collectionHistory;
 
     public Long getId() {

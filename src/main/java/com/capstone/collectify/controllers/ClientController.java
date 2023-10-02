@@ -4,6 +4,8 @@ import com.capstone.collectify.models.Client;
 import com.capstone.collectify.models.Contract;
 import com.capstone.collectify.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -17,6 +19,11 @@ public class ClientController {
 
     @Autowired
     private ClientService clientService;
+
+    @GetMapping
+    public ResponseEntity<Object> getClient() {
+        return new ResponseEntity<>(clientService.getClient(), HttpStatus.OK);
+    }
 
     @PostMapping
     public Client createClient(@RequestBody Client client) {

@@ -1,6 +1,8 @@
 package com.capstone.collectify.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,7 +29,7 @@ public class Client {
     // Other client-specific attributes and relationships
 
     @OneToMany(mappedBy = "client")
-    @JsonIgnore
+    @JsonManagedReference("client-contracts")
     private List<Contract> contracts;
 
     // Getters and setters

@@ -1,5 +1,9 @@
 package com.capstone.collectify.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,6 +24,7 @@ public class Collector {
     private String password;
 
     @OneToOne
+    @JsonBackReference("collector-assignedcontract")
     private Contract assignedContract;
 
 

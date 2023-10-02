@@ -10,5 +10,8 @@ public interface CollectorService {
     Collector createCollector(Collector collector);
 
     Optional<Collector> getCollectorById(Long id);
+
+    Iterable<Collector> getCollector();
+
 }
 

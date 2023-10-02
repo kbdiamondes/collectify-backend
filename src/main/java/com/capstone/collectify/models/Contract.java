@@ -1,5 +1,9 @@
 package com.capstone.collectify.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -99,12 +103,15 @@ public class Contract {
     // Other contract-specific attributes and relationships
 
     @ManyToOne
+    @JsonBackReference("client-contracts")
     private Client client;
 
     @ManyToOne
+    @JsonBackReference("reseller-contracts")
     private Reseller reseller;
 
     @OneToOne(mappedBy = "assignedContract")
+    @JsonBackReference("collector-assignedcontract")
     private Collector collector;
 
 

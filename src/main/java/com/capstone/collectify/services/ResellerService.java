@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ResellerService{
-    Contract createContract(Long resellerId, Long clientId, BigDecimal dueAmount);
+    Contract createContract(Long resellerId, Long clientId, String username, String itemName, BigDecimal dueAmount, Long fullPrice, Boolean isPaid);
     void assignCollector(Long resellerId, Long contractId, Long collectorId) throws AccessDeniedException;
     void collectPayment(Long resellerId, Long contractId, BigDecimal amount) throws AccessDeniedException;
     List<CollectionHistory> getCollectionHistory(Long resellerId);
@@ -17,4 +17,6 @@ public interface ResellerService{
     Reseller createReseller(Reseller reseller);
 
     Optional<Reseller> getResellerById(Long id);
+
+    Iterable<Reseller> getReseller();
 }

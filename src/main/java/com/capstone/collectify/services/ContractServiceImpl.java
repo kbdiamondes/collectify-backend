@@ -80,5 +80,9 @@ public class ContractServiceImpl implements ContractService {
 
         contractRepository.save(contract);
     }
+
+    public Iterable<Contract> getContract() {
+        return contractRepository.findAll();
+    }
 }
 

@@ -12,5 +12,7 @@ public interface ContractService {
     List<Contract> getResellerContracts(Long resellerId);
     void assignCollectorToContract(Long contractId, Long collectorId);
     void collectPayment(Long contractId, BigDecimal amount);
+
+    Iterable<Contract> getContract();
 }
 

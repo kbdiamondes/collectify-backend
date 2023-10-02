@@ -3,6 +3,8 @@ package com.capstone.collectify.controllers;
 import com.capstone.collectify.models.Collector;
 import com.capstone.collectify.services.CollectorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -13,6 +15,11 @@ public class CollectorController {
 
     @Autowired
     private CollectorService collectorService;
+
+    @GetMapping
+    public ResponseEntity<Object> getCollector() {
+        return new ResponseEntity<>(collectorService.getCollector(), HttpStatus.OK);
+    }
 
     @PostMapping
     public Collector createCollector(@RequestBody Collector collector) {

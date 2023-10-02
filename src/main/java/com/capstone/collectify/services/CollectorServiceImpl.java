@@ -46,5 +46,9 @@ public class CollectorServiceImpl implements CollectorService {
         return collectorRepository.findById(id);
     }
 
+    public Iterable<Collector> getCollector() {
+        return collectorRepository.findAll();
+    }
+
 }
 

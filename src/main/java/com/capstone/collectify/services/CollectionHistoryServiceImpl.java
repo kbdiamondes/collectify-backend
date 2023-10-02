@@ -19,11 +19,17 @@ public class CollectionHistoryServiceImpl implements CollectionHistoryService {
     @Autowired
     private ResellerRepository resellerRepository;
 
+
+
     @Override
     public List<CollectionHistory> getCollectionHistory(Long resellerId) {
         Reseller reseller = resellerRepository.findById(resellerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reseller not found with id: " + resellerId));
 
         return collectionHistoryRepository.findByReseller(reseller);
+    }
+
+    public Iterable<CollectionHistory> getCollectionHistory() {
+        return collectionHistoryRepository.findAll();
     }
 }

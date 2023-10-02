@@ -5,6 +5,8 @@ import com.capstone.collectify.models.Contract;
 import com.capstone.collectify.models.Reseller;
 import com.capstone.collectify.services.ResellerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -18,6 +20,11 @@ public class ResellerController {
 
     @Autowired
     private ResellerService resellerService;
+
+    @GetMapping
+    public ResponseEntity<Object> getReseller() {
+        return new ResponseEntity<>(resellerService.getReseller(), HttpStatus.OK);
+    }
 
     @PostMapping
     public Reseller createReseller(@RequestBody Reseller reseller) {
@@ -36,7 +43,7 @@ public class ResellerController {
 
     @PostMapping("/{resellerId}/clients/{clientId}/contracts")
     public Contract createContractForClientByReseller(@PathVariable Long resellerId, @PathVariable Long clientId, @RequestBody Contract contract) {
-        return resellerService.createContract(resellerId, clientId, contract.getDueAmount());
+        return resellerService.createContract(resellerId, clientId, contract.getUsername(), contract.getItemName(), contract.getDueAmount(), contract.getFullPrice(), contract.isPaid());
     }
 
     @PostMapping("/{resellerId}/contracts/{contractId}/assign-collector")
