@@ -49,6 +49,8 @@ public class ClientServiceImpl implements ClientService {
         } else {
             throw new AccessDeniedException("You don't have permission to pay dues for this contract.");
         }
+        System.out.println("Success");
+
     }
 
     @Override

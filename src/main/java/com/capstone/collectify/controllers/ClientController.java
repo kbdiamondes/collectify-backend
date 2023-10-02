@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.net.http.HttpResponse;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -46,7 +48,9 @@ public class ClientController {
     }
 
     @PostMapping("/{clientId}/contracts/{contractId}/pay")
-    public void payDue(@PathVariable Long clientId, @PathVariable Long contractId, @RequestBody BigDecimal amount) {
+    public void payDue(@PathVariable Long clientId, @PathVariable Long contractId, @RequestBody Map<String, BigDecimal> requestBody) {
+        BigDecimal amount = requestBody.get("amount");
+
         try {
             clientService.payDue(clientId, contractId, amount);
         } catch (AccessDeniedException e) {
