@@ -1,19 +1,14 @@
 package com.capstone.collectify.services;
 
 import com.capstone.collectify.models.Collector;
-import org.springframework.http.ResponseEntity;
+
+import java.util.Optional;
 
 public interface CollectorService {
+    void assignCollectorToClient(Long collectorId, Long clientId);
 
-    // Create Client
-    void createCollector(Collector client);
+    Collector createCollector(Collector collector);
 
-    // Get Client
-    Iterable<Collector> getUsername();
-
-    // Delete Client
-    ResponseEntity deleteCollector(Long id);
-
-    // Update a Client
-    ResponseEntity updateCollector(Long id, Collector collector);
+    Optional<Collector> getCollectorById(Long id);
 }
+

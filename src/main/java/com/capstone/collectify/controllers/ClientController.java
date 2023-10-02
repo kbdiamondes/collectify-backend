@@ -1,39 +1,51 @@
 package com.capstone.collectify.controllers;
 
 import com.capstone.collectify.models.Client;
+import com.capstone.collectify.models.Contract;
 import com.capstone.collectify.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.nio.file.AccessDeniedException;
+import java.util.List;
+import java.util.Optional;
+
 @RestController
-@CrossOrigin
-@RequestMapping("/user")
+@RequestMapping("/clients")
 public class ClientController {
 
     @Autowired
-    ClientService clientService;
+    private ClientService clientService;
 
-    // Create User
-    @RequestMapping(value = "/client",method = RequestMethod.POST)
-    public ResponseEntity<Object> createClient(@RequestBody Client client){
-        clientService.createClient(client);
-        return new ResponseEntity<>("Client Account created Successfully", HttpStatus.CREATED);
+    @PostMapping
+    public Client createClient(@RequestBody Client client) {
+        return clientService.createClient(client);
     }
-    //  Get all User
-    @RequestMapping(value = "/client" , method = RequestMethod.GET)
-    public ResponseEntity<Object> getUsername() {
-        return new ResponseEntity<>(clientService.getUsername(), HttpStatus.OK);
+
+    @GetMapping("/{id}")
+    public Optional<Client> getClientById(@PathVariable Long id) {
+        return clientService.getClientById(id);
     }
-    // Delete a U
-    @RequestMapping (value = "/client/{clientid}", method = RequestMethod.DELETE)
-    public ResponseEntity<Object> deleteClient(@PathVariable Long clientid){
-        return clientService.deleteClient(clientid);
+
+    @GetMapping("/{id}/contracts")
+    public List<Contract> getClientContracts(@PathVariable Long id) {
+        return clientService.getClientContracts(id);
     }
-    // Update a post
-    @RequestMapping (value = "/client/{clientid}", method = RequestMethod.PUT)
-    public ResponseEntity<Object> updateClient(@PathVariable Long clientid, @RequestBody Client client){
-        return clientService.updateClient(clientid,client);
+
+    @PostMapping("/{clientId}/contracts")
+    public Contract createContractForClient(@PathVariable Long clientId, @RequestBody Contract contract) {
+        return clientService.createContractForClient(clientId, contract);
     }
+
+    @PostMapping("/{clientId}/contracts/{contractId}/pay")
+    public void payDue(@PathVariable Long clientId, @PathVariable Long contractId, @RequestBody BigDecimal amount) {
+        try {
+            clientService.payDue(clientId, contractId, amount);
+        } catch (AccessDeniedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Add other endpoints for Client-related operations
 }

@@ -1,39 +1,50 @@
 package com.capstone.collectify.services;
 
+import com.capstone.collectify.models.Client;
 import com.capstone.collectify.models.Collector;
+import com.capstone.collectify.repositories.ClientRepository;
 import com.capstone.collectify.repositories.CollectorRepository;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
-public class CollectorServiceImpl implements CollectorService{
+public class CollectorServiceImpl implements CollectorService {
+
     @Autowired
     private CollectorRepository collectorRepository;
 
-    // Create a Collector
-    public void createCollector(Collector collector){
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @Override
+    public void assignCollectorToClient(Long collectorId, Long clientId) {
+        Collector collector = collectorRepository.findById(collectorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Collector not found with id: " + collectorId));
+
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
+
+        // Check if the collector is already assigned to another client
+        if (collector.getAssignedClient() != null) {
+            throw new IllegalStateException("Collector is already assigned to a client.");
+        }
+
+        collector.setAssignedClient(client);
         collectorRepository.save(collector);
     }
-    // Get all Collector
-    public Iterable<Collector> getUsername(){
-        return collectorRepository.findAll();
-    }
-    // Delete Collector
 
-    public ResponseEntity deleteCollector(Long id){
-        collectorRepository.deleteById(id);
-        return new ResponseEntity<>("Collector Deleted successfully", HttpStatus.OK);
+    @Override
+    public Collector createCollector(Collector collector) {
+        return collectorRepository.save(collector);
     }
-    public ResponseEntity updateCollector(Long id, Collector collector){
-        // Find the user to update
-        Collector collectorForUpdate = collectorRepository.findById(id).get();
-        // Updating the username and password
-        collectorForUpdate .setFullName(collector.getFullName());
-        collectorForUpdate .setAddress(collector.getAddress());
-        // Saving and Updating a user
-        collectorRepository.save(collectorForUpdate );
-        return new ResponseEntity<>("Collector updated Successfully",HttpStatus.OK);
+
+    @Override
+    public Optional<Collector> getCollectorById(Long id) {
+        return collectorRepository.findById(id);
     }
+
 }
+

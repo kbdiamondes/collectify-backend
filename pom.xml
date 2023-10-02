@@ -45,8 +45,13 @@
 			<version>8.0.28</version>
 			<scope>runtime</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.5</version>
+        </dependency>
 
-<!--		&lt;!&ndash; "Spring Security" is a powerful and highly customizable authentication and access-control framework. &ndash;&gt;-->
+        <!--		&lt;!&ndash; "Spring Security" is a powerful and highly customizable authentication and access-control framework. &ndash;&gt;-->
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.security</groupId>-->
 <!--			<artifactId>spring-security-core</artifactId>-->

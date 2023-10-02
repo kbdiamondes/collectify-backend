@@ -1,39 +1,62 @@
 package com.capstone.collectify.controllers;
 
+import com.capstone.collectify.models.CollectionHistory;
+import com.capstone.collectify.models.Contract;
 import com.capstone.collectify.models.Reseller;
 import com.capstone.collectify.services.ResellerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.nio.file.AccessDeniedException;
+import java.util.List;
+import java.util.Optional;
+
 @RestController
-@CrossOrigin
-@RequestMapping("/user")
+@RequestMapping("/resellers")
 public class ResellerController {
+
     @Autowired
+    private ResellerService resellerService;
 
-    ResellerService resellerService;
+    @PostMapping
+    public Reseller createReseller(@RequestBody Reseller reseller) {
+        return resellerService.createReseller(reseller);
+    }
 
-    // Create User
-    @RequestMapping(value = "/reseller",method = RequestMethod.POST)
-    public ResponseEntity<Object> createCollector(@RequestBody Reseller reseller){
-        resellerService.createReseller(reseller);
-        return new ResponseEntity<>("Reseller Account created Successfully", HttpStatus.CREATED);
+    @GetMapping("/{id}")
+    public Optional<Reseller> getResellerById(@PathVariable Long id) {
+        return resellerService.getResellerById(id);
     }
-    //  Get all User
-    @RequestMapping(value = "/reseller" , method = RequestMethod.GET)
-    public ResponseEntity<Object> getUsername() {
-        return new ResponseEntity<>(resellerService.getUsername(), HttpStatus.OK);
+
+    @GetMapping("/{id}/collection-history")
+    public List<CollectionHistory> getCollectionHistory(@PathVariable Long id) {
+        return resellerService.getCollectionHistory(id);
     }
-    // Delete a U
-    @RequestMapping (value = "/reseller/{resellerid}", method = RequestMethod.DELETE)
-    public ResponseEntity<Object> deleteClient(@PathVariable Long resellerid){
-        return resellerService.deleteReseller(resellerid);
+
+    @PostMapping("/{resellerId}/clients/{clientId}/contracts")
+    public Contract createContractForClientByReseller(@PathVariable Long resellerId, @PathVariable Long clientId, @RequestBody Contract contract) {
+        return resellerService.createContract(resellerId, clientId, contract.getDueAmount());
     }
-    // Update a post
-    @RequestMapping (value = "/resel/{resellerid}", method = RequestMethod.PUT)
-    public ResponseEntity<Object> updateCollector(@PathVariable Long resellerid, @RequestBody Reseller reseller){
-        return resellerService.updateReseller(resellerid,reseller);
+
+    @PostMapping("/{resellerId}/contracts/{contractId}/assign-collector")
+    public void assignCollector(@PathVariable Long resellerId, @PathVariable Long contractId, @RequestBody Long collectorId) {
+        try {
+            resellerService.assignCollector(resellerId, contractId, collectorId);
+        } catch (AccessDeniedException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+    @PostMapping("/{resellerId}/contracts/{contractId}/collect-payment")
+    public void collectPayment(@PathVariable Long resellerId, @PathVariable Long contractId, @RequestBody BigDecimal amount) {
+        try {
+            resellerService.collectPayment(resellerId, contractId, amount);
+        } catch (AccessDeniedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Add other endpoints for Reseller-related operations
 }
+

@@ -1,28 +1,15 @@
 package com.capstone.collectify.models;
 
-import com.capstone.collectify.models.ResellerModule.SendCollectors;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
-@Table(name = "reseller")
 public class Reseller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reseller_id;
-
-
-
     @Column
     private String username;
-
-    @Column
-    private String password;
-
-    @Column
-    private String fullName;
 
     @Column
     private String address;
@@ -30,22 +17,23 @@ public class Reseller {
     @Column
     private String email;
 
+    @Column
+    private String password;
+
+    // Other reseller-specific attributes and relationships
+
     @OneToMany(mappedBy = "reseller")
-    @JsonIgnore
-    private Set<SendCollectors> sendCollectors;
+    private List<Contract> contracts;
 
-    public Reseller() {
-    }
-    public Reseller(String username, String password, String fullName, String address, String email) {
-        this.username = username;
-        this.password = password;
-        this.fullName = fullName;
-        this.address = address;
-        this.email = email;
+    @OneToMany(mappedBy = "reseller")
+    private List<CollectionHistory> collectionHistory;
+
+    public Long getId() {
+        return reseller_id;
     }
 
-    public void setReseller_id(Long reseller_id) {
-        this.reseller_id = reseller_id;
+    public void setId(Long id) {
+        this.reseller_id = id;
     }
 
     public String getUsername() {
@@ -54,22 +42,6 @@ public class Reseller {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getAddress() {
@@ -88,15 +60,30 @@ public class Reseller {
         this.email = email;
     }
 
-    public Long getReseller_id() {
-        return reseller_id;
+    public String getPassword() {
+        return password;
     }
 
-    public Set<SendCollectors> getSendCollectors() {
-        return sendCollectors;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setSendCollectors(Set<SendCollectors> sendCollectors) {
-        this.sendCollectors = sendCollectors;
+    public List<Contract> getContracts() {
+        return contracts;
     }
+
+    public void setContracts(List<Contract> contracts) {
+        this.contracts = contracts;
+    }
+
+    public List<CollectionHistory> getCollectionHistory() {
+        return collectionHistory;
+    }
+
+    public void setCollectionHistory(List<CollectionHistory> collectionHistory) {
+        this.collectionHistory = collectionHistory;
+    }
+
+
+    // Getters and setters
 }

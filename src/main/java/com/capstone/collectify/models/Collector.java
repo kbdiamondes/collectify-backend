@@ -3,24 +3,12 @@ package com.capstone.collectify.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "collector")
 public class Collector {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long collector_id;
-
-    @ManyToOne
-    @JoinColumn(name="reseller_id", nullable = false)
-    private Reseller reseller;
-
     @Column
     private String username;
-
-    @Column
-    private String password;
-
-    @Column
-    private String fullName;
 
     @Column
     private String address;
@@ -28,20 +16,15 @@ public class Collector {
     @Column
     private String email;
 
- /*   @OneToMany(mappedBy = "collector")
-    @JsonIgnore
-    private Set<SendCollectors> sendCollectors;*/
+    @Column
+    private String password;
 
-    public Collector() {
-    }
+    @OneToOne
+    private Contract assignedContract;
 
-    public Collector(Reseller reseller, String username, String password, String fullName, String address, String email) {
-        this.reseller = reseller;
-        this.username = username;
-        this.password = password;
-        this.fullName = fullName;
-        this.address = address;
-        this.email = email;
+
+    public Long getCollector_id() {
+        return collector_id;
     }
 
     public void setCollector_id(Long collector_id) {
@@ -54,22 +37,6 @@ public class Collector {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getAddress() {
@@ -88,15 +55,47 @@ public class Collector {
         this.email = email;
     }
 
-    public Long getCollector_id() {
-        return collector_id;
+    public String getPassword() {
+        return password;
     }
 
- /*   public Set<SendCollectors> getSendCollectors() {
-        return sendCollectors;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setSendCollectors(Set<SendCollectors> sendCollectors) {
-        this.sendCollectors = sendCollectors;
-    }*/
+    public Contract getAssignedContract() {
+        return assignedContract;
+    }
+
+    public void setAssignedContract(Contract assignedContract) {
+        this.assignedContract = assignedContract;
+    }
+
+    public void setAssignedClient(Client client) {
+        // Implement logic to set the assigned client by creating a new contract
+        if (client != null) {
+            Contract newContract = new Contract();
+            newContract.setClient(client);
+            newContract.setCollector(this);
+
+            // You may need to set other contract properties such as dueAmount and isPaid
+            // newContract.setDueAmount(dueAmount);
+            // newContract.setIsPaid(isPaid);
+
+            this.assignedContract = newContract;
+        } else {
+            // If client is null, clear the assigned contract
+            this.assignedContract = null;
+        }
+    }
+
+    public Client getAssignedClient() {
+        // Implement logic to get the assigned client from the assigned contract
+        if (assignedContract != null) {
+            return assignedContract.getClient();
+        } else {
+            return null; // No client is assigned
+        }
+    }
+
 }
