@@ -24,6 +24,7 @@ public class Client {
     private String email;
 
     @Column
+    @JsonIgnore
     private String password;
 
     // Other client-specific attributes and relationships

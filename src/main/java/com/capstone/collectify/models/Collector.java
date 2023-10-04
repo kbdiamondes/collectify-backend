@@ -3,6 +3,7 @@ package com.capstone.collectify.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
@@ -21,10 +22,12 @@ public class Collector {
     private String email;
 
     @Column
+    @JsonIgnore
     private String password;
 
     @OneToOne
-    @JsonBackReference("collector-assignedcontract")
+    @JoinColumn(name = "contract_id") // Add this to specify the foreign key column
+    @JsonManagedReference("collector-assignedcontract")
     private Contract assignedContract;
 
 

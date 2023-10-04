@@ -9,6 +9,41 @@ import java.math.BigDecimal;
 
 @Entity
 public class Contract {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long contract_id;
+
+    @Column
+    private String username;
+
+    @Column
+    private String itemName;
+
+    @Column
+    private BigDecimal dueAmount;
+
+    @Column
+    private Long fullPrice;
+
+    @Column
+    private boolean isPaid;
+
+    // Other contract-specific attributes and relationships
+
+    @ManyToOne
+    @JsonBackReference("client-contracts")
+    private Client client;
+
+    @ManyToOne
+    @JsonBackReference("reseller-contracts")
+    private Reseller reseller;
+
+    @OneToOne(mappedBy = "assignedContract")
+    @JsonBackReference("collector-assignedcontract")
+    private Collector collector;
+
+
     public Long getContract_id() {
         return contract_id;
     }
@@ -80,39 +115,5 @@ public class Contract {
     public void setCollector(Collector collector) {
         this.collector = collector;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long contract_id;
-
-    @Column
-    private String username;
-
-    @Column
-    private String itemName;
-
-    @Column
-    private BigDecimal dueAmount;
-
-    @Column
-    private Long fullPrice;
-
-    @Column
-    private boolean isPaid;
-
-    // Other contract-specific attributes and relationships
-
-    @ManyToOne
-    @JsonBackReference("client-contracts")
-    private Client client;
-
-    @ManyToOne
-    @JsonBackReference("reseller-contracts")
-    private Reseller reseller;
-
-    @OneToOne(mappedBy = "assignedContract")
-    @JsonBackReference("collector-assignedcontract")
-    private Collector collector;
-
 
 }

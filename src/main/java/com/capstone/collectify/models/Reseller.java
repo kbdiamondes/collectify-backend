@@ -22,6 +22,7 @@ public class Reseller {
     private String email;
 
     @Column
+    @JsonIgnore
     private String password;
 
     // Other reseller-specific attributes and relationships
