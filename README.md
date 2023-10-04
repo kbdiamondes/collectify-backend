@@ -105,4 +105,6 @@ This documentation provides information on how to use the API endpoints provided
   - `collectorId` - The ID of the collector.
 - **Response**: Success message or error message.
 
+### Postman Workspace
 
+https://orange-comet-568586.postman.co/workspace/Research-%26-Capstone---Mongoose~51e037a9-5bb0-4615-82a1-08e74799080b/collection/21217716-59c730f4-671f-4ff1-8728-53354db1b23c?action=share&creator=21217716
