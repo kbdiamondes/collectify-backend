@@ -94,6 +94,8 @@ public class ResellerServiceImpl implements ResellerService {
                 history.setCollectionDate(LocalDateTime.now());
                 history.setReseller(reseller);
                 collectionHistoryRepository.save(history);
+
+                System.out.println(amount + "is successfully collected");
             } else {
                 throw new IllegalArgumentException("Collected amount exceeds the due amount.");
             }
@@ -124,5 +126,22 @@ public class ResellerServiceImpl implements ResellerService {
     public Iterable<Reseller> getReseller() {
         return resellerRepository.findAll();
     }
-}
 
+    @Override
+    public Collector getAssignedCollector(Long resellerId, Long contractId) {
+        // Step 1: Retrieve the Reseller
+        Reseller reseller = resellerRepository.findById(resellerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Reseller not found with id: " + resellerId));
+
+        // Step 2: Retrieve the Contract
+        Contract contract = contractRepository.findById(contractId)
+                .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + contractId));
+
+        // Step 3: Get the Assigned Collector
+        Collector assignedCollector = contract.getCollector();
+
+        // Step 4: Return the Assigned Collector
+        return assignedCollector;
+    }
+
+}

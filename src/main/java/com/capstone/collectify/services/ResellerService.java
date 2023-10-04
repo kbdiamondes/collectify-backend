@@ -1,6 +1,7 @@
 package com.capstone.collectify.services;
 
 import com.capstone.collectify.models.CollectionHistory;
+import com.capstone.collectify.models.Collector;
 import com.capstone.collectify.models.Contract;
 import com.capstone.collectify.models.Reseller;
 import java.math.BigDecimal;
@@ -19,4 +20,6 @@ public interface ResellerService{
     Optional<Reseller> getResellerById(Long id);
 
     Iterable<Reseller> getReseller();
+
+    Collector getAssignedCollector(Long resellerId, Long contractId);
 }

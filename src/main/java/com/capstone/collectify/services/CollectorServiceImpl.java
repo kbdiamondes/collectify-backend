@@ -2,12 +2,15 @@ package com.capstone.collectify.services;
 
 import com.capstone.collectify.models.Client;
 import com.capstone.collectify.models.Collector;
+import com.capstone.collectify.models.Contract;
 import com.capstone.collectify.repositories.ClientRepository;
 import com.capstone.collectify.repositories.CollectorRepository;
+import com.capstone.collectify.repositories.ContractRepository;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -19,6 +22,9 @@ public class CollectorServiceImpl implements CollectorService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private ContractRepository contractRepository;
+
     @Override
     public void assignCollectorToClient(Long collectorId, Long clientId) {
         Collector collector = collectorRepository.findById(collectorId)
@@ -27,12 +33,19 @@ public class CollectorServiceImpl implements CollectorService {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
 
-        // Check if the collector is already assigned to another client
-        if (collector.getAssignedClient() != null) {
-            throw new IllegalStateException("Collector is already assigned to a client.");
-        }
+        // Create a new Contract and set its properties
+        Contract contract = new Contract();
+        contract.setClient(client);
+        contract.setCollector(collector);
+        contract.setDueAmount(BigDecimal.ZERO); // Set your desired default values
 
-        collector.setAssignedClient(client);
+        // Save the Contract first to ensure that it gets a valid ID
+        contractRepository.save(contract);
+
+        // Update the Collector with the assigned Contract
+        collector.setAssignedContract(contract);
+
+        // Save the Collector
         collectorRepository.save(collector);
     }
 
