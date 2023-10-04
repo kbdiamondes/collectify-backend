@@ -21,6 +21,10 @@ public class FileDB {
     @Lob
     private byte[] data;
 
+    @OneToOne(mappedBy = "transactionProof")
+    private Contract contract; // Represents the contract associated with this file
+
+
     public FileDB() {
     }
 

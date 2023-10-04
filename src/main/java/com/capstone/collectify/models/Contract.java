@@ -43,6 +43,17 @@ public class Contract {
     @JsonBackReference("collector-assignedcontract")
     private Collector collector;
 
+    @OneToOne
+    @JoinColumn(name = "transaction_proof_id") // Adjust the column name as needed
+    private FileDB transactionProof; // Represents the transaction proof image
+
+    public FileDB getTransactionProof() {
+        return transactionProof;
+    }
+
+    public void setTransactionProof(FileDB transactionProof) {
+        this.transactionProof = transactionProof;
+    }
 
     public Long getContract_id() {
         return contract_id;
