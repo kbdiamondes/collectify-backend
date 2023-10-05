@@ -66,6 +66,7 @@ This documentation provides information on how to use the API endpoints provided
 - **Description**: Collect a payment for a contract.
 - **Path Parameter**: `contractId` - The ID of the contract.
 - **Request Body**: JSON with the `amount` of payment.
+- **Request Parameter*: paymentType - Gcash
 - **Response**: No content.
 
 ## Pay Dues Controller
