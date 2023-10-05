@@ -17,6 +17,10 @@ public class Client {
     @Column
     private String username;
 
+
+    @Column
+    private String fullName;
+
     @Column
     private String address;
 
@@ -33,6 +37,14 @@ public class Client {
     @JsonManagedReference("client-contracts")
     private List<Contract> contracts;
 
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
     // Getters and setters
     public Long getClient_id() {
         return client_id;
