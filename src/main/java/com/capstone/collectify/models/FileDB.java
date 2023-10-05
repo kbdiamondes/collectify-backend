@@ -2,7 +2,7 @@ package com.capstone.collectify.models;
 
 
 import javax.persistence.*;
-
+import com.capstone.collectify.models.CollectionHistory;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -24,6 +24,8 @@ public class FileDB {
     @OneToOne(mappedBy = "transactionProof")
     private Contract contract; // Represents the contract associated with this file
 
+    @OneToOne(mappedBy="transactionProof")
+    private CollectionHistory collectionHistory;
 
     public FileDB() {
     }

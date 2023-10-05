@@ -18,6 +18,10 @@ public class CollectionHistory {
 
     private String paymentType;
 
+    @OneToOne
+    @JoinColumn(name = "transaction_proof_id")
+    private FileDB transactionProof;
+
     public String getPaymentType() {
         return paymentType;
     }
@@ -25,6 +29,16 @@ public class CollectionHistory {
     public void setPaymentType(String paymentType) {
         this.paymentType = paymentType;
     }
+
+
+    public FileDB getTransactionProof() {
+        return transactionProof;
+    }
+
+    public void setTransactionProof(FileDB transactionProof) {
+        this.transactionProof = transactionProof;
+    }
+
 
 
 
@@ -63,4 +77,6 @@ public class CollectionHistory {
     public void setReseller(Reseller reseller) {
         this.reseller = reseller;
     }
+
+
 }
