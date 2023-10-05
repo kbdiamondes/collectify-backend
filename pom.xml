@@ -51,7 +51,14 @@
             <version>1.5</version>
         </dependency>
 
-        <!--		&lt;!&ndash; "Spring Security" is a powerful and highly customizable authentication and access-control framework. &ndash;&gt;-->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.28</version> <!-- Use the version compatible with your MySQL server -->
+		</dependency>
+
+
+		<!--		&lt;!&ndash; "Spring Security" is a powerful and highly customizable authentication and access-control framework. &ndash;&gt;-->
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.security</groupId>-->
 <!--			<artifactId>spring-security-core</artifactId>-->
