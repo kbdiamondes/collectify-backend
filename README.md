@@ -92,6 +92,11 @@ This documentation provides information on how to use the API endpoints provided
 - **Path Parameters**:
   - `resellerId` - The ID of the reseller.
   - `contractId` - The ID of the contract.
+- **Request Parameters**:
+  - `paymentType` - The Payment Type of Transaction. 
+  - `base64Image` - Base64-encoded image data.
+  - `fileName` - The name of the file.
+  - `contentType` - The content type of the file.
 - **Response**: Success message or error message.
 
 ## Collector Collection Controller
