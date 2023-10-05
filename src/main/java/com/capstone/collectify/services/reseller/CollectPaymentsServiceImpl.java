@@ -32,7 +32,7 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
     }
 
     @Override
-    public void collectPayments(Long resellerId, Long contractId) throws AccessDeniedException {
+    public void collectPayments(Long resellerId, Long contractId, String paymentType) throws AccessDeniedException {
         Reseller reseller = resellerRepository.findById(resellerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reseller not found with id: " + resellerId));
 
@@ -54,6 +54,7 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
                 history.setCollectedAmount(amountToCollect);
                 history.setCollectionDate(LocalDateTime.now());
                 history.setReseller(reseller);
+                history.setPaymentType(paymentType);
                 collectionHistoryRepository.save(history);
 
                 System.out.println(amountToCollect + " is successfully collected");

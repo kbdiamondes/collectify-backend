@@ -7,5 +7,5 @@ import java.nio.file.AccessDeniedException;
 
 public interface CollectPaymentsService {
 
-    void collectPayments(Long resellerId, Long contractId) throws AccessDeniedException;
+    void collectPayments(Long resellerId, Long contractId, String paymentType ) throws AccessDeniedException;
 }

@@ -16,6 +16,18 @@ public class CollectionHistory {
     private BigDecimal collectedAmount;
     private LocalDateTime collectionDate;
 
+    private String paymentType;
+
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
+
+
     // Other collection history-specific attributes
 
     @ManyToOne
