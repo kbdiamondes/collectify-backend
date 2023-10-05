@@ -18,6 +18,7 @@ import java.util.Base64;
 import java.util.Map;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/paydues")
 public class PayDuesController {
 

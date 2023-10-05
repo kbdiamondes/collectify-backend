@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.file.AccessDeniedException;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/collect-payments")
 public class CollectPaymentsController {
 

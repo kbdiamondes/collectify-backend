@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/resellers")
 public class ResellerController {
 
@@ -55,9 +56,9 @@ public class ResellerController {
         return resellerService.getCollectionHistory(id);
     }
 
-    @PostMapping("/{resellerId}/clients/{clientId}/contracts")
-    public Contract createContractForClientByReseller(@PathVariable Long resellerId, @PathVariable Long clientId, @RequestBody Contract contract) {
-        return resellerService.createContract(resellerId, clientId, contract.getUsername(), contract.getItemName(), contract.getDueAmount(), contract.getFullPrice(), contract.isPaid());
+    @PostMapping("/{resellerId}/clients/{clientUsername}/contracts")
+    public Contract createContractForClientByReseller(@PathVariable Long resellerId, @PathVariable String clientUsername , @RequestBody Contract contract) {
+        return resellerService.createContract(resellerId, clientUsername, contract.getUsername(), contract.getItemName(), contract.getDueAmount(), contract.getFullPrice(), contract.isPaid());
     }
 
     @PostMapping("/{resellerId}/contracts/{contractId}/assign-collector")

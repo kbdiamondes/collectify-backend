@@ -31,17 +31,17 @@ public class ResellerServiceImpl implements ResellerService {
     private CollectionHistoryRepository collectionHistoryRepository;
 
     @Override
-    public Contract createContract(Long resellerId, Long clientId, String username, String itemName, BigDecimal dueAmount, Long fullPrice, Boolean isPaid) {
+    public Contract createContract(Long resellerId, String clientUsername, String username, String itemName, BigDecimal dueAmount, Long fullPrice, Boolean isPaid) {
         Reseller reseller = resellerRepository.findById(resellerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reseller not found with id: " + resellerId));
 
-        Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
+        Client client = clientRepository.findByUsername(clientUsername)
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found with username: " + username));
 
         Contract contract = new Contract();
         contract.setReseller(reseller);
         contract.setClient(client);
-        contract.setUsername(username);
+        contract.setUsername(clientUsername);
         contract.setItemName(itemName);
         contract.setDueAmount(dueAmount);
         contract.setFullPrice(fullPrice);
@@ -145,3 +145,27 @@ public class ResellerServiceImpl implements ResellerService {
     }
 
 }
+
+/*
+v2
+@Override
+    public Contract createContract(Long resellerId,  Long clientId, String username, String itemName, BigDecimal dueAmount, Long fullPrice, Boolean isPaid) {
+        Reseller reseller = resellerRepository.findById(resellerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Reseller not found with id: " + resellerId));
+
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + username));
+
+        Contract contract = new Contract();
+        contract.setReseller(reseller);
+        contract.setClient(client);
+        contract.setUsername(username);
+        contract.setItemName(itemName);
+        contract.setDueAmount(dueAmount);
+        contract.setFullPrice(fullPrice);
+        contract.setPaid(isPaid);
+
+        // Save the contract and return it
+        return contractRepository.save(contract);
+    }
+ */

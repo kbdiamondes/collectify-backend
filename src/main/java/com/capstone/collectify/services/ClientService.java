@@ -23,7 +23,7 @@ public interface ClientService {
     ResponseEntity updateClient(Long client_id, Client client);
 
     //    Optional - defines if the method may/may not return an object of the User Class
-    Optional<Client> findByUsername(String username);
+    Optional<Optional<Client>> findByUsername(String username);
 
     Optional<Client> getClientById(Long id);
 

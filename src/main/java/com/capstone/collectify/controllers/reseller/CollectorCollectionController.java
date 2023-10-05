@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.nio.file.AccessDeniedException;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/assigncollectors")
 public class CollectorCollectionController {
 

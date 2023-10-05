@@ -27,13 +27,15 @@ Keith Brylle Diamante
 
 This documentation provides information on how to use the API endpoints provided by the controllers in this project. The API allows you to perform various operations related to contracts, payment dues, payment collection, and collector assignment.
 
-## Contract Controller
+## Reseller Controller
 
-### Create Contract
-- **URL**: `POST /contracts`
+### Create Contract with Client
+- **URL**: `POST /contracts/{resellerId}/clients/{clientUsername}/contracts}
 - **Description**: Create a new contract.
 - **Request Body**: JSON representing the contract.
 - **Response**: JSON representing the created contract.
+
+## Contract Controller
 
 ### Get Contract by ID
 - **URL**: `GET /contracts/{id}`
@@ -52,22 +54,6 @@ This documentation provides information on how to use the API endpoints provided
 - **Description**: Retrieve contracts associated with a specific reseller.
 - **Path Parameter**: `resellerId` - The ID of the reseller.
 - **Response**: JSON array representing a list of contracts.
-
-### Assign Collector to Contract
-- **URL**: `POST /contracts/{contractId}/assign-collector/{collectorId}`
-- **Description**: Assign a collector to a contract.
-- **Path Parameters**:
-  - `contractId` - The ID of the contract.
-  - `collectorId` - The ID of the collector.
-- **Response**: No content.
-
-### Collect Payment
-- **URL**: `POST /contracts/{contractId}/collect-payment`
-- **Description**: Collect a payment for a contract.
-- **Path Parameter**: `contractId` - The ID of the contract.
-- **Request Body**: JSON with the `amount` of payment.
-- **Request Parameter*: paymentType - Gcash
-- **Response**: No content.
 
 ## Pay Dues Controller
 

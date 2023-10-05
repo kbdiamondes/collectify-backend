@@ -92,7 +92,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     //    Find user by username
-    public Optional<Client> findByUsername(String username){
+    public Optional<Optional<Client>> findByUsername(String username){
 //        if findByUsername method returns null it will throw a NullPointerException.
 //        using .ofNullable method will avoid this from happening.
         return Optional.ofNullable(clientRepository.findByUsername(username));
