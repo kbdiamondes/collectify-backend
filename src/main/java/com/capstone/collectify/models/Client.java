@@ -16,6 +16,8 @@ public class Client {
 
     @Column
     private String username;
+    @Column
+    private String fullName;
 
     @Column
     private String address;
@@ -37,6 +39,15 @@ public class Client {
     public Long getClient_id() {
         return client_id;
     }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
 
     public void setClient_id(Long client_id) {
         this.client_id = client_id;

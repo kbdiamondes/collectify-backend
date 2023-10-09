@@ -16,6 +16,9 @@ public class Collector {
     private String username;
 
     @Column
+    private String fullName;
+
+    @Column
     private String address;
 
     @Column
@@ -30,6 +33,13 @@ public class Collector {
     @JsonManagedReference("collector-assignedcontract")
     private Contract assignedContract;
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
     public Long getCollector_id() {
         return collector_id;

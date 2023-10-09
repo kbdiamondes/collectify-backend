@@ -16,6 +16,10 @@ public class Reseller {
     private String username;
 
     @Column
+    private String fullName;
+
+
+    @Column
     private String address;
 
     @Column
@@ -49,6 +53,14 @@ public class Reseller {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getAddress() {
