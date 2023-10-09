@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Collector {
@@ -32,6 +33,10 @@ public class Collector {
     @JoinColumn(name = "contract_id") // Add this to specify the foreign key column
     @JsonManagedReference("collector-assignedcontract")
     private Contract assignedContract;
+
+    @OneToMany(mappedBy = "collector")
+    @JsonManagedReference("collector_collectionHistory")
+    private List<CollectionHistory> collectionHistory;
 
     public String getFullName() {
         return fullName;

@@ -48,6 +48,10 @@ public class CollectionHistory {
     @JsonBackReference("reseller_collectionHistory")
     private Reseller reseller;
 
+    @ManyToOne
+    @JsonBackReference("collector_collectionHistory")
+    private Collector collector;
+
     // Getters and setters
 
     public Long getId() {
@@ -78,5 +82,12 @@ public class CollectionHistory {
         this.reseller = reseller;
     }
 
+    public Collector getCollector() {
+        return collector;
+    }
+
+    public void setCollector(Collector collector) {
+        this.collector = collector;
+    }
 
 }

@@ -1,4 +1,5 @@
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\models\FileDB.java
+C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\controllers\collector\CollectPaymentsController.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\exceptions\UserException.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\models\CollectionHistory.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\ClientService.java
@@ -37,9 +38,11 @@ C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\client\PayDuesService.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\filehandling\FileStorageServiceImpl.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\controllers\ResellerController.java
+C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\collector\CollectPaymentsServiceImpl.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\CollectorService.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\ContractServiceImpl.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\models\Client.java
+C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\collector\CollectPaymentsService.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\controllers\ContractController.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\ResellerServiceImpl.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\models\Reseller.java
