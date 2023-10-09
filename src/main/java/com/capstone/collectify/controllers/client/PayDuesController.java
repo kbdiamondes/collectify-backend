@@ -18,7 +18,7 @@ import java.util.Base64;
 import java.util.Map;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:19006")
 @RequestMapping("/paydues")
 public class PayDuesController {
 
