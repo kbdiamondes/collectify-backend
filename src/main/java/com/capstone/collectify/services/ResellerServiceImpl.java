@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,7 +32,7 @@ public class ResellerServiceImpl implements ResellerService {
     private CollectionHistoryRepository collectionHistoryRepository;
 
     @Override
-    public Contract createContract(Long resellerId, String clientUsername, String username, String itemName, BigDecimal dueAmount, Long fullPrice, Boolean isPaid) {
+    public Contract createContract(Long resellerId, String clientUsername, String username, String itemName, Long fullPrice, Boolean isPaid, int installmentDuration, boolean isMonthly) {
         Reseller reseller = resellerRepository.findById(resellerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reseller not found with id: " + resellerId));
 
@@ -43,9 +44,24 @@ public class ResellerServiceImpl implements ResellerService {
         contract.setClient(client);
         contract.setUsername(clientUsername);
         contract.setItemName(itemName);
-        contract.setDueAmount(dueAmount);
         contract.setFullPrice(fullPrice);
         contract.setPaid(isPaid);
+        contract.setInstallmentDuration(installmentDuration);
+        contract.setIsMonthly(isMonthly);
+
+        // Calculate and set the dueAmount based on isMonthly
+        if (isMonthly) {
+            // Calculate the monthly installment amount
+            BigDecimal monthlyInstallmentAmount = BigDecimal.valueOf(fullPrice)
+                    .divide(BigDecimal.valueOf(installmentDuration), 2, RoundingMode.HALF_UP); // Set scale and rounding mode
+
+            // Set the calculated dueAmount
+            contract.setDueAmount(monthlyInstallmentAmount);
+        } else {
+            // For non-monthly payments, set dueAmount equal to fullPrice
+            contract.setDueAmount(BigDecimal.valueOf(fullPrice));
+        }
+
 
         // Save the contract and return it
         return contractRepository.save(contract);

@@ -41,8 +41,12 @@ public class CollectionHistory {
 
 
 
-
     // Other collection history-specific attributes
+
+
+    @ManyToOne
+    @JsonBackReference("client_paymentHistory") // Adjust the reference name as needed
+    private Client client;
 
     @ManyToOne
     @JsonBackReference("reseller_collectionHistory")
@@ -90,4 +94,7 @@ public class CollectionHistory {
         this.collector = collector;
     }
 
+    public void setClient(Client client) {
+        this.client = client;
+    }
 }

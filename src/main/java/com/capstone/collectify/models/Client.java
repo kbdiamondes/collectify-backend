@@ -1,10 +1,12 @@
 package com.capstone.collectify.models;
 
+import com.capstone.collectify.repositories.CollectionHistoryRepository;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -28,6 +30,8 @@ public class Client {
     @Column
     @JsonIgnore
     private String password;
+
+
 
     // Other client-specific attributes and relationships
 
@@ -92,6 +96,9 @@ public class Client {
     public void setContracts(List<Contract> contracts) {
         this.contracts = contracts;
     }
+
+    //functions
+
 
 
 }

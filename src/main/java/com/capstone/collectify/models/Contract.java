@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
 
 @Entity
 public class Contract {
@@ -28,6 +30,17 @@ public class Contract {
 
     @Column
     private boolean isPaid;
+
+    @Column
+    private int installmentDuration;
+
+    @Column
+    private boolean isMonthly;
+
+
+    @Column
+    private LocalDateTime lastPaymentDate;
+
 
     // Other contract-specific attributes and relationships
 
@@ -127,4 +140,43 @@ public class Contract {
         this.collector = collector;
     }
 
+    public int getInstallmentDuration() {
+        return installmentDuration;
+    }
+
+    public void setInstallmentDuration(int installmentDuration) {
+        this.installmentDuration = installmentDuration;
+    }
+
+    public boolean isIsMonthly() {
+        return isMonthly;
+    }
+
+    public void setIsMonthly(boolean isMonthly) {
+        this.isMonthly = isMonthly;
+    }
+
+    public LocalDateTime getLastPaymentDate() {
+        return lastPaymentDate;
+    }
+
+    public void setLastPaymentDate(LocalDateTime lastPaymentDate) {
+        this.lastPaymentDate = lastPaymentDate;
+    }
+
+
+
+    //functions
+    //Used in ContractServiceImpl
+    public BigDecimal calculateMonthlyInstallmentAmount(Boolean isMonthly) {
+        if (isMonthly) {
+            if (installmentDuration > 0) {
+                return dueAmount.divide(BigDecimal.valueOf(installmentDuration), 2, RoundingMode.HALF_UP);
+            } else {
+                throw new IllegalArgumentException("Invalid installment duration");
+            }
+        } else {
+            return dueAmount; // For non-monthly payments, the due amount remains the same
+        }
+    }
 }

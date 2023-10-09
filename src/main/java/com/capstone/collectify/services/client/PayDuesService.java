@@ -12,4 +12,6 @@ public interface PayDuesService {
     //void payDues(Long clientId, Long contractId, BigDecimal amount) throws AccessDeniedException;
 
     void payDues(Long clientId, Long contractId, Map<String,String> amount, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException;
+
+    void processMonthlyPayments();
 }

@@ -1,18 +1,16 @@
 package com.capstone.collectify.services;
 
-import com.capstone.collectify.models.Client;
-import com.capstone.collectify.models.Collector;
-import com.capstone.collectify.models.Contract;
-import com.capstone.collectify.models.Reseller;
-import com.capstone.collectify.repositories.ClientRepository;
-import com.capstone.collectify.repositories.CollectorRepository;
-import com.capstone.collectify.repositories.ContractRepository;
-import com.capstone.collectify.repositories.ResellerRepository;
+import com.capstone.collectify.models.*;
+import com.capstone.collectify.repositories.*;
+import com.capstone.collectify.services.filehandling.FileStorageService;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -29,6 +27,19 @@ public class ContractServiceImpl implements ContractService {
 
     @Autowired
     private CollectorRepository collectorRepository;
+
+    private final FileStorageService fileStorageService;
+
+    @Autowired
+    private CollectionHistoryRepository collectionHistoryRepository;
+
+    private String base64ImageData;
+    private String fileName;
+    private String contentType;
+
+    public ContractServiceImpl(FileStorageService fileStorageService) {
+        this.fileStorageService = fileStorageService;
+    }
 
     @Override
     public Contract createContract(Contract contract) {
@@ -84,5 +95,62 @@ public class ContractServiceImpl implements ContractService {
     public Iterable<Contract> getContract() {
         return contractRepository.findAll();
     }
+
+    @Scheduled(cron = "0 0 0 1 * ?") // Run at midnight on the 1st day of each month
+    public void processMonthlyPayments() throws IOException {
+
+        // Get the current date and time
+        LocalDateTime currentDate = LocalDateTime.now();
+
+        // Iterate through contracts with isMonthly=true and calculate monthly payments
+        List<Contract> monthlyPaymentContracts = contractRepository.findByIsMonthly(true);
+
+        for (Contract contract : monthlyPaymentContracts) {
+            if (!contract.isPaid()) {
+                // Calculate the next payment date based on the contract's payment plan
+                LocalDateTime lastPaymentDate = contract.getLastPaymentDate();
+                int paymentPlanMonths = contract.getInstallmentDuration();
+                LocalDateTime nextPaymentDate = lastPaymentDate.plusMonths(paymentPlanMonths);
+                if (currentDate.toLocalDate().isEqual(nextPaymentDate.toLocalDate())) {
+                    // Calculate the monthly payment amount
+                    BigDecimal monthlyInstallmentAmount = contract.calculateMonthlyInstallmentAmount(contract.isIsMonthly());
+
+                    // Check if the client has sufficient balance
+                    if (contract.getDueAmount().compareTo(monthlyInstallmentAmount) >= 0) {
+                        // Update the due amount and mark the contract as paid if necessary
+                        contract.setDueAmount(contract.getDueAmount().subtract(monthlyInstallmentAmount));
+                        if (contract.getDueAmount().compareTo(BigDecimal.ZERO) == 0) {
+                            contract.setPaid(true);
+                        }
+
+                        // Record the collection history (you can customize this part)
+                        CollectionHistory history = new CollectionHistory();
+                        history.setCollectedAmount(monthlyInstallmentAmount);
+                        history.setCollectionDate(currentDate);
+                        history.setClient(contract.getClient());
+                        // You can also set other relevant attributes in the history
+
+                        // Store the image data and associate it with the contract
+                        FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
+                        history.setTransactionProof(fileDB);
+
+                        // Set the lastPaymentDate to nextPaymentDate
+                        contract.setLastPaymentDate(nextPaymentDate);
+
+                        // Save the contract and collection history
+                        contractRepository.save(contract);
+                        collectionHistoryRepository.save(history);
+
+                        System.out.println("Payment collected: " + monthlyInstallmentAmount + " for contract: " + contract.getContract_id());
+                    } else {
+                        // Handle insufficient balance (e.g., send notifications)
+                        // You can implement this part based on your business logic
+                    }
+                }
+
+            }
+        }
+    }
+
 }
 
