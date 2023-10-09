@@ -46,15 +46,24 @@ public class PayDuesController {
             ResponseEntity<ResponseMessage> uploadResponse = fileUploadController.uploadFile(base64Image, fileName, contentType);
 
             if (uploadResponse.getStatusCode() == HttpStatus.OK) {
-                // Call the payDues service to handle the payment
-                payDuesService.payDues(clientId, contractId, amount, base64Image, fileName, contentType);
-                return ResponseEntity.ok("Payment successful");
+                try{
+                    // Call the payDues service to handle the payment
+                    payDuesService.payDues(clientId, contractId, amount, base64Image, fileName, contentType);
+                    return ResponseEntity.ok("Payment successful");
+
+                }catch(NullPointerException ex){
+                    // Handle the case when a null pointer exception occurs in the payDues service
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment failed: Null pointer exception in payDues service.");
+                }
+
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment failed: " + uploadResponse.getBody().getMessage());
             }
         } catch (AccessDeniedException e) {
+            System.out.println(e.getMessage()) ;
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception e) {
+            System.out.println(e.getMessage()) ;
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment failed: " + e.getMessage());
         }
     }
