@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,10 +35,21 @@ public class Client {
 
 
     // Other client-specific attributes and relationships
-
     @OneToMany(mappedBy = "client")
     @JsonManagedReference("client-contracts")
     private List<Contract> contracts;
+
+    @OneToMany(mappedBy = "client")
+    @JsonManagedReference("client-paymentHistory")
+    private List<PaymentHistory> paymentHistory = new ArrayList<>();
+
+    //functions
+
+    // Add a method to add payment history records
+    public void addPaymentHistory(PaymentHistory paymentHistoryRecord) {
+        paymentHistory.add(paymentHistoryRecord);
+        paymentHistoryRecord.setClient(this);
+    }
 
     // Getters and setters
     public Long getClient_id() {

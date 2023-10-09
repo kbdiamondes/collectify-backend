@@ -12,9 +12,11 @@ com\capstone\collectify\services\ClientServiceImpl.class
 com\capstone\collectify\models\Collector.class
 com\capstone\collectify\controllers\CollectionHistoryController.class
 com\capstone\collectify\services\ResellerServiceImpl.class
+com\capstone\collectify\models\PaymentHistory.class
 com\capstone\collectify\services\client\PayDuesService.class
 com\capstone\collectify\models\CollectionHistory.class
 com\capstone\collectify\controllers\reseller\CollectorCollectionController.class
+com\capstone\collectify\repositories\PaymentHistoryRepository.class
 com\capstone\collectify\services\client\PayDuesServiceImpl.class
 com\capstone\collectify\repositories\ClientRepository.class
 com\capstone\collectify\models\Client.class

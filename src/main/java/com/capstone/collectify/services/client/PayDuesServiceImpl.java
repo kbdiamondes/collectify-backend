@@ -1,12 +1,10 @@
 package com.capstone.collectify.services.client;
 
-import com.capstone.collectify.models.Client;
-import com.capstone.collectify.models.CollectionHistory;
-import com.capstone.collectify.models.Contract;
-import com.capstone.collectify.models.FileDB;
+import com.capstone.collectify.models.*;
 import com.capstone.collectify.repositories.ClientRepository;
 import com.capstone.collectify.repositories.CollectionHistoryRepository;
 import com.capstone.collectify.repositories.ContractRepository;
+import com.capstone.collectify.repositories.PaymentHistoryRepository;
 import com.capstone.collectify.services.filehandling.FileStorageService;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +26,19 @@ public class PayDuesServiceImpl implements PayDuesService {
     private final CollectionHistoryRepository collectionHistoryRepository;
     private final FileStorageService fileStorageService;
 
+    private final PaymentHistoryRepository paymentHistoryRepository;
+
     @Autowired
     public PayDuesServiceImpl(
             ClientRepository clientRepository,
             ContractRepository contractRepository,
             CollectionHistoryRepository collectionHistoryRepository,
-            FileStorageService fileStorageService) {
+            FileStorageService fileStorageService, PaymentHistoryRepository paymentHistoryRepository) {
         this.clientRepository = clientRepository;
         this.contractRepository = contractRepository;
         this.collectionHistoryRepository = collectionHistoryRepository;
         this.fileStorageService = fileStorageService;
+        this.paymentHistoryRepository = paymentHistoryRepository;
     }
 
     @Override
@@ -64,11 +65,25 @@ public class PayDuesServiceImpl implements PayDuesService {
                         // Set the lastPaymentDate to the current date and time
                         contract.setLastPaymentDate(LocalDateTime.now());
 
+                        // Create a new payment history record
+                        PaymentHistory paymentHistoryRecord = new PaymentHistory();
+                        paymentHistoryRecord.setAmountPaid(amount);
+                        paymentHistoryRecord.setPaymentDate(LocalDateTime.now());
+
+                        // Add the payment history record to the client's history
+                        client.addPaymentHistory(paymentHistoryRecord);
+
+                        // Save the payment history record to the database
+                        paymentHistoryRepository.save(paymentHistoryRecord);
+
                         // Store the image data and associate it with the contract
                         FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
                         contract.setTransactionProof(fileDB);
 
+                        // Save the contract, client, and payment history
                         contractRepository.save(contract);
+                        clientRepository.save(client);
+
                     } else {
                         throw new IllegalArgumentException("Paid amount is not equal to the due amount.");
                     }
