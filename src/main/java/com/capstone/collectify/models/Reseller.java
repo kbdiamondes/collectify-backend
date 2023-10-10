@@ -15,6 +15,20 @@ public class Reseller {
     @Column
     private String username;
 
+
+    @Column
+    private String firstname;
+
+    @Column
+    private String middlename;
+
+    @Column
+    private String lastname;
+
+    @Column
+    private String fullName;
+
+
     @Column
     private String address;
 
@@ -50,6 +64,43 @@ public class Reseller {
     public void setUsername(String username) {
         this.username = username;
     }
+
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getMiddlename() {
+        return middlename;
+    }
+
+    public void setMiddlename(String middlename) {
+        this.middlename = middlename;
+    }
+
+
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+
 
     public String getAddress() {
         return address;

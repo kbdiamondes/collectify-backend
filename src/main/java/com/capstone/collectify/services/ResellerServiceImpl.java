@@ -4,7 +4,9 @@ import com.capstone.collectify.models.*;
 import com.capstone.collectify.repositories.*;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.nio.file.AccessDeniedException;
@@ -143,6 +145,48 @@ public class ResellerServiceImpl implements ResellerService {
         // Step 4: Return the Assigned Collector
         return assignedCollector;
     }
+
+    private final String apiUrl = "https://bunbury-dugong-fktd.2.sg-1.fl0.io/dealer/getAllDealers";
+
+    public void fetchDataAndSaveToDatabase() {
+        RestTemplate restTemplate = new RestTemplate();
+        Reseller[] resellers = restTemplate.getForObject(apiUrl, Reseller[].class);
+
+        if (resellers != null) {
+            for (Reseller reseller : resellers) {
+                // Extract relevant fields from the JSON response
+                String firstname = reseller.getFirstname();
+                String middlename = reseller.getMiddlename();
+                String lastname = reseller.getLastname();
+                String address = reseller.getAddress();
+
+                // Concatenate first, middle, and last names into the fullName field
+                String fullName = firstname + " " + middlename + " " + lastname;
+
+                // Create a Reseller instance and set the extracted data
+                Reseller newReseller = new Reseller();
+                newReseller.setUsername(firstname + "." + lastname);
+                newReseller.setFullName(fullName);
+                newReseller.setEmail(firstname.toLowerCase() + lastname.toLowerCase() + "@example.com");
+                newReseller.setPassword(lastname + "123");
+                newReseller.setAddress(address);
+
+                // Check if the reseller already exists in the database using some unique identifier (e.g., username or email)
+                // If it doesn't exist, save it to the database
+                if (!resellerRepository.existsByUsername(newReseller.getUsername())
+                        && !resellerRepository.existsByEmail(newReseller.getEmail())) {
+                    resellerRepository.save(newReseller);
+                }
+            }
+        }
+    }
+
+    // This method will run automatically every 5 minutes
+    @Scheduled(fixedRate = 5000) // 5 minutes = 300,000 milliseconds
+    public void scheduleFetchAndSave() {
+        fetchDataAndSaveToDatabase();
+    }
+
 
 }
 
