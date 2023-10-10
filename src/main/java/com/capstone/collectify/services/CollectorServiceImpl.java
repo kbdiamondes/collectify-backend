@@ -8,7 +8,9 @@ import com.capstone.collectify.repositories.CollectorRepository;
 import com.capstone.collectify.repositories.ContractRepository;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -63,5 +65,42 @@ public class CollectorServiceImpl implements CollectorService {
         return collectorRepository.findAll();
     }
 
+    private final String apiUrl = "https://bunbury-dugong-fktd.2.sg-1.fl0.io/employee/getAllEmployees";
+
+
+
+    public void fetchDataAndSaveToDatabase() {
+        RestTemplate restTemplate = new RestTemplate();
+        Collector[] collectors = restTemplate.getForObject(apiUrl, Collector[].class);
+
+        if (collectors != null) {
+            for (Collector collector : collectors) {
+                // Extract first, middle, and last names from JSON response
+                String firstname = collector.getFirstname();
+                String middlename = collector.getMiddlename();
+                String lastname = collector.getLastname();
+
+                // Concatenate first, middle, and last names into the fullName field
+                String fullName = firstname + " " + middlename + " " + lastname;
+                String email = firstname + lastname + "@gmail.com";
+
+                collector.setFullName(fullName);
+                collector.setEmail(email);
+
+                // Check if the collector already exists in the database using some unique identifier (e.g., username or email)
+                // If it doesn't exist, save it to the database
+                if (!collectorRepository.existsByUsername(collector.getUsername())
+                        && !collectorRepository.existsByEmail(collector.getEmail())) {
+                    collectorRepository.save(collector);
+                }
+            }
+        }
+    }
+
+    // This method will run automatically every 5 minutes
+    @Scheduled(fixedRate = 50000) // 5 minutes = 300,000 milliseconds
+    public void scheduleFetchAndSave() {
+        fetchDataAndSaveToDatabase();
+    }
 }
 
