@@ -104,7 +104,7 @@ public class CollectorServiceImpl implements CollectorService {
     }
 
     // This method will run automatically every 5 minutes
-    @Scheduled(fixedRate = 15000) // 5 minutes = 300,000 milliseconds
+    @Scheduled(fixedRate = 5000) // 5 minutes = 300,000 milliseconds
     public void scheduleFetchAndSave() {
         fetchDataAndSaveToDatabase();
     }
