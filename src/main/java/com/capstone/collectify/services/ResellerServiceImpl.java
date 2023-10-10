@@ -162,12 +162,16 @@ public class ResellerServiceImpl implements ResellerService {
 
                 // Concatenate first, middle, and last names into the fullName field
                 String fullName = firstname + " " + middlename + " " + lastname;
+                String email = firstname.toLowerCase() + lastname.toLowerCase() + "@example.com";
 
                 // Create a Reseller instance and set the extracted data
                 Reseller newReseller = new Reseller();
                 newReseller.setUsername(firstname + "." + lastname);
+                newReseller.setFirstname(firstname);
+                newReseller.setMiddlename(middlename);
+                newReseller.setLastname(lastname);
                 newReseller.setFullName(fullName);
-                newReseller.setEmail(firstname.toLowerCase() + lastname.toLowerCase() + "@example.com");
+                newReseller.setEmail(email);
                 newReseller.setPassword(lastname + "123");
                 newReseller.setAddress(address);
 
