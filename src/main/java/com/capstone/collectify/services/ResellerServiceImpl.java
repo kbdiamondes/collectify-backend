@@ -147,7 +147,6 @@ public class ResellerServiceImpl implements ResellerService {
     }
 
     private final String apiUrl = "https://bunbury-dugong-fktd.2.sg-1.fl0.io/dealer/getAllDealers";
-
     public void fetchDataAndSaveToDatabase() {
         RestTemplate restTemplate = new RestTemplate();
         Reseller[] resellers = restTemplate.getForObject(apiUrl, Reseller[].class);
@@ -161,18 +160,33 @@ public class ResellerServiceImpl implements ResellerService {
                 String address = reseller.getAddress();
 
                 // Concatenate first, middle, and last names into the fullName field
-                String fullName = firstname + " " + middlename + " " + lastname;
-                String email = firstname.toLowerCase() + lastname.toLowerCase() + "@example.com";
+                StringBuilder fullNameBuilder = new StringBuilder();
+                if (firstname != null) {
+                    fullNameBuilder.append(firstname);
+                }
+                if (middlename != null) {
+                    if (fullNameBuilder.length() > 0) {
+                        fullNameBuilder.append(" ");
+                    }
+                    fullNameBuilder.append(middlename);
+                }
+                if (lastname != null) {
+                    if (fullNameBuilder.length() > 0) {
+                        fullNameBuilder.append(" ");
+                    }
+                    fullNameBuilder.append(lastname);
+                }
+                String fullName = fullNameBuilder.toString();
 
                 // Create a Reseller instance and set the extracted data
                 Reseller newReseller = new Reseller();
-                newReseller.setUsername(firstname + "." + lastname);
+                newReseller.setUsername(firstname != null && lastname != null ? firstname + "." + lastname : "");
                 newReseller.setFirstname(firstname);
                 newReseller.setMiddlename(middlename);
                 newReseller.setLastname(lastname);
                 newReseller.setFullName(fullName);
-                newReseller.setEmail(email);
-                newReseller.setPassword(lastname + "123");
+                newReseller.setEmail((firstname != null && lastname != null) ? (firstname.toLowerCase() + lastname.toLowerCase() + "@example.com") : "");
+                newReseller.setPassword(lastname != null ? (lastname + "123") : "");
                 newReseller.setAddress(address);
 
                 // Check if the reseller already exists in the database using some unique identifier (e.g., username or email)
