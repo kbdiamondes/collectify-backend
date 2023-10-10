@@ -67,8 +67,6 @@ public class CollectorServiceImpl implements CollectorService {
 
     private final String apiUrl = "https://bunbury-dugong-fktd.2.sg-1.fl0.io/employee/getAllEmployees";
 
-
-
     public void fetchDataAndSaveToDatabase() {
         RestTemplate restTemplate = new RestTemplate();
         Collector[] collectors = restTemplate.getForObject(apiUrl, Collector[].class);
@@ -79,13 +77,21 @@ public class CollectorServiceImpl implements CollectorService {
                 String firstname = collector.getFirstname();
                 String middlename = collector.getMiddlename();
                 String lastname = collector.getLastname();
+                String address = collector.getAddress();
+
 
                 // Concatenate first, middle, and last names into the fullName field
+                String userName = firstname+"."+lastname;
+                String password = lastname+"123";
                 String fullName = firstname + " " + middlename + " " + lastname;
                 String email = firstname + lastname + "@gmail.com";
+                String collectorAddress = address;
 
+                collector.setUsername(userName);
                 collector.setFullName(fullName);
                 collector.setEmail(email);
+                collector.setPassword(password);
+                collector.setAddress(collectorAddress);
 
                 // Check if the collector already exists in the database using some unique identifier (e.g., username or email)
                 // If it doesn't exist, save it to the database
@@ -98,7 +104,7 @@ public class CollectorServiceImpl implements CollectorService {
     }
 
     // This method will run automatically every 5 minutes
-    @Scheduled(fixedRate = 50000) // 5 minutes = 300,000 milliseconds
+    @Scheduled(fixedRate = 15000) // 5 minutes = 300,000 milliseconds
     public void scheduleFetchAndSave() {
         fetchDataAndSaveToDatabase();
     }
