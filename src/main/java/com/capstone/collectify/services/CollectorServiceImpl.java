@@ -65,7 +65,7 @@ public class CollectorServiceImpl implements CollectorService {
         return collectorRepository.findAll();
     }
 
-    private final String apiUrl = "https://bunbury-dugong-fktd.2.sg-1.fl0.io/employee/getAllEmployees";
+    private final String apiUrl = "https://tamworth-wallaby-raqd.2.sg-1.fl0.io/employee/getAllEmployees";
 
     public void fetchDataAndSaveToDatabase() {
         RestTemplate restTemplate = new RestTemplate();

@@ -146,7 +146,7 @@ public class ResellerServiceImpl implements ResellerService {
         return assignedCollector;
     }
 
-    private final String apiUrl = "https://bunbury-dugong-fktd.2.sg-1.fl0.io/dealer/getAllDealers";
+    private final String apiUrl = "https://tamworth-wallaby-raqd.2.sg-1.fl0.io/dealer/getAllDealers";
     public void fetchDataAndSaveToDatabase() {
         RestTemplate restTemplate = new RestTemplate();
         Reseller[] resellers = restTemplate.getForObject(apiUrl, Reseller[].class);
