@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ResellerRepository extends CrudRepository<Reseller, Object> {
 
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 }
