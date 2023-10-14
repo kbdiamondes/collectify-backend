@@ -37,6 +37,9 @@ public class ContractServiceImpl implements ContractService {
     @Autowired
     private OrderedProductRepository orderedProductRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     private String base64ImageData;
     private String fileName;
     private String contentType;
@@ -196,7 +199,9 @@ public class ContractServiceImpl implements ContractService {
                             // Check if the product information exists in the external data
                             Product externalProduct = externalOrderedProduct.getProduct();
                             if (externalProduct != null) {
+
                                 Product product = new Product();
+                                System.out.println("System print: " + externalProduct.getName());
                                 product.setName(externalProduct.getName());
                                 product.setUnit(externalProduct.getUnit());
                                 product.setPrice(externalProduct.getPrice());
@@ -204,16 +209,23 @@ public class ContractServiceImpl implements ContractService {
 
                                 // Set the relationship between OrderedProduct and Product
                                 orderedProduct.setProduct(product);
+                                productRepository.save(product);
+                            }else{
+                                System.out.println("External Product is empty!");
                             }
 
-                            // Assuming that OrderedProduct has a ManyToOne relationship with Contract
-                            // You should handle the relationship between OrderedProduct and Contract here
+                            // Set the relationship between OrderedProduct and Contract
+                            orderedProduct.setContract(contract);
 
                             // Save the new OrderedProduct entity
                             orderedProductRepository.save(orderedProduct);
+
                         }
+
                     }
 
+                    // Add the OrderedProduct entities to the Contract
+                    contract.setOrderedProduct(orderedProducts);
 
                     // Save the new Contract entity
                     contractRepository.save(contract);

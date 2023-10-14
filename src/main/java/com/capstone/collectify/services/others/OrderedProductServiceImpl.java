@@ -10,11 +10,8 @@ import org.springframework.stereotype.Service;
 public class OrderedProductServiceImpl implements OrderedProductService {
 
     @Autowired
-    private final OrderedProductRepository orderedProductRepository;
+    private OrderedProductRepository orderedProductRepository;
 
-    public OrderedProductServiceImpl(OrderedProductRepository orderedProductRepository) {
-        this.orderedProductRepository = orderedProductRepository;
-    }
 
     public Iterable<OrderedProduct> getOrderedProduct() {
         return orderedProductRepository.findAll();

@@ -258,4 +258,6 @@ public class Contract {
             return dueAmount; // For non-monthly payments, the due amount remains the same
         }
     }
+
+
 }
