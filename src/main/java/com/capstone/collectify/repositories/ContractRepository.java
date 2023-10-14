@@ -14,4 +14,6 @@ public interface ContractRepository extends CrudRepository<Contract, Object> {
     List<Contract> findByClient(Client client);
 
     List<Contract> findByReseller(Reseller reseller);
+
+    boolean existsByUsername(String username);
 }
