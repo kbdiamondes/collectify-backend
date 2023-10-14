@@ -9,7 +9,9 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.nio.file.AccessDeniedException;
@@ -106,6 +108,50 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Contract createContractForClient(Long clientId, Contract contract) {
         return null;
+    }
+
+    private final String apiUrl = "https://tamworth-wallaby-raqd.2.sg-1.fl0.io/dealer/getAllDealers";
+    public void fetchDataAndSaveToDatabase() {
+        RestTemplate restTemplate = new RestTemplate();
+        Client[] clients = restTemplate.getForObject(apiUrl, Client[].class);
+
+        if (clients != null) {
+            for (Client client : clients) {
+
+                // Extract client data
+                String firstname = client.getFirstname();
+                String middlename = client.getMiddlename();
+                String lastname = client.getLastname();
+                String address = client.getAddress();
+
+                // Concatenate first, middle, and last names into the fullName field
+                String userName = firstname + "." + lastname;
+                String password = lastname + "123";
+                String fullName = firstname + " " + middlename + " " + lastname;
+                String email = firstname.toLowerCase() + lastname.toLowerCase() + "@example.com";
+                String clientAddress = address;
+
+                client.setUsername(userName);
+                client.setFullName(fullName);
+                client.setEmail(email);
+                client.setPassword(password);
+                client.setAddress(clientAddress);
+
+                // Check if the client already exists in the database using some unique identifier (e.g., username or email)
+                // If it doesn't exist, save it to the database
+                if (!clientRepository.existsByUsername(client.getUsername())
+                        && !clientRepository.existsByEmail(client.getEmail())) {
+                    clientRepository.save(client);
+                }
+            }
+        }
+    }
+
+
+    // This method will run automatically every 5 minutes
+    @Scheduled(fixedRate = 5000) // 5 minutes = 300,000 milliseconds
+    public void scheduleFetchAndSave() {
+        fetchDataAndSaveToDatabase();
     }
 
 }

@@ -32,6 +32,14 @@ public class Client {
     @JsonIgnore
     private String password;
 
+    @Column
+    private String firstname;
+
+    @Column
+    private String middlename;
+
+    @Column
+    private String lastname;
 
 
     // Other client-specific attributes and relationships
@@ -112,5 +120,27 @@ public class Client {
     //functions
 
 
+    public String getFirstname() {
+        return firstname;
+    }
 
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getMiddlename() {
+        return middlename;
+    }
+
+    public void setMiddlename(String middlename) {
+        this.middlename = middlename;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 }

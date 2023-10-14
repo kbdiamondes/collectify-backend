@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Contract {
@@ -41,6 +43,25 @@ public class Contract {
     @Column
     private LocalDateTime lastPaymentDate;
 
+    //For connection
+
+    @Column
+    private String orderid;
+
+    @Column
+    private LocalDate orderdate;
+    @Column
+    private LocalDate distributiondate;
+
+    @Column
+    private double penaltyrate;
+
+    @Column
+    private int paymentterms;
+
+    @Column
+    private double orderamount;
+
 
     // Other contract-specific attributes and relationships
 
@@ -59,6 +80,10 @@ public class Contract {
     @OneToOne
     @JoinColumn(name = "transaction_proof_id") // Adjust the column name as needed
     private FileDB transactionProof; // Represents the transaction proof image
+
+    @OneToMany(mappedBy = "contract")
+    @JsonBackReference("ordered-products")
+    private List<OrderedProduct> orderedProduct;
 
     public FileDB getTransactionProof() {
         return transactionProof;
@@ -140,6 +165,54 @@ public class Contract {
         this.collector = collector;
     }
 
+    public String getOrderid() {
+        return orderid;
+    }
+
+    public void setOrderid(String orderid) {
+        this.orderid = orderid;
+    }
+
+    public LocalDate getOrderdate() {
+        return orderdate;
+    }
+
+    public void setOrderdate(LocalDate orderdate) {
+        this.orderdate = orderdate;
+    }
+
+    public LocalDate getDistributiondate() {
+        return distributiondate;
+    }
+
+    public void setDistributiondate(LocalDate distributiondate) {
+        this.distributiondate = distributiondate;
+    }
+
+    public double getPenaltyrate() {
+        return penaltyrate;
+    }
+
+    public void setPenaltyrate(double penaltyrate) {
+        this.penaltyrate = penaltyrate;
+    }
+
+    public int getPaymentterms() {
+        return paymentterms;
+    }
+
+    public void setPaymentterms(int paymentterms) {
+        this.paymentterms = paymentterms;
+    }
+
+    public double getOrderamount() {
+        return orderamount;
+    }
+
+    public void setOrderamount(double orderamount) {
+        this.orderamount = orderamount;
+    }
+
     public int getInstallmentDuration() {
         return installmentDuration;
     }
@@ -164,7 +237,13 @@ public class Contract {
         this.lastPaymentDate = lastPaymentDate;
     }
 
+    public List<OrderedProduct> getOrderedProduct() {
+        return orderedProduct;
+    }
 
+    public void setOrderedProduct(List<OrderedProduct> orderedProduct) {
+        this.orderedProduct = orderedProduct;
+    }
 
     //functions
     //Used in ContractServiceImpl
