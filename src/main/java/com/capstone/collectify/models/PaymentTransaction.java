@@ -4,11 +4,13 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="paymentransaction")
 public class PaymentTransaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long payment_transactionid;
+
+    @Column
     private String paymenttransactionid;
 
     @Column
@@ -28,6 +30,15 @@ public class PaymentTransaction {
 
     @ManyToOne
     private Contract contract;
+
+
+    public Long getPayment_transactionid() {
+        return payment_transactionid;
+    }
+
+    public void setPayment_transactionid(Long payment_transactionid) {
+        this.payment_transactionid = payment_transactionid;
+    }
 
     public String getPaymenttransactionid() {
         return paymenttransactionid;

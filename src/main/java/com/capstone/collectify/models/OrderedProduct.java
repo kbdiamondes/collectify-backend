@@ -6,11 +6,13 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="orderedproduct")
 public class OrderedProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long order_productid;
+
+    @Column
     private String orderedproductid;
 
     @Column
@@ -20,11 +22,19 @@ public class OrderedProduct {
     private double subtotal;
 
     @ManyToOne
+    @JoinColumn(name="product_productid")
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Contract contract;
 
+    public Long getOrder_productid() {
+        return order_productid;
+    }
+
+    public void setOrder_productid(Long order_productid) {
+        this.order_productid = order_productid;
+    }
 
     public String getOrderedproductid() {
         return orderedproductid;

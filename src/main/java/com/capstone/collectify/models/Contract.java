@@ -81,9 +81,9 @@ public class Contract {
     @JoinColumn(name = "transaction_proof_id") // Adjust the column name as needed
     private FileDB transactionProof; // Represents the transaction proof image
 
-    @OneToMany(mappedBy = "contract")
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL)
     @JsonBackReference("ordered-products")
-    private List<OrderedProduct> orderedProduct;
+    private List<OrderedProduct> orderedProducts;
 
     public FileDB getTransactionProof() {
         return transactionProof;
@@ -237,12 +237,12 @@ public class Contract {
         this.lastPaymentDate = lastPaymentDate;
     }
 
-    public List<OrderedProduct> getOrderedProduct() {
-        return orderedProduct;
+    public List<OrderedProduct> getOrderedProducts() {
+        return orderedProducts;
     }
 
-    public void setOrderedProduct(List<OrderedProduct> orderedProduct) {
-        this.orderedProduct = orderedProduct;
+    public void setOrderedProducts(List<OrderedProduct> orderedProducts) {
+        this.orderedProducts = orderedProducts;
     }
 
     //functions

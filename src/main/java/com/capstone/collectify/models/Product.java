@@ -4,11 +4,13 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name="product")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long product_id;
+
+    @Column
     private String productid;
 
     @Column
@@ -21,8 +23,16 @@ public class Product {
     @Column
     private double commissionrate;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<OrderedProduct> orderedProducts;
+
+    public Long getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(Long product_id) {
+        this.product_id = product_id;
+    }
 
     public String getProductid() {
         return productid;

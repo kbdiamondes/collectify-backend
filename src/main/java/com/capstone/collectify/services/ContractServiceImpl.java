@@ -4,17 +4,27 @@ import com.capstone.collectify.models.*;
 import com.capstone.collectify.repositories.*;
 import com.capstone.collectify.services.filehandling.FileStorageService;
 import org.apache.velocity.exception.ResourceNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+
+
 @Service
+@Transactional
 public class ContractServiceImpl implements ContractService {
 
     @Autowired
@@ -161,10 +171,13 @@ public class ContractServiceImpl implements ContractService {
 
 
     private final String apiUrl = "https://tamworth-wallaby-raqd.2.sg-1.fl0.io/order/getAllOrders";
+    private EntityManager entityManager;
 
     public void fetchDataAndSaveToDatabase() {
         RestTemplate restTemplate = new RestTemplate();
         Contract[] contracts = restTemplate.getForObject(apiUrl, Contract[].class);
+
+
 
         if (contracts != null) {
             for (Contract externalContract : contracts) {
@@ -185,7 +198,10 @@ public class ContractServiceImpl implements ContractService {
 
                     // Set other attributes based on your business logic
                     // For relationships, you'll need to populate them as well based on the API data.
-                    List<OrderedProduct> orderedProducts = externalContract.getOrderedProduct();
+
+                    List<OrderedProduct> orderedProducts = externalContract.getOrderedProducts();
+                    System.out.println("Contracts: " + Arrays.toString(contracts));
+                    System.out.println("Ordered Products: " + orderedProducts);
                     if (orderedProducts != null) {
                         for (OrderedProduct externalOrderedProduct : orderedProducts) {
                             OrderedProduct orderedProduct = new OrderedProduct();
@@ -219,13 +235,15 @@ public class ContractServiceImpl implements ContractService {
 
                             // Save the new OrderedProduct entity
                             orderedProductRepository.save(orderedProduct);
+                            entityManager.flush();
+                            entityManager.clear();
 
                         }
 
                     }
 
                     // Add the OrderedProduct entities to the Contract
-                    contract.setOrderedProduct(orderedProducts);
+                    contract.setOrderedProducts(orderedProducts);
 
                     // Save the new Contract entity
                     contractRepository.save(contract);
