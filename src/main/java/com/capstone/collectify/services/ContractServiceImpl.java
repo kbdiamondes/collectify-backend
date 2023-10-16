@@ -272,6 +272,7 @@ public class ContractServiceImpl implements ContractService {
                                     product.setPrice(externalProduct.getPrice());
                                     product.setCommissionrate(externalProduct.getCommissionrate());
 
+                                    //Extra functions
                                     Long fullPrice = (long) externalProduct.getPrice() * externalOrderedProduct.getQuantity();
                                     int installmentduration = externalContract.getPaymentterms();
 
@@ -280,6 +281,14 @@ public class ContractServiceImpl implements ContractService {
                                     contract.setFullPrice(fullPrice);
                                     contract.setInstallmentDuration(installmentduration);
                                     contract.setDueAmount(BigDecimal.valueOf(fullPrice/installmentduration));
+
+                                    if(installmentduration!=0){
+                                        contract.setIsMonthly(true);
+                                    }else{
+                                        contract.setIsMonthly(false);
+                                    }
+
+
                                     // Set the relationship between OrderedProduct and Product
                                     productRepository.save(product);
 
