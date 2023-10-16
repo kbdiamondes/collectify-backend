@@ -197,6 +197,17 @@ public class ContractServiceImpl implements ContractService {
                         if (externalDistributor != null) {
                             Reseller reseller = new Reseller();
                             // Map and set distributor attributes
+                            String username = externalDistributor.getFirstname()+"."+externalDistributor.getLastname();
+
+                            reseller.setFullName(externalDistributor.getFirstname()+" " + externalDistributor.getMiddlename()+" "+externalDistributor.getLastname());
+                            reseller.setUsername(username);
+                            reseller.setFirstname(externalDistributor.getFirstname());
+                            reseller.setMiddlename(externalDistributor.getMiddlename());
+                            reseller.setLastname(externalDistributor.getLastname());
+                            reseller.setEmail(externalDistributor.getEmail());
+                            reseller.setAddress(externalDistributor.getAddress());
+                            reseller.setPassword(externalDistributor.getPassword());
+
                             // ...
                             resellerRepository.save(reseller);
                             contract.setReseller(reseller);
