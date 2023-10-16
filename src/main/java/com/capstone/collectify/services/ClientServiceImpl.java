@@ -151,7 +151,7 @@ public class ClientServiceImpl implements ClientService {
 
 
     // This method will run automatically every 5 minutes
-    @Scheduled(fixedRate = 5000) // 5 minutes = 300,000 milliseconds
+    @Scheduled(fixedRate = 350000) // 5 minutes = 300,000 milliseconds
     public void scheduleFetchAndSave() {
         fetchDataAndSaveToDatabase();
     }
