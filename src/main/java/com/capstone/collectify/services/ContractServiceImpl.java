@@ -273,11 +273,13 @@ public class ContractServiceImpl implements ContractService {
                                     product.setCommissionrate(externalProduct.getCommissionrate());
 
                                     Long fullPrice = (long) externalProduct.getPrice() * externalOrderedProduct.getQuantity();
+                                    int installmentduration = externalContract.getPaymentterms();
 
-                                    //Set dueAmount, fullPrice & itemName
+                                    //Set dueAmount, fullPrice, itemName and installment_duration(paymentterms)
                                     contract.setItemName(externalProduct.getName());
                                     contract.setFullPrice(fullPrice);
-                                    contract.setDueAmount(BigDecimal.valueOf(fullPrice/externalContract.getPaymentterms()));
+                                    contract.setInstallmentDuration(installmentduration);
+                                    contract.setDueAmount(BigDecimal.valueOf(fullPrice/installmentduration));
                                     // Set the relationship between OrderedProduct and Product
                                     productRepository.save(product);
 
