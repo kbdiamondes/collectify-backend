@@ -66,12 +66,14 @@ public class Contract {
 
     // Other contract-specific attributes and relationships
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonBackReference("client-contracts")
+    @JsonProperty("dealer")
     private Client client;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonBackReference("reseller-contracts")
+    @JsonProperty("distributor")
     private Reseller reseller;
 
     @OneToOne(mappedBy = "assignedContract")
