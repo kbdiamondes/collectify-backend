@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -171,6 +172,8 @@ public class ContractServiceImpl implements ContractService {
 
 
     private final String apiUrl = "https://tamworth-wallaby-raqd.2.sg-1.fl0.io/order/getAllOrders";
+
+    @PersistenceContext
     private EntityManager entityManager;
 
     public void fetchDataAndSaveToDatabase() {
@@ -224,19 +227,21 @@ public class ContractServiceImpl implements ContractService {
                                 product.setCommissionrate(externalProduct.getCommissionrate());
 
                                 // Set the relationship between OrderedProduct and Product
-                                orderedProduct.setProduct(product);
                                 productRepository.save(product);
+
+                                orderedProduct.setProduct(product);
+
+
                             }else{
                                 System.out.println("External Product is empty!");
                             }
+
 
                             // Set the relationship between OrderedProduct and Contract
                             orderedProduct.setContract(contract);
 
                             // Save the new OrderedProduct entity
                             orderedProductRepository.save(orderedProduct);
-                            entityManager.flush();
-                            entityManager.clear();
 
                         }
 

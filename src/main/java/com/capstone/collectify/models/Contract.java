@@ -3,6 +3,7 @@ package com.capstone.collectify.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -81,7 +82,8 @@ public class Contract {
     @JoinColumn(name = "transaction_proof_id") // Adjust the column name as needed
     private FileDB transactionProof; // Represents the transaction proof image
 
-    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL)
+    @JsonProperty("orderedproducts")
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.PERSIST)
     @JsonBackReference("ordered-products")
     private List<OrderedProduct> orderedProducts;
 
