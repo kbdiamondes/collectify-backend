@@ -64,7 +64,7 @@ public class CollectorCollectPaymentsServiceImpl implements CollectorCollectPaym
                 history.setPaymentType(paymentType);
 
                 // Store the image data and associate it with the contract
-                FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
+                FileDB fileDB = fileStorageService.store(base64ImageData,fileName, contentType);
                 history.setTransactionProof(fileDB);
 
                 collectionHistoryRepository.save(history);

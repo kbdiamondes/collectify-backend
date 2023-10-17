@@ -1,6 +1,7 @@
 package com.capstone.collectify.services.filehandling;
 
 import java.io.IOException;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,10 @@ public class FileStorageServiceImpl implements FileStorageService{
         return fileDBRepository.save(fileDB);
     }
 
+    private String getExtension(String contentType) {
+        // Extract the file extension from the content type (e.g., image/jpeg -> jpeg)
+        return contentType.split("/")[1];
+    }
     @Override
     public FileDB getFile(String id) {
         return fileDBRepository.findById(id).get();
