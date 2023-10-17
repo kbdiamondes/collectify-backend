@@ -19,4 +19,5 @@ public interface ContractRepository extends CrudRepository<Contract, Object> {
 
     boolean existsByOrderid(String orderid);
 
+    List<Contract> findByIsPaidFalse();
 }

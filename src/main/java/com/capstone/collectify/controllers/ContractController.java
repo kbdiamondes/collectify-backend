@@ -23,6 +23,12 @@ public class ContractController {
         return contractService.createContract(contract);
     }
 
+    @GetMapping("/unpaid")
+    public List<Contract> getAllUnpaidContracts() {
+        List<Contract> unpaidContracts = contractService.getAllUnpaidContracts();
+        return unpaidContracts;
+    }
+
     @GetMapping
     public ResponseEntity<Object> getContracts() {
         return new ResponseEntity<>(contractService.getContract(), HttpStatus.OK);

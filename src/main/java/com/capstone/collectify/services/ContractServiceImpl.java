@@ -11,14 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -63,6 +60,12 @@ public class ContractServiceImpl implements ContractService {
     public Contract createContract(Contract contract) {
         // Implement the logic to create a new contract
         return contractRepository.save(contract);
+    }
+
+    @Override
+    public List<Contract> getAllUnpaidContracts() {
+        // Use the ContractRepository to retrieve all contracts with isPaid set to false
+        return contractRepository.findByIsPaidFalse();
     }
 
     @Override
