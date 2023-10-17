@@ -28,6 +28,12 @@ public class ClientServiceImpl implements ClientService {
     private ContractRepository contractRepository;
 
     @Override
+    public List<Client> getClientsWithUnpaidContracts() {
+        // Use the ClientRepository to retrieve clients with contracts where isPaid is false
+        return clientRepository.findClientsWithUnpaidContracts();
+    }
+
+    @Override
     public void payDue(Long clientId, Long contractId, BigDecimal amount) throws AccessDeniedException {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));

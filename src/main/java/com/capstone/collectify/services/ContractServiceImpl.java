@@ -62,11 +62,6 @@ public class ContractServiceImpl implements ContractService {
         return contractRepository.save(contract);
     }
 
-    @Override
-    public List<Contract> getAllUnpaidContracts() {
-        // Use the ContractRepository to retrieve all contracts with isPaid set to false
-        return contractRepository.findByIsPaidFalse();
-    }
 
     @Override
     public Contract getContractById(Long id) {
