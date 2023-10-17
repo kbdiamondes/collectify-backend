@@ -112,6 +112,10 @@ public class Reseller {
         this.collectionHistory = collectionHistory;
     }
 
+    public Long getReseller_id() {
+        return reseller_id;
+    }
+
     public String getFirstname() {
         return firstname;
     }

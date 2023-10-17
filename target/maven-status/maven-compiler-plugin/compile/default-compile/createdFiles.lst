@@ -1,5 +1,6 @@
 com/capstone/collectify/services/others/PaymentTransactionService.class
 com/capstone/collectify/models/OrderedProduct.class
+com/capstone/collectify/services/others/LoginService.class
 com/capstone/collectify/messages/ResponseFile.class
 com/capstone/collectify/services/collector/CollectorCollectPaymentsServiceImpl.class
 com/capstone/collectify/DiscussionApplication.class
@@ -27,6 +28,7 @@ com/capstone/collectify/ServletInitializer.class
 com/capstone/collectify/repositories/OrderedProductRepository.class
 com/capstone/collectify/models/Collector.class
 com/capstone/collectify/services/CollectorService.class
+com/capstone/collectify/controllers/others/LoginController.class
 com/capstone/collectify/controllers/collector/CollectorCollectPaymentsController.class
 com/capstone/collectify/services/reseller/CollectPaymentsServiceImpl.class
 com/capstone/collectify/models/PaymentHistory.class
@@ -53,6 +55,7 @@ com/capstone/collectify/services/collector/CollectorCollectPaymentsService.class
 com/capstone/collectify/services/others/ProductServiceImpl.class
 com/capstone/collectify/controllers/CollectorController.class
 com/capstone/collectify/config/CorsConfig.class
+com/capstone/collectify/services/others/LoginServiceImpl.class
 com/capstone/collectify/services/client/PayDuesService.class
 com/capstone/collectify/repositories/ResellerRepository.class
 com/capstone/collectify/controllers/ClientController.class
