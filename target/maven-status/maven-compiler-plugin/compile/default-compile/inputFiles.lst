@@ -52,12 +52,15 @@
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/repositories/CollectionHistoryRepository.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/models/Client.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/ClientServiceImpl.java
+/Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/others/LoginService.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/CollectorServiceImpl.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/ContractServiceImpl.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/client/PayDuesServiceImpl.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/CollectionHistoryService.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/controllers/reseller/CollectorCollectionController.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/others/PaymentTransactionService.java
+/Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/controllers/others/LoginController.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/messages/ResponseFile.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/controllers/CollectorController.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/controllers/ClientController.java
+/Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/others/LoginServiceImpl.java
