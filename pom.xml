@@ -11,7 +11,7 @@
 	<groupId>com.zuitt</groupId>
 	<artifactId>discussion</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>discussion</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
