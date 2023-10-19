@@ -23,13 +23,14 @@ public class CollectorCollectionController {
     }
 
     @PostMapping("/{resellerId}/contracts/{contractId}/assign-collector")
-    public void assignCollector(
+    public ResponseEntity<String> assignCollector(
             @PathVariable Long resellerId,
             @PathVariable Long contractId,
             @RequestParam Long collectorId) {
         try {
             collectorAssignmentService.assignCollector(resellerId, contractId, collectorId);
-            ResponseEntity.ok("Collector Assigned Successfully!");
+
+            return ResponseEntity.ok("Collector Assigned Successfully!");
         } catch (AccessDeniedException e) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage(), e);
         }

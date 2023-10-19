@@ -58,7 +58,7 @@ public class ResellerController {
 
     @PostMapping("/{resellerId}/clients/{clientUsername}/contracts")
     public Contract createContractForClientByReseller(@PathVariable Long resellerId, @PathVariable String clientUsername , @RequestBody Contract contract) {
-        return resellerService.createContract(resellerId, clientUsername, contract.getUsername(), contract.getItemName(), contract.getDueAmount(), contract.getFullPrice(), contract.isPaid());
+        return resellerService.createContract(resellerId, clientUsername, contract.getUsername(), contract.getItemName(), contract.getFullPrice(), contract.isPaid(), contract.getInstallmentDuration(), contract.isIsMonthly());
     }
 
     @PostMapping("/{resellerId}/contracts/{contractId}/assign-collector")

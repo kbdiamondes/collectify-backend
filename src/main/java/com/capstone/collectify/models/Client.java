@@ -1,10 +1,13 @@
 package com.capstone.collectify.models;
 
+import com.capstone.collectify.repositories.CollectionHistoryRepository;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,11 +32,32 @@ public class Client {
     @JsonIgnore
     private String password;
 
-    // Other client-specific attributes and relationships
+    @Column
+    private String firstname;
 
+    @Column
+    private String middlename;
+
+    @Column
+    private String lastname;
+
+
+    // Other client-specific attributes and relationships
     @OneToMany(mappedBy = "client")
     @JsonManagedReference("client-contracts")
     private List<Contract> contracts;
+
+    @OneToMany(mappedBy = "client")
+    @JsonManagedReference("client-paymentHistory")
+    private List<PaymentHistory> paymentHistory = new ArrayList<>();
+
+    //functions
+
+    // Add a method to add payment history records
+    public void addPaymentHistory(PaymentHistory paymentHistoryRecord) {
+        paymentHistory.add(paymentHistoryRecord);
+        paymentHistoryRecord.setClient(this);
+    }
 
     // Getters and setters
     public Long getClient_id() {
@@ -93,5 +117,30 @@ public class Client {
         this.contracts = contracts;
     }
 
+    //functions
 
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getMiddlename() {
+        return middlename;
+    }
+
+    public void setMiddlename(String middlename) {
+        this.middlename = middlename;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Collector {
@@ -14,6 +15,15 @@ public class Collector {
     private Long collector_id;
     @Column
     private String username;
+
+    @Column
+    private String firstname;
+
+    @Column
+    private String middlename;
+
+    @Column
+    private String lastname;
 
     @Column
     private String fullName;
@@ -32,6 +42,10 @@ public class Collector {
     @JoinColumn(name = "contract_id") // Add this to specify the foreign key column
     @JsonManagedReference("collector-assignedcontract")
     private Contract assignedContract;
+
+    @OneToMany(mappedBy = "collector")
+    @JsonManagedReference("collector_collectionHistory")
+    private List<CollectionHistory> collectionHistory;
 
     public String getFullName() {
         return fullName;
@@ -116,4 +130,27 @@ public class Collector {
         }
     }
 
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getMiddlename() {
+        return middlename;
+    }
+
+    public void setMiddlename(String middlename) {
+        this.middlename = middlename;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 }

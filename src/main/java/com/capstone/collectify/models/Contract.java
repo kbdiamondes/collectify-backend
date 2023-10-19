@@ -3,9 +3,14 @@ package com.capstone.collectify.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Contract {
@@ -29,14 +34,46 @@ public class Contract {
     @Column
     private boolean isPaid;
 
+    @Column
+    private int installmentDuration;
+
+    @Column
+    private boolean isMonthly;
+
+
+    @Column
+    private LocalDateTime lastPaymentDate;
+
+    //For connection
+
+    @Column
+    private String orderid;
+
+    @Column
+    private LocalDate orderdate;
+    @Column
+    private LocalDate distributiondate;
+
+    @Column
+    private double penaltyrate;
+
+    @Column
+    private int paymentterms;
+
+    @Column
+    private double orderamount;
+
+
     // Other contract-specific attributes and relationships
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonBackReference("client-contracts")
+    @JsonProperty("dealer")
     private Client client;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonBackReference("reseller-contracts")
+    @JsonProperty("distributor")
     private Reseller reseller;
 
     @OneToOne(mappedBy = "assignedContract")
@@ -46,6 +83,11 @@ public class Contract {
     @OneToOne
     @JoinColumn(name = "transaction_proof_id") // Adjust the column name as needed
     private FileDB transactionProof; // Represents the transaction proof image
+
+    @JsonProperty("orderedproducts")
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.PERSIST)
+    @JsonBackReference("ordered-products")
+    private List<OrderedProduct> orderedProducts;
 
     public FileDB getTransactionProof() {
         return transactionProof;
@@ -126,5 +168,100 @@ public class Contract {
     public void setCollector(Collector collector) {
         this.collector = collector;
     }
+
+    public String getOrderid() {
+        return orderid;
+    }
+
+    public void setOrderid(String orderid) {
+        this.orderid = orderid;
+    }
+
+    public LocalDate getOrderdate() {
+        return orderdate;
+    }
+
+    public void setOrderdate(LocalDate orderdate) {
+        this.orderdate = orderdate;
+    }
+
+    public LocalDate getDistributiondate() {
+        return distributiondate;
+    }
+
+    public void setDistributiondate(LocalDate distributiondate) {
+        this.distributiondate = distributiondate;
+    }
+
+    public double getPenaltyrate() {
+        return penaltyrate;
+    }
+
+    public void setPenaltyrate(double penaltyrate) {
+        this.penaltyrate = penaltyrate;
+    }
+
+    public int getPaymentterms() {
+        return paymentterms;
+    }
+
+    public void setPaymentterms(int paymentterms) {
+        this.paymentterms = paymentterms;
+    }
+
+    public double getOrderamount() {
+        return orderamount;
+    }
+
+    public void setOrderamount(double orderamount) {
+        this.orderamount = orderamount;
+    }
+
+    public int getInstallmentDuration() {
+        return installmentDuration;
+    }
+
+    public void setInstallmentDuration(int installmentDuration) {
+        this.installmentDuration = installmentDuration;
+    }
+
+    public boolean isIsMonthly() {
+        return isMonthly;
+    }
+
+    public void setIsMonthly(boolean isMonthly) {
+        this.isMonthly = isMonthly;
+    }
+
+    public LocalDateTime getLastPaymentDate() {
+        return lastPaymentDate;
+    }
+
+    public void setLastPaymentDate(LocalDateTime lastPaymentDate) {
+        this.lastPaymentDate = lastPaymentDate;
+    }
+
+    public List<OrderedProduct> getOrderedProducts() {
+        return orderedProducts;
+    }
+
+    public void setOrderedProducts(List<OrderedProduct> orderedProducts) {
+        this.orderedProducts = orderedProducts;
+    }
+
+    //functions
+    //Used in ContractServiceImpl
+    public BigDecimal calculateMonthlyInstallmentAmount(Boolean isMonthly) {
+        if (isMonthly) {
+            if (installmentDuration > 0) {
+                return dueAmount.divide(BigDecimal.valueOf(installmentDuration), 2, RoundingMode.HALF_UP);
+            } else {
+                throw new IllegalArgumentException("Invalid installment duration");
+            }
+        } else {
+            return dueAmount; // For non-monthly payments, the due amount remains the same
+        }
+    }
+
 
 }

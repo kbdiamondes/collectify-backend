@@ -3,6 +3,8 @@ package com.capstone.collectify.controllers;
 import com.capstone.collectify.models.Contract;
 import com.capstone.collectify.services.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -20,6 +22,13 @@ public class ContractController {
     public Contract createContract(@RequestBody Contract contract) {
         return contractService.createContract(contract);
     }
+
+
+    @GetMapping
+    public ResponseEntity<Object> getContracts() {
+        return new ResponseEntity<>(contractService.getContract(), HttpStatus.OK);
+    }
+
 
     @GetMapping("/{id}")
     public Contract getContractById(@PathVariable Long id) {

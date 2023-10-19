@@ -23,6 +23,12 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
+    @GetMapping("/unpaid-contracts")
+    public List<Client> getClientsWithUnpaidContracts() {
+        List<Client> clientsWithUnpaidContracts = clientService.getClientsWithUnpaidContracts();
+        return clientsWithUnpaidContracts;
+    }
+
     @GetMapping
     public ResponseEntity<Object> getClient() {
         return new ResponseEntity<>(clientService.getClient(), HttpStatus.OK);

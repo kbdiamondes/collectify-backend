@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ContractService {
     Contract createContract(Contract contract);
+
+
     Contract getContractById(Long id);
     List<Contract> getClientContracts(Long clientId);
     List<Contract> getResellerContracts(Long resellerId);

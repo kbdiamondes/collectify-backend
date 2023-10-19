@@ -16,6 +16,15 @@ public class Reseller {
     private String username;
 
     @Column
+    private String firstname;
+
+    @Column
+    private String middlename;
+
+    @Column
+    private String lastname;
+
+    @Column
     private String fullName;
 
 
@@ -103,6 +112,33 @@ public class Reseller {
         this.collectionHistory = collectionHistory;
     }
 
+    public Long getReseller_id() {
+        return reseller_id;
+    }
 
-    // Getters and setters
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getMiddlename() {
+        return middlename;
+    }
+
+    public void setMiddlename(String middlename) {
+        this.middlename = middlename;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+// Getters and setters
 }

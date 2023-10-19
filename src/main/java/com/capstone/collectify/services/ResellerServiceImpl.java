@@ -4,9 +4,12 @@ import com.capstone.collectify.models.*;
 import com.capstone.collectify.repositories.*;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,7 +34,7 @@ public class ResellerServiceImpl implements ResellerService {
     private CollectionHistoryRepository collectionHistoryRepository;
 
     @Override
-    public Contract createContract(Long resellerId, String clientUsername, String username, String itemName, BigDecimal dueAmount, Long fullPrice, Boolean isPaid) {
+    public Contract createContract(Long resellerId, String clientUsername, String username, String itemName, Long fullPrice, Boolean isPaid, int installmentDuration, boolean isMonthly) {
         Reseller reseller = resellerRepository.findById(resellerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reseller not found with id: " + resellerId));
 
@@ -43,9 +46,24 @@ public class ResellerServiceImpl implements ResellerService {
         contract.setClient(client);
         contract.setUsername(clientUsername);
         contract.setItemName(itemName);
-        contract.setDueAmount(dueAmount);
         contract.setFullPrice(fullPrice);
         contract.setPaid(isPaid);
+        contract.setInstallmentDuration(installmentDuration);
+        contract.setIsMonthly(isMonthly);
+
+        // Calculate and set the dueAmount based on isMonthly
+        if (isMonthly) {
+            // Calculate the monthly installment amount
+            BigDecimal monthlyInstallmentAmount = BigDecimal.valueOf(fullPrice)
+                    .divide(BigDecimal.valueOf(installmentDuration), 2, RoundingMode.HALF_UP); // Set scale and rounding mode
+
+            // Set the calculated dueAmount
+            contract.setDueAmount(monthlyInstallmentAmount);
+        } else {
+            // For non-monthly payments, set dueAmount equal to fullPrice
+            contract.setDueAmount(BigDecimal.valueOf(fullPrice));
+        }
+
 
         // Save the contract and return it
         return contractRepository.save(contract);
@@ -143,6 +161,53 @@ public class ResellerServiceImpl implements ResellerService {
         // Step 4: Return the Assigned Collector
         return assignedCollector;
     }
+
+
+
+    private final String apiUrl = "https://tamworth-wallaby-raqd.2.sg-1.fl0.io/distributor/getAllDistributor";
+
+    public void fetchDataAndSaveToDatabase() {
+        RestTemplate restTemplate = new RestTemplate();
+        Reseller[] resellers = restTemplate.getForObject(apiUrl, Reseller[].class);
+
+        if (resellers!= null) {
+            for (Reseller reseller : resellers) {
+                // Extract first, middle, and last names from JSON response
+                String firstname = reseller.getFirstname();
+                String middlename = reseller.getMiddlename();
+                String lastname = reseller.getLastname();
+                String address = reseller.getAddress();
+
+
+                // Concatenate first, middle, and last names into the fullName field
+                String userName = firstname+"."+lastname;
+                String password = lastname+"123";
+                String fullName = firstname + " " + middlename + " " + lastname;
+                String email = firstname + lastname + "@gmail.com";
+                String collectorAddress = address;
+
+                reseller.setUsername(userName);
+                reseller.setFullName(fullName);
+                reseller.setEmail(email);
+                reseller.setPassword(password);
+                reseller.setAddress(collectorAddress);
+
+                // Check if the collector already exists in the database using some unique identifier (e.g., username or email)
+                // If it doesn't exist, save it to the database
+                if (!resellerRepository.existsByUsername(reseller.getUsername())
+                        && !resellerRepository.existsByEmail(reseller.getEmail())) {
+                    resellerRepository.save(reseller);
+                }
+            }
+        }
+    }
+
+    // This method will run automatically every 5 minutes
+    @Scheduled(fixedRate = 5000) // 5 minutes = 300,000 milliseconds
+    public void scheduleFetchAndSave() {
+        fetchDataAndSaveToDatabase();
+    }
+
 
 }
 

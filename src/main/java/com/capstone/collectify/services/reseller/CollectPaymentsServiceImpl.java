@@ -1,9 +1,6 @@
 package com.capstone.collectify.services.reseller;
 
-import com.capstone.collectify.models.CollectionHistory;
-import com.capstone.collectify.models.Contract;
-import com.capstone.collectify.models.FileDB;
-import com.capstone.collectify.models.Reseller;
+import com.capstone.collectify.models.*;
 import com.capstone.collectify.repositories.CollectionHistoryRepository;
 import com.capstone.collectify.repositories.ContractRepository;
 import com.capstone.collectify.repositories.ResellerRepository;
@@ -44,6 +41,8 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
 
         Contract contract = contractRepository.findById(contractId)
                 .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + contractId));
+        Client client = contract.getClient(); // Get the associated client
+        Collector collector = contract.getCollector(); // Get the associated collector
 
         // Check if the reseller is associated with the contract
         if (contract.getReseller().equals(reseller)) {
@@ -60,10 +59,12 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
                 history.setCollectedAmount(amountToCollect);
                 history.setCollectionDate(LocalDateTime.now());
                 history.setReseller(reseller);
+                history.setClient(client);
+                history.setCollector(collector);
                 history.setPaymentType(paymentType);
 
                 // Store the image data and associate it with the contract
-                FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
+                FileDB fileDB = fileStorageService.store(base64ImageData,fileName, contentType);
                 history.setTransactionProof(fileDB);
 
                 collectionHistoryRepository.save(history);
