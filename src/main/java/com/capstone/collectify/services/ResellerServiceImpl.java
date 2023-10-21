@@ -4,6 +4,7 @@ import com.capstone.collectify.models.*;
 import com.capstone.collectify.repositories.*;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -164,7 +165,8 @@ public class ResellerServiceImpl implements ResellerService {
 
 
 
-    private final String apiUrl = "https://tamworth-wallaby-raqd.2.sg-1.fl0.io/distributor/getAllDistributor";
+    @Value("${api.endpoint.getDistributors}")
+    private String apiUrl;
 
     public void fetchDataAndSaveToDatabase() {
         RestTemplate restTemplate = new RestTemplate();
