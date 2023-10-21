@@ -62,6 +62,24 @@ public class ContractServiceImpl implements ContractService {
         return contractRepository.save(contract);
     }
 
+    @Override
+    public List<Contract> getUnpaidContractsByClient(Long clientId) {
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
+
+        // Fetch only the unpaid contracts for the client
+        return contractRepository.findByClientAndIsPaid(client, false);
+    }
+
+    @Override
+    public List<Contract> getPaidContractsByClient(Long clientId) {
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
+
+        // Fetch only the unpaid contracts for the client
+        return contractRepository.findByClientAndIsPaid(client, true);
+    }
+
 
     @Override
     public Contract getContractById(Long id) {

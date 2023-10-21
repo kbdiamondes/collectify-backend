@@ -29,6 +29,7 @@ public class ClientController {
         return clientsWithUnpaidContracts;
     }
 
+
     @GetMapping
     public ResponseEntity<Object> getClient() {
         return new ResponseEntity<>(clientService.getClient(), HttpStatus.OK);
