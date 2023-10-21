@@ -13,12 +13,21 @@ public class PaymentHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    String orderId;
+
 
     @Column
     private BigDecimal amountPaid;
 
     @Column
     private LocalDateTime paymentDate;
+
+    @OneToOne
+    @JoinColumn(name="payment_transactionProof")
+    private FileDB transactionProof;
+
+    private String productName;
 
 
     // Add a reference to the Client entity
@@ -52,6 +61,27 @@ public class PaymentHistory {
         this.amountPaid = amountPaid;
     }
 
+    public String getOrderId() {
+        return orderId;
+    }
 
+    public void setOrderId(String orderid) {
+        this.orderId = orderid;
+    }
 
+    public FileDB getTransactionProof() {
+        return transactionProof;
+    }
+
+    public void setTransactionProof(FileDB transactionProof) {
+        this.transactionProof = transactionProof;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 }

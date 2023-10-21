@@ -27,6 +27,9 @@ public class FileDB {
     @OneToOne(mappedBy="transactionProof")
     private CollectionHistory collectionHistory;
 
+    @OneToOne(mappedBy="transactionProof")
+    private PaymentHistory paymentHistory;
+
     public FileDB() {
     }
 

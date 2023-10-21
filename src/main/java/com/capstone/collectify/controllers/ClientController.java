@@ -3,6 +3,7 @@ package com.capstone.collectify.controllers;
 import com.capstone.collectify.models.Client;
 import com.capstone.collectify.models.Contract;
 import com.capstone.collectify.services.ClientService;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,37 @@ public class ClientController {
         List<Client> clientsWithUnpaidContracts = clientService.getClientsWithUnpaidContracts();
         return clientsWithUnpaidContracts;
     }
+
+    @GetMapping("/client/{clientId}/unpaid-contracts")
+    public ResponseEntity<Client> getClientWithUnpaidContracts(@PathVariable Long clientId) {
+        Client client = clientService.getClientWithUnpaidContracts(clientId);
+        if (client != null) {
+            return new ResponseEntity<>(client, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/client/{clientId}/paid-contracts")
+    public ResponseEntity<String> getClientWithPaidContracts(@PathVariable Long clientId) {
+        Client client = clientService.getClientWithPaidContracts(clientId);
+
+        if (client != null) {
+            // Check if the client has unpaid contracts
+            List<Contract> unpaidContracts = clientService.getClientWithUnpaidContracts(clientId).getContracts();
+
+            if (!unpaidContracts.isEmpty()) {
+                return new ResponseEntity<>("You have pending dues", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("All contracts are paid", HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+
 
 
     @GetMapping

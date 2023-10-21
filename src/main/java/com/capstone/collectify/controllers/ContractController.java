@@ -29,20 +29,6 @@ public class ContractController {
         return new ResponseEntity<>(contractService.getContract(), HttpStatus.OK);
     }
 
-    @GetMapping("/client/{clientId}/unpaid")
-    public List<Contract> getUnpaidContractsByClient(@PathVariable Long clientId) {
-        List<Contract> unpaidContracts = contractService.getUnpaidContractsByClient(clientId);
-        return unpaidContracts;
-    }
-
-    @GetMapping("/client/{clientId}/paid")
-    public List<Contract> getPaidContractsByClient(@PathVariable Long clientId) {
-        List<Contract> paidContracts = contractService.getPaidContractsByClient(clientId);
-        return paidContracts;
-    }
-
-
-
     @GetMapping("/{id}")
     public Contract getContractById(@PathVariable Long id) {
         return contractService.getContractById(id);

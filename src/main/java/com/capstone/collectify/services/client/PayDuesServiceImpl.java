@@ -70,6 +70,8 @@ public class PayDuesServiceImpl implements PayDuesService {
                         paymentHistoryRecord.setAmountPaid(amount);
                         paymentHistoryRecord.setPaymentDate(LocalDateTime.now());
 
+                        paymentHistoryRecord.setOrderId(contract.getOrderid());
+                        paymentHistoryRecord.setProductName(contract.getItemName());
                         // Add the payment history record to the client's history
                         client.addPaymentHistory(paymentHistoryRecord);
 
@@ -79,6 +81,7 @@ public class PayDuesServiceImpl implements PayDuesService {
                         // Store the image data and associate it with the contract
                         FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
                         contract.setTransactionProof(fileDB);
+                        paymentHistoryRecord.setTransactionProof(fileDB);
 
                         // Save the contract, client, and payment history
                         contractRepository.save(contract);
