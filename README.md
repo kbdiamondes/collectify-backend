@@ -35,29 +35,6 @@ This documentation provides information on how to use the API endpoints provided
 - **Request Body**: JSON representing the contract.
 - **Response**: JSON representing the created contract.
 
-
-## Due Payments Controller
-
-Get Client with Unpaid Contracts
-
-    URL: GET /client/{clientId}/unpaid-contracts
-    Description: Retrieve a client's information along with their unpaid contracts.
-    Parameters:
-        clientId (Path Variable): The unique identifier for the client.
-    Response:
-        HTTP Status Code 200 OK with JSON representing the client and unpaid contracts if the client exists.
-        HTTP Status Code 404 Not Found if the client does not exist.
-
-Get Client with Paid Contracts
-
-    URL: GET /client/{clientId}/paid-contracts
-    Description: Retrieve a client's information along with their paid contracts.
-    Parameters:
-        clientId (Path Variable): The unique identifier for the client.
-    Response:
-        HTTP Status Code 200 OK with JSON representing the client and paid contracts if the client exists.
-        HTTP Status Code 404 Not Found if the client does not exist.
-
 ## Pay Dues Controller
 
 ### Pay Dues
@@ -99,6 +76,42 @@ Get Client with Paid Contracts
 - **Request Parameter**:
   - `collectorId` - The ID of the collector.
 - **Response**: Success message or error message.
+
+
+# Getters for Screen List
+
+
+## Due Payments Controller [CLIENT SENTITY]
+
+### Get Client with Unpaid Contracts
+- **URL**: `GET /client/{clientId}/unpaid-contracts`
+- **Description**: Retrieve a client's information along with their unpaid contracts.
+- **Parameters**:
+  - `clientId` (Path Variable): The unique identifier for the client.
+- **Response**:
+  - `HTTP Status Code 200 OK` with JSON representing the client and unpaid contracts if the client exists.
+  - `HTTP Status Code 404 Not Found` if the client does not exist.
+
+### Get Client with Paid Contracts
+- **URL**: `GET /client/{clientId}/paid-contracts`
+- **Description**: Retrieve a client's information along with their paid contracts.
+- **Parameters**:
+  - `clientId` (Path Variable): The unique identifier for the client.
+- **Response**:
+  - `HTTP Status Code 200 OK` with JSON representing the client and paid contracts if the client exists.
+  - `HTTP Status Code 404 Not Found` if the client does not exist.
+ 
+## Collection List Controller [COLLECTOR ENTITY]
+
+### Get Assigned Paid Contracts for Collector
+- **URL**: `GET /collection/{collectorId}/assigned-paid-contracts`
+- **Description**: Retrieve a list of assigned paid contracts for a collector.
+- **Parameters**:
+  - `collectorId` (Path Variable): The unique identifier for the collector.
+- **Response**:
+  - `HTTP Status Code 200 OK` with JSON representing a list of paid contracts if the collector exists.
+  - `HTTP Status Code 404 Not Found` if the collector does not exist.
+
 
 ### Postman Workspace
 
