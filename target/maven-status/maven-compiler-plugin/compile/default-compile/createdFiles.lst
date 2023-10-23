@@ -3,6 +3,7 @@ com\capstone\collectify\services\client\DuePaymentsService.class
 com\capstone\collectify\services\collector\CollectorCollectPaymentsService.class
 com\capstone\collectify\services\client\DuePaymentsServiceImpl.class
 com\capstone\collectify\controllers\client\PayDuesController.class
+com\capstone\collectify\services\client\TransactionHistoryService.class
 com\capstone\collectify\models\TransactionHistory.class
 com\capstone\collectify\services\ClientService.class
 com\capstone\collectify\controllers\others\LoginController.class
@@ -17,6 +18,7 @@ com\capstone\collectify\ServletInitializer.class
 com\capstone\collectify\services\CollectorService.class
 com\capstone\collectify\services\ContractServiceImpl.class
 com\capstone\collectify\repositories\CollectionHistoryRepository.class
+com\capstone\collectify\services\client\TransactionHistoryServiceImpl.class
 com\capstone\collectify\services\ClientServiceImpl.class
 com\capstone\collectify\services\others\PaymentTransactionServiceImpl.class
 com\capstone\collectify\models\Collector.class
@@ -45,6 +47,7 @@ com\capstone\collectify\services\reseller\CollectPaymentsService.class
 com\capstone\collectify\controllers\ClientController.class
 com\capstone\collectify\repositories\ResellerRepository.class
 com\capstone\collectify\services\ContractService.class
+com\capstone\collectify\controllers\client\TransactionHistoryController.class
 com\capstone\collectify\controllers\collector\CollectorCollectPaymentsController.class
 com\capstone\collectify\DiscussionApplication.class
 com\capstone\collectify\repositories\OrderedProductRepository.class
