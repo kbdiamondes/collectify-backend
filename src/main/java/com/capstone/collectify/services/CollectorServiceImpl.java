@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CollectorServiceImpl implements CollectorService {
@@ -65,7 +68,6 @@ public class CollectorServiceImpl implements CollectorService {
     public Iterable<Collector> getCollector() {
         return collectorRepository.findAll();
     }
-
 
     @Value("${api.endpoint.getEmployees}")
     private String apiUrl;

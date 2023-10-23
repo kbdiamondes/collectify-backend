@@ -2,7 +2,7 @@ package com.capstone.collectify.models;
 
 
 import javax.persistence.*;
-import com.capstone.collectify.models.CollectionHistory;
+
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -28,7 +28,7 @@ public class FileDB {
     private CollectionHistory collectionHistory;
 
     @OneToOne(mappedBy="transactionProof")
-    private PaymentHistory paymentHistory;
+    private TransactionHistory transactionHistory;
 
     public FileDB() {
     }

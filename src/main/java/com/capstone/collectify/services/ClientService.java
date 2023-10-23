@@ -14,13 +14,6 @@ public interface ClientService {
 
     Client createClient(Client client);
 
-    List<Client> getClientsWithUnpaidContracts();
-
-    Client getClientWithUnpaidContracts(Long clientId);
-
-    Client getClientWithPaidContracts(Long clientId);
-
-
     void payDue(Long clientId, Long contractId, BigDecimal amount) throws AccessDeniedException;
     List<Contract> getClientContracts(Long clientId);
 

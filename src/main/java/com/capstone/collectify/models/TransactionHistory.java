@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-public class PaymentHistory {
+public class TransactionHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +28,8 @@ public class PaymentHistory {
     private FileDB transactionProof;
 
     private String productName;
+
+    private String clientName;
 
 
     // Add a reference to the Client entity
@@ -83,5 +85,13 @@ public class PaymentHistory {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 }
