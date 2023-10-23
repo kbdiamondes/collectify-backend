@@ -1,12 +1,9 @@
 package com.capstone.collectify.models;
 
-import com.capstone.collectify.repositories.CollectionHistoryRepository;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,14 +46,14 @@ public class Client {
 
     @OneToMany(mappedBy = "client")
     @JsonManagedReference("client-paymentHistory")
-    private List<PaymentHistory> paymentHistory = new ArrayList<>();
+    private List<TransactionHistory> transactionHistory = new ArrayList<>();
 
     //functions
 
     // Add a method to add payment history records
-    public void addPaymentHistory(PaymentHistory paymentHistoryRecord) {
-        paymentHistory.add(paymentHistoryRecord);
-        paymentHistoryRecord.setClient(this);
+    public void addPaymentHistory(TransactionHistory transactionHistoryRecord) {
+        transactionHistory.add(transactionHistoryRecord);
+        transactionHistoryRecord.setClient(this);
     }
 
     // Getters and setters

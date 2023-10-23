@@ -66,22 +66,23 @@ public class PayDuesServiceImpl implements PayDuesService {
                         contract.setLastPaymentDate(LocalDateTime.now());
 
                         // Create a new payment history record
-                        PaymentHistory paymentHistoryRecord = new PaymentHistory();
-                        paymentHistoryRecord.setAmountPaid(amount);
-                        paymentHistoryRecord.setPaymentDate(LocalDateTime.now());
+                        TransactionHistory transactionHistoryRecord = new TransactionHistory();
+                        transactionHistoryRecord.setAmountPaid(amount);
+                        transactionHistoryRecord.setPaymentDate(LocalDateTime.now());
 
-                        paymentHistoryRecord.setOrderId(contract.getOrderid());
-                        paymentHistoryRecord.setProductName(contract.getItemName());
+                        transactionHistoryRecord.setClientName(client.getFullName());
+                        transactionHistoryRecord.setOrderId(contract.getOrderid());
+                        transactionHistoryRecord.setProductName(contract.getItemName());
                         // Add the payment history record to the client's history
-                        client.addPaymentHistory(paymentHistoryRecord);
+                        client.addPaymentHistory(transactionHistoryRecord);
 
                         // Save the payment history record to the database
-                        paymentHistoryRepository.save(paymentHistoryRecord);
+                        paymentHistoryRepository.save(transactionHistoryRecord);
 
                         // Store the image data and associate it with the contract
                         FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
                         contract.setTransactionProof(fileDB);
-                        paymentHistoryRecord.setTransactionProof(fileDB);
+                        transactionHistoryRecord.setTransactionProof(fileDB);
 
                         // Save the contract, client, and payment history
                         contractRepository.save(contract);

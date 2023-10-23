@@ -3,6 +3,7 @@ com\capstone\collectify\services\client\DuePaymentsService.class
 com\capstone\collectify\services\collector\CollectorCollectPaymentsService.class
 com\capstone\collectify\services\client\DuePaymentsServiceImpl.class
 com\capstone\collectify\controllers\client\PayDuesController.class
+com\capstone\collectify\models\TransactionHistory.class
 com\capstone\collectify\services\ClientService.class
 com\capstone\collectify\controllers\others\LoginController.class
 com\capstone\collectify\config\FileUpload.class
@@ -22,7 +23,6 @@ com\capstone\collectify\models\Collector.class
 com\capstone\collectify\models\OrderedProduct.class
 com\capstone\collectify\controllers\CollectionHistoryController.class
 com\capstone\collectify\services\ResellerServiceImpl.class
-com\capstone\collectify\models\PaymentHistory.class
 com\capstone\collectify\services\client\PayDuesService.class
 com\capstone\collectify\models\CollectionHistory.class
 com\capstone\collectify\controllers\reseller\CollectorCollectionController.class
