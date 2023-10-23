@@ -84,7 +84,7 @@ This documentation provides information on how to use the API endpoints provided
 ## Due Payments Controller [CLIENT SENTITY]
 
 ### Get Client with Unpaid Contracts
-- **URL**: `GET /client/{clientId}/unpaid-contracts`
+- **URL**: `GET /due-payments/client/{clientId}/unpaid-contracts`
 - **Description**: Retrieve a client's information along with their unpaid contracts.
 - **Parameters**:
   - `clientId` (Path Variable): The unique identifier for the client.
@@ -93,7 +93,7 @@ This documentation provides information on how to use the API endpoints provided
   - `HTTP Status Code 404 Not Found` if the client does not exist.
 
 ### Get Client with Paid Contracts
-- **URL**: `GET /client/{clientId}/paid-contracts`
+- **URL**: `GET /due-payments/client/{clientId}/paid-contracts`
 - **Description**: Retrieve a client's information along with their paid contracts.
 - **Parameters**:
   - `clientId` (Path Variable): The unique identifier for the client.
