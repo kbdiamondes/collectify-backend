@@ -24,36 +24,6 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-    @GetMapping("/unpaid-contracts")
-    public List<Client> getClientsWithUnpaidContracts() {
-        List<Client> clientsWithUnpaidContracts = clientService.getClientsWithUnpaidContracts();
-        return clientsWithUnpaidContracts;
-    }
-
-    @GetMapping("/client/{clientId}/unpaid-contracts")
-    public ResponseEntity<Client> getClientWithUnpaidContracts(@PathVariable Long clientId) {
-        Client client = clientService.getClientWithUnpaidContracts(clientId);
-        if (client != null) {
-            return new ResponseEntity<>(client, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @GetMapping("/client/{clientId}/paid-contracts")
-    public ResponseEntity<Client> getClientWithPaidContracts(@PathVariable Long clientId) {
-        Client client = clientService.getClientWithPaidContracts(clientId);
-
-        if (client != null) {
-            return new ResponseEntity<>(client, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
-        }
-    }
-
-
-
-
 
     @GetMapping
     public ResponseEntity<Object> getClient() {
