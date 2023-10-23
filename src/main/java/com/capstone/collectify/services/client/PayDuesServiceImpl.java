@@ -4,7 +4,7 @@ import com.capstone.collectify.models.*;
 import com.capstone.collectify.repositories.ClientRepository;
 import com.capstone.collectify.repositories.CollectionHistoryRepository;
 import com.capstone.collectify.repositories.ContractRepository;
-import com.capstone.collectify.repositories.PaymentHistoryRepository;
+import com.capstone.collectify.repositories.TransactionHistoryRepository;
 import com.capstone.collectify.services.filehandling.FileStorageService;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,19 +26,19 @@ public class PayDuesServiceImpl implements PayDuesService {
     private final CollectionHistoryRepository collectionHistoryRepository;
     private final FileStorageService fileStorageService;
 
-    private final PaymentHistoryRepository paymentHistoryRepository;
+    private final TransactionHistoryRepository transactionHistoryRepository;
 
     @Autowired
     public PayDuesServiceImpl(
             ClientRepository clientRepository,
             ContractRepository contractRepository,
             CollectionHistoryRepository collectionHistoryRepository,
-            FileStorageService fileStorageService, PaymentHistoryRepository paymentHistoryRepository) {
+            FileStorageService fileStorageService, TransactionHistoryRepository transactionHistoryRepository) {
         this.clientRepository = clientRepository;
         this.contractRepository = contractRepository;
         this.collectionHistoryRepository = collectionHistoryRepository;
         this.fileStorageService = fileStorageService;
-        this.paymentHistoryRepository = paymentHistoryRepository;
+        this.transactionHistoryRepository = transactionHistoryRepository;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class PayDuesServiceImpl implements PayDuesService {
                         client.addPaymentHistory(transactionHistoryRecord);
 
                         // Save the payment history record to the database
-                        paymentHistoryRepository.save(transactionHistoryRecord);
+                        transactionHistoryRepository.save(transactionHistoryRecord);
 
                         // Store the image data and associate it with the contract
                         FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);

@@ -26,7 +26,6 @@ com\capstone\collectify\services\ResellerServiceImpl.class
 com\capstone\collectify\services\client\PayDuesService.class
 com\capstone\collectify\models\CollectionHistory.class
 com\capstone\collectify\controllers\reseller\CollectorCollectionController.class
-com\capstone\collectify\repositories\PaymentHistoryRepository.class
 com\capstone\collectify\services\client\PayDuesServiceImpl.class
 com\capstone\collectify\repositories\ClientRepository.class
 com\capstone\collectify\services\others\PaymentTransactionService.class
@@ -41,6 +40,7 @@ com\capstone\collectify\services\collector\CollectionListService.class
 com\capstone\collectify\services\collector\CollectorCollectPaymentsServiceImpl.class
 com\capstone\collectify\services\others\ProductServiceImpl.class
 com\capstone\collectify\config\CorsConfig.class
+com\capstone\collectify\repositories\TransactionHistoryRepository.class
 com\capstone\collectify\services\reseller\CollectPaymentsService.class
 com\capstone\collectify\controllers\ClientController.class
 com\capstone\collectify\repositories\ResellerRepository.class
