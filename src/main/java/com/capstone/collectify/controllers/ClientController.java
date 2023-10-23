@@ -41,20 +41,13 @@ public class ClientController {
     }
 
     @GetMapping("/client/{clientId}/paid-contracts")
-    public ResponseEntity<String> getClientWithPaidContracts(@PathVariable Long clientId) {
+    public ResponseEntity<Client> getClientWithPaidContracts(@PathVariable Long clientId) {
         Client client = clientService.getClientWithPaidContracts(clientId);
 
         if (client != null) {
-            // Check if the client has unpaid contracts
-            List<Contract> unpaidContracts = clientService.getClientWithUnpaidContracts(clientId).getContracts();
-
-            if (!unpaidContracts.isEmpty()) {
-                return new ResponseEntity<>("You have pending dues", HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("All contracts are paid", HttpStatus.OK);
-            }
+            return new ResponseEntity<>(client, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
         }
     }
 

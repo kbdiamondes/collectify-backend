@@ -7,6 +7,7 @@ import com.capstone.collectify.repositories.ClientRepository;
 import com.capstone.collectify.repositories.ContractRepository;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -147,7 +148,8 @@ public class ClientServiceImpl implements ClientService {
         return null;
     }
 
-    private final String apiUrl = "https://tamworth-wallaby-raqd.2.sg-1.fl0.io/dealer/getAllDealers";
+    @Value("${api.endpoint.getDealers}")
+    private String apiUrl;
     public void fetchDataAndSaveToDatabase() {
         RestTemplate restTemplate = new RestTemplate();
         Client[] clients = restTemplate.getForObject(apiUrl, Client[].class);

@@ -8,6 +8,7 @@ import com.capstone.collectify.repositories.CollectorRepository;
 import com.capstone.collectify.repositories.ContractRepository;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -66,7 +67,8 @@ public class CollectorServiceImpl implements CollectorService {
     }
 
 
-    private final String apiUrl = "https://tamworth-wallaby-raqd.2.sg-1.fl0.io/employee/getAllCollectors";
+    @Value("${api.endpoint.getEmployees}")
+    private String apiUrl;
 
     public void fetchDataAndSaveToDatabase() {
         RestTemplate restTemplate = new RestTemplate();

@@ -6,6 +6,7 @@ import com.capstone.collectify.services.filehandling.FileStorageService;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -169,7 +170,8 @@ public class ContractServiceImpl implements ContractService {
     }
 
 
-    private final String apiUrl = "https://tamworth-wallaby-raqd.2.sg-1.fl0.io/order/getAllOrders";
+    @Value("${api.endpoint.getOrders}")
+    private String apiUrl;
 
     @PersistenceContext
     private EntityManager entityManager;
