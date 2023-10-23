@@ -1,7 +1,9 @@
 package com.capstone.collectify.services;
 
 import com.capstone.collectify.models.Collector;
+import com.capstone.collectify.models.Contract;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CollectorService {
@@ -12,6 +14,5 @@ public interface CollectorService {
     Optional<Collector> getCollectorById(Long id);
 
     Iterable<Collector> getCollector();
-
 }
 

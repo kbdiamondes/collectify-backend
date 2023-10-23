@@ -1,12 +1,14 @@
 package com.capstone.collectify.controllers;
 
 import com.capstone.collectify.models.Collector;
+import com.capstone.collectify.models.Contract;
 import com.capstone.collectify.services.CollectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -42,5 +44,6 @@ public class CollectorController {
     }
 
     // Add other endpoints for Collector-related operations
+
 }
 
