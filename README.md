@@ -35,25 +35,28 @@ This documentation provides information on how to use the API endpoints provided
 - **Request Body**: JSON representing the contract.
 - **Response**: JSON representing the created contract.
 
-## Contract Controller
 
-### Get Contract by ID
-- **URL**: `GET /contracts/{id}`
-- **Description**: Retrieve a contract by its ID.
-- **Path Parameter**: `id` - The ID of the contract.
-- **Response**: JSON representing the contract.
+## Due Payments Controller
 
-### Get Contracts by Client ID
-- **URL**: `GET /contracts/client/{clientId}`
-- **Description**: Retrieve contracts associated with a specific client.
-- **Path Parameter**: `clientId` - The ID of the client.
-- **Response**: JSON array representing a list of contracts.
+Get Client with Unpaid Contracts
 
-### Get Contracts by Reseller ID
-- **URL**: `GET /contracts/reseller/{resellerId}`
-- **Description**: Retrieve contracts associated with a specific reseller.
-- **Path Parameter**: `resellerId` - The ID of the reseller.
-- **Response**: JSON array representing a list of contracts.
+    URL: GET /client/{clientId}/unpaid-contracts
+    Description: Retrieve a client's information along with their unpaid contracts.
+    Parameters:
+        clientId (Path Variable): The unique identifier for the client.
+    Response:
+        HTTP Status Code 200 OK with JSON representing the client and unpaid contracts if the client exists.
+        HTTP Status Code 404 Not Found if the client does not exist.
+
+Get Client with Paid Contracts
+
+    URL: GET /client/{clientId}/paid-contracts
+    Description: Retrieve a client's information along with their paid contracts.
+    Parameters:
+        clientId (Path Variable): The unique identifier for the client.
+    Response:
+        HTTP Status Code 200 OK with JSON representing the client and paid contracts if the client exists.
+        HTTP Status Code 404 Not Found if the client does not exist.
 
 ## Pay Dues Controller
 
