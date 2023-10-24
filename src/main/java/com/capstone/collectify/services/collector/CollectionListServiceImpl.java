@@ -33,4 +33,22 @@ public class CollectionListServiceImpl implements CollectionListService {
 
         return paidContracts;
     }
+
+    @Override
+    public List<Contract> getAssignedUnpaidContractsForCollector(Long collectorId) {
+        // Retrieve the collector from the database
+        Collector collector = collectorRepository.findById(collectorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Collector not found with id: " + collectorId));
+
+        // Get the collector's assigned contracts
+        List<Contract> assignedContracts = Collections.singletonList(collector.getAssignedContract());
+
+        // Filter the unpaid contracts
+        List<Contract> unpaidContracts = assignedContracts.stream()
+                .filter(contract -> !contract.isPaid())
+                .collect(Collectors.toList());
+
+        return unpaidContracts;
+    }
+
 }
