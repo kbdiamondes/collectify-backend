@@ -19,4 +19,6 @@ public class TransactionHistoryController {
     public List<TransactionHistory> getAllTransactionsByClient(@PathVariable Long clientId) {
         return transactionHistoryService.getAllTransactionsByClient(clientId);
     }
+
+
 }

@@ -37,6 +37,11 @@ public class TransactionHistory {
     @JsonBackReference("client-paymentHistory")
     private Client client;
 
+    @ManyToOne
+    @JsonBackReference("contract-transactionHistory")
+    @JoinColumn(name = "contract_id")
+    private Contract contract;
+
     // Constructors, getters, and setters
 
     public Client getClient() {
@@ -93,5 +98,13 @@ public class TransactionHistory {
 
     public void setClientName(String clientName) {
         this.clientName = clientName;
+    }
+
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
 }

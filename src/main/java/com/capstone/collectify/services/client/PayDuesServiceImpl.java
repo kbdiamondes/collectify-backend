@@ -73,6 +73,7 @@ public class PayDuesServiceImpl implements PayDuesService {
                         transactionHistoryRecord.setClientName(client.getFullName());
                         transactionHistoryRecord.setOrderId(contract.getOrderid());
                         transactionHistoryRecord.setProductName(contract.getItemName());
+                        transactionHistoryRecord.setContract(contract);
                         // Add the payment history record to the client's history
                         client.addPaymentHistory(transactionHistoryRecord);
 
