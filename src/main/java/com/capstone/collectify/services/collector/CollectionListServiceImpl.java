@@ -24,7 +24,7 @@ public class CollectionListServiceImpl implements CollectionListService {
                 .orElseThrow(() -> new ResourceNotFoundException("Collector not found with id: " + collectorId));
 
         // Get the collector's assigned paid contracts
-        List<Contract> assignedContracts = Collections.singletonList(collector.getAssignedContract());
+        List<Contract> assignedContracts = collector.getAssignedContract();
 
         // Filter the paid contracts
         List<Contract> paidContracts = assignedContracts.stream()
@@ -41,7 +41,7 @@ public class CollectionListServiceImpl implements CollectionListService {
                 .orElseThrow(() -> new ResourceNotFoundException("Collector not found with id: " + collectorId));
 
         // Get the collector's assigned contracts
-        List<Contract> assignedContracts = Collections.singletonList(collector.getAssignedContract());
+        List<Contract> assignedContracts = collector.getAssignedContract();
 
         // Filter the unpaid contracts
         List<Contract> unpaidContracts = assignedContracts.stream()

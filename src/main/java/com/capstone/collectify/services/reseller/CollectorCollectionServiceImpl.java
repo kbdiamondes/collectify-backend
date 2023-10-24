@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 
 @Service
 public class CollectorCollectionServiceImpl implements CollectorCollectionService{
@@ -42,7 +43,7 @@ public class CollectorCollectionServiceImpl implements CollectorCollectionServic
         if (contract.getReseller().equals(reseller)) {
             Collector collector = collectorRepository.findById(collectorId)
                     .orElseThrow(() -> new ResourceNotFoundException("Collector not found with id: " + collectorId));
-            collector.setAssignedContract(contract);
+            collector.getAssignedContract().add(contract);
             contract.setCollector(collector);
             contractRepository.save(contract);
         } else {

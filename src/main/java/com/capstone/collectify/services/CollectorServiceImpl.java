@@ -49,7 +49,7 @@ public class CollectorServiceImpl implements CollectorService {
         contractRepository.save(contract);
 
         // Update the Collector with the assigned Contract
-        collector.setAssignedContract(contract);
+        collector.getAssignedContract().add(contract);
 
         // Save the Collector
         collectorRepository.save(collector);

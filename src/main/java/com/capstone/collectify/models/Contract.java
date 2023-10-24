@@ -76,7 +76,8 @@ public class Contract {
     @JsonProperty("distributor")
     private Reseller reseller;
 
-    @OneToOne(mappedBy = "assignedContract")
+    @ManyToOne
+    @JoinColumn(name="collector_id")
     @JsonBackReference("collector-assignedcontract")
     private Collector collector;
 

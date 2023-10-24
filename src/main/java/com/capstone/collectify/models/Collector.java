@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -38,10 +39,9 @@ public class Collector {
     @JsonIgnore
     private String password;
 
-    @OneToOne
-    @JoinColumn(name = "contract_id") // Add this to specify the foreign key column
+    @OneToMany(mappedBy="collector")
     @JsonManagedReference("collector-assignedcontract")
-    private Contract assignedContract;
+    private List<Contract> assignedContract = new ArrayList<>();
 
     @OneToMany(mappedBy = "collector")
     @JsonManagedReference("collector_collectionHistory")
@@ -95,14 +95,15 @@ public class Collector {
         this.password = password;
     }
 
-    public Contract getAssignedContract() {
+    public List<Contract> getAssignedContract() {
         return assignedContract;
     }
 
-    public void setAssignedContract(Contract assignedContract) {
+    public void setAssignedContract(List<Contract> assignedContract) {
         this.assignedContract = assignedContract;
     }
 
+/*
     public void setAssignedClient(Client client) {
         // Implement logic to set the assigned client by creating a new contract
         if (client != null) {
@@ -128,7 +129,7 @@ public class Collector {
         } else {
             return null; // No client is assigned
         }
-    }
+    }*/
 
     public String getFirstname() {
         return firstname;
