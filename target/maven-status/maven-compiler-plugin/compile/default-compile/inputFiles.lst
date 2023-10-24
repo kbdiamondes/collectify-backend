@@ -6,6 +6,7 @@ C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\controllers\CollectorController.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\repositories\ProductRepository.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\repositories\PaymentTransactionRepository.java
+C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\client\PaymentRecordsServiceImpl.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\models\TransactionHistory.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\repositories\ContractRepository.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\others\ProductService.java
@@ -24,6 +25,7 @@ C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\CollectionHistoryService.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\models\PaymentTransaction.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\collector\CollectorCollectPaymentsService.java
+C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\controllers\client\PaymentRecordsController.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\filehandling\FileStorageServiceImpl.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\controllers\ResellerController.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\ContractServiceImpl.java
@@ -43,6 +45,7 @@ C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\ContractService.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\ServletInitializer.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\messages\ResponseFile.java
+C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\client\PaymentRecordsService.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\filehandling\FileStorageService.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\DiscussionApplication.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\controllers\others\LoginController.java
