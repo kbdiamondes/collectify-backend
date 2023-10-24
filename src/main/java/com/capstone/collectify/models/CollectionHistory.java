@@ -45,14 +45,17 @@ public class CollectionHistory {
 
 
     @ManyToOne
+    @JoinColumn(name="client_id")
     @JsonBackReference("client_paymentHistory") // Adjust the reference name as needed
     private Client client;
 
     @ManyToOne
+    @JoinColumn(name="reseller_id")
     @JsonBackReference("reseller_collectionHistory")
     private Reseller reseller;
 
     @ManyToOne
+    @JoinColumn(name="collector_id")
     @JsonBackReference("collector_collectionHistory")
     private Collector collector;
 
