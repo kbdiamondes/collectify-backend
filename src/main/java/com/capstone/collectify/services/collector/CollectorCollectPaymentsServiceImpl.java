@@ -104,6 +104,8 @@ public class CollectorCollectPaymentsServiceImpl implements CollectorCollectPaym
                     history.setCollectionDate(LocalDateTime.now());
                     history.setCollector(collector);
                     history.setPaymentType(paymentType);
+                    history.setClient(contract.getClient());
+                    history.setReseller(contract.getReseller());
 
                     // Store the image data and associate it with the contract
                     FileDB fileDB = fileStorageService.store(base64ImageData,fileName, contentType);
