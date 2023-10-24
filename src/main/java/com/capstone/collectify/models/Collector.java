@@ -103,34 +103,34 @@ public class Collector {
         this.assignedContract = assignedContract;
     }
 
-/*
-    public void setAssignedClient(Client client) {
-        // Implement logic to set the assigned client by creating a new contract
-        if (client != null) {
-            Contract newContract = new Contract();
-            newContract.setClient(client);
-            newContract.setCollector(this);
+    /*
+        public void setAssignedClient(Client client) {
+            // Implement logic to set the assigned client by creating a new contract
+            if (client != null) {
+                Contract newContract = new Contract();
+                newContract.setClient(client);
+                newContract.setCollector(this);
 
-            // You may need to set other contract properties such as dueAmount and isPaid
-            // newContract.setDueAmount(dueAmount);
-            // newContract.setIsPaid(isPaid);
+                // You may need to set other contract properties such as dueAmount and isPaid
+                // newContract.setDueAmount(dueAmount);
+                // newContract.setIsPaid(isPaid);
 
-            this.assignedContract = newContract;
-        } else {
-            // If client is null, clear the assigned contract
-            this.assignedContract = null;
+                this.assignedContract = newContract;
+            } else {
+                // If client is null, clear the assigned contract
+                this.assignedContract = null;
+            }
         }
-    }
 
-    public Client getAssignedClient() {
-        // Implement logic to get the assigned client from the assigned contract
-        if (assignedContract != null) {
-            return assignedContract.getClient();
-        } else {
-            return null; // No client is assigned
+        public Client getAssignedClient() {
+            // Implement logic to get the assigned client from the assigned contract
+            if (assignedContract != null) {
+                return assignedContract.getClient();
+            } else {
+                return null; // No client is assigned
+            }
         }
-    }*/
-
+    */
     public String getFirstname() {
         return firstname;
     }
