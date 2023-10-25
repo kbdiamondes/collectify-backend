@@ -112,6 +112,43 @@ This documentation provides information on how to use the API endpoints provided
   - `HTTP Status Code 200 OK` with JSON representing a list of paid contracts if the collector exists.
   - `HTTP Status Code 404 Not Found` if the collector does not exist.
 
+## Transaction History Controller
+- **URL**: `/transaction-history`
+- **Description**: Controller for managing transaction history.
+  
+#### Get All Transactions By Client
+- **URL**: `GET /transaction-history/client/{clientId}`
+- **Description**: Retrieve all transactions by client.
+- **Parameters**:
+  - `clientId` (Path Variable): The unique identifier for the client.
+- **Response**: A list of transaction history records.
+
+### Payment Records Controller
+- **URL**: `/payment-records`
+- **Description**: Controller for managing payment records.
+
+#### Get Payment Records For Client
+- **URL**: `GET /payment-records/client/{clientId}`
+- **Description**: Retrieve payment records for a specific client.
+- **Parameters**:
+  - `clientId` (Path Variable): The unique identifier for the client.
+- **Response**:
+  - `HTTP Status Code 200 OK` with JSON representing payment records if the client and records exist.
+  - `HTTP Status Code 404 Not Found` if the client or records do not exist.
+
+### Collector Payment Records Controller
+- **URL**: `/collector-payment-records`
+- **Description**: Controller for managing payment records for collectors.
+
+#### Get Payment Records For Collector
+- **URL**: `GET /collector-payment-records/collector/{collectorId}`
+- **Description**: Retrieve payment records for a specific collector.
+- **Parameters**:
+  - `collectorId` (Path Variable): The unique identifier for the collector.
+- **Response**:
+  - `HTTP Status Code 200 OK` with JSON representing payment records if the collector and records exist.
+  - `HTTP Status Code 404 Not Found` if the collector or records do not exist.
+
 
 ### Postman Workspace
 
