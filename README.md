@@ -123,7 +123,7 @@ This documentation provides information on how to use the API endpoints provided
   - `clientId` (Path Variable): The unique identifier for the client.
 - **Response**: A list of transaction history records.
 
-### Payment Records Controller
+## Payment Records Controller
 - **URL**: `/payment-records`
 - **Description**: Controller for managing payment records.
 
@@ -136,7 +136,7 @@ This documentation provides information on how to use the API endpoints provided
   - `HTTP Status Code 200 OK` with JSON representing payment records if the client and records exist.
   - `HTTP Status Code 404 Not Found` if the client or records do not exist.
 
-### Collector Payment Records Controller
+## Collector Payment Records Controller
 - **URL**: `/collector-payment-records`
 - **Description**: Controller for managing payment records for collectors.
 
