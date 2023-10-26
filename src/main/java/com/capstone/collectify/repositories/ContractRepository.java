@@ -38,4 +38,7 @@ public interface ContractRepository extends JpaRepository<Contract, Object> {
     List<Contract> findContractsForResellerWithNoCollector(@Param("resellerId") Long resellerId);
     @Query("SELECT c FROM Contract c WHERE c.reseller.reseller_id = :resellerId AND c.collector IS NULL AND c.isPaid = false")
     List<Contract> findUnpaidContractsForReseller(@Param("resellerId") Long resellerId);
+
+    @Query("SELECT c FROM Contract c WHERE c.reseller.reseller_id = :resellerId")
+    List<Contract> findAssignedContractsForReseller(@Param("resellerId") Long resellerId);
 }

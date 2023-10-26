@@ -1,3 +1,7 @@
+com\capstone\collectify\services\reseller\MyCollectorsServiceImpl.class
+com\capstone\collectify\repositories\MyCollectorsRepository.class
 com\capstone\collectify\services\collector\PaymentRecordServiceImpl.class
 com\capstone\collectify\services\collector\PaymentRecordService.class
+com\capstone\collectify\controllers\reseller\MyCollectorsController.class
+com\capstone\collectify\services\reseller\MyCollectorsService.class
 com\capstone\collectify\controllers\collector\PaymentRecordController.class
