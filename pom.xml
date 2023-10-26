@@ -56,6 +56,16 @@
             <version>5.6.15.Final</version>
         </dependency>
 
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+
 
 
 		<!--		&lt;!&ndash; "Spring Security" is a powerful and highly customizable authentication and access-control framework. &ndash;&gt;-->

@@ -174,13 +174,14 @@ public class ContractServiceImpl implements ContractService {
     }
 
 
+
     @Value("${api.endpoint.getOrders}")
     private String apiUrl;
 
     @PersistenceContext
     private EntityManager entityManager;
 
-        public void fetchDataAndSaveToDatabase() {
+    public void fetchDataAndSaveToDatabase() {
             RestTemplate restTemplate = new RestTemplate();
             Contract[] contracts = restTemplate.getForObject(apiUrl, Contract[].class);
 
@@ -336,10 +337,15 @@ public class ContractServiceImpl implements ContractService {
         }
 
     // This method will run automatically every 5 minutes
-    @Scheduled(fixedRate = 5000) // 5 minutes = 300,000 milliseconds
+    /*
+    @Scheduled(fixedRate = 3000000) // 5 minutes = 300,000 milliseconds
     public void scheduleFetchAndSave() {
         fetchDataAndSaveToDatabase();
     }
+
+     */
+
+
 
 }
 
