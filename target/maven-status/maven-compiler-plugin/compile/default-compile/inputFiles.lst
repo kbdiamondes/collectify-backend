@@ -65,7 +65,6 @@ C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\collector\CollectionListService.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\reseller\CollectPaymentsService.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\collector\CollectorCollectPaymentsServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\repositories\MyCollectorsRepository.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\models\OrderedProduct.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\services\client\PayDuesServiceImpl.java
 C:\Users\User\Documents\GitHub\Code\collectify-backend\collectify\src\main\java\com\capstone\collectify\controllers\ClientController.java

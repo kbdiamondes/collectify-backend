@@ -41,4 +41,7 @@ public interface ContractRepository extends JpaRepository<Contract, Object> {
 
     @Query("SELECT c FROM Contract c WHERE c.reseller.reseller_id = :resellerId")
     List<Contract> findAssignedContractsForReseller(@Param("resellerId") Long resellerId);
+
+    @Query("SELECT con FROM Contract con WHERE con.collector.collector_id = :collectorId AND con.reseller.reseller_id = :resellerId")
+    List<Contract> findContractsAssignedToCollectorByReseller(@Param("resellerId") Long resellerId, @Param("collectorId") Long collectorId);
 }
