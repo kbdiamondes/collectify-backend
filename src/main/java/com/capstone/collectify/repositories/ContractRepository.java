@@ -33,4 +33,7 @@ public interface ContractRepository extends JpaRepository<Contract, Object> {
             @Param("collectorId") Long collectorId,
             @Param("dueAmount") BigDecimal dueAmount
     );
+
+    @Query("SELECT c FROM Contract c WHERE c.reseller.id = :resellerId AND c.collector IS NULL")
+    List<Contract> findContractsForResellerWithNoCollector(@Param("resellerId") Long resellerId);
 }

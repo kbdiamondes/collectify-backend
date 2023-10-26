@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class CollectPaymentsServiceImpl implements CollectPaymentsService {
@@ -77,6 +78,45 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
             throw new AccessDeniedException("You don't have permission to collect payment for this contract.");
         }
     }
+
+    @Override
+    public void collectPaymentsFromAllContracts(Long resellerId, String paymentType, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException {
+        Reseller reseller = resellerRepository.findById(resellerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Reseller not found with id: " + resellerId));
+
+        // Get all contracts assigned to the reseller that do not have a Collector assigned
+        List<Contract> contracts = contractRepository.findContractsForResellerWithNoCollector(resellerId);
+
+        for (Contract contract : contracts) {
+            BigDecimal amountToCollect = contract.getDueAmount();
+
+            if (amountToCollect != null && amountToCollect.compareTo(BigDecimal.ZERO) > 0) {
+                // Update the due amount and mark the contract as paid if necessary
+                contract.setDueAmount(BigDecimal.ZERO);
+                contract.setPaid(true);
+                contractRepository.save(contract);
+
+                // Record the collection history
+                CollectionHistory history = new CollectionHistory();
+                history.setCollectedAmount(amountToCollect);
+                history.setCollectionDate(LocalDateTime.now());
+                history.setReseller(reseller);
+                history.setClient(contract.getClient());
+
+                // Store the image data and associate it with the contract
+                FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
+                history.setTransactionProof(fileDB);
+                history.setPaymentType(paymentType);
+
+                collectionHistoryRepository.save(history);
+
+                System.out.println(amountToCollect + " is successfully collected for contract " + contract.getContract_id());
+            } else {
+                throw new IllegalStateException("The contract has already been paid or the due amount is null.");
+            }
+        }
+    }
+
 }
 /*
 
