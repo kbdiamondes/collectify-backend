@@ -63,6 +63,10 @@ public class ContractServiceImpl implements ContractService {
         return contractRepository.save(contract);
     }
 
+    @Override
+    public List<Contract> getUnpaidContractsForReseller(Long resellerId) {
+        return contractRepository.findUnpaidContractsForReseller(resellerId);
+    }
 
     @Override
     public Contract getContractById(Long id) {

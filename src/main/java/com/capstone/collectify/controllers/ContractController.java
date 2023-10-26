@@ -39,6 +39,12 @@ public class ContractController {
         return contractService.getClientContracts(clientId);
     }
 
+    @GetMapping("/unpaid/{resellerId}")
+    public ResponseEntity<List<Contract>> getUnpaidContractsForReseller(@PathVariable Long resellerId) {
+        List<Contract> unpaidContracts = contractService.getUnpaidContractsForReseller(resellerId);
+        return ResponseEntity.ok(unpaidContracts);
+    }
+
     @GetMapping("/reseller/{resellerId}")
     public List<Contract> getResellerContracts(@PathVariable Long resellerId) {
         return contractService.getResellerContracts(resellerId);
