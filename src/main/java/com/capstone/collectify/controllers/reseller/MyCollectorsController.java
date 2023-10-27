@@ -24,18 +24,17 @@ public class MyCollectorsController {
 
     @GetMapping("/assigned/{resellerId}")
     public ResponseEntity<Map<String, List<?>>> getCollectorsAndContractsAssignedByReseller(@PathVariable Long resellerId) {
-        Map<String, List<?>> response = new HashMap<>();
         List<Collector> collectors = myCollectorsService.getCollectorsAssignedByReseller(resellerId);
-        response.put("collectors", collectors);
+        Map<String, List<?>> response = new HashMap<>();
 
-        if (!collectors.isEmpty()) {
-            // Retrieve contracts for the first collector as an example; you can adjust this part as needed
-            Collector firstCollector = collectors.get(0);
-            List<Contract> contracts = myCollectorsService.getContractsAssignedToCollectorByReseller(resellerId, firstCollector.getCollector_id());
-            response.put("contracts", contracts);
+        for (Collector collector : collectors) {
+            List<Contract> contracts = myCollectorsService.getContractsAssignedToCollectorByReseller(resellerId, collector.getCollector_id());
+            response.put(collector.getUsername(), contracts);
         }
 
         return ResponseEntity.ok(response);
     }
+
+
 
 }
