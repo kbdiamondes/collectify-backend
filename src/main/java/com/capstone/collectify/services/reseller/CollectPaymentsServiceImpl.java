@@ -47,32 +47,36 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
 
         // Check if the reseller is associated with the contract
         if (contract.getReseller().equals(reseller)) {
+            if (contract.isPaid()) {
             BigDecimal amountToCollect = contract.getDueAmount();
 
-            if (amountToCollect.compareTo(BigDecimal.ZERO) > 0) {
-                // Update the due amount and mark the contract as paid if necessary
-                contract.setDueAmount(BigDecimal.ZERO);
-                contract.setPaid(true);
-                contractRepository.save(contract);
+                if (amountToCollect.compareTo(BigDecimal.ZERO) > 0) {
+                    // Update the due amount and mark the contract as paid if necessary
+                    contract.setDueAmount(BigDecimal.ZERO);
+                    contract.setPaid(true);
+                    contractRepository.save(contract);
 
-                // Record the collection history
-                CollectionHistory history = new CollectionHistory();
-                history.setCollectedAmount(amountToCollect);
-                history.setCollectionDate(LocalDateTime.now());
-                history.setReseller(reseller);
-                history.setClient(client);
-                history.setCollector(collector);
-                history.setPaymentType(paymentType);
+                    // Record the collection history
+                    CollectionHistory history = new CollectionHistory();
+                    history.setCollectedAmount(amountToCollect);
+                    history.setCollectionDate(LocalDateTime.now());
+                    history.setReseller(reseller);
+                    history.setClient(client);
+                    history.setCollector(collector);
+                    history.setPaymentType(paymentType);
 
-                // Store the image data and associate it with the contract
-                FileDB fileDB = fileStorageService.store(base64ImageData,fileName, contentType);
-                history.setTransactionProof(fileDB);
+                    // Store the image data and associate it with the contract
+                    FileDB fileDB = fileStorageService.store(base64ImageData,fileName, contentType);
+                    history.setTransactionProof(fileDB);
 
-                collectionHistoryRepository.save(history);
+                    collectionHistoryRepository.save(history);
 
-                System.out.println(amountToCollect + " is successfully collected");
+                    System.out.println(amountToCollect + " is successfully collected");
+                } else {
+                    throw new IllegalStateException("The contract has already been paid.");
+                }
             } else {
-                throw new IllegalStateException("The contract has already been paid.");
+                throw new IllegalStateException("The contract is not yet paid.");
             }
         } else {
             throw new AccessDeniedException("You don't have permission to collect payment for this contract.");
