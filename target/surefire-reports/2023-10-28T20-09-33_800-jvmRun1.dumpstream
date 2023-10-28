@@ -1,0 +1,45 @@
+# Created at 2023-10-28T20:09:35.429
+TestSet has not finished before stream error has appeared >> initializing exit by non-null configuration: null
+java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:386)
+	at org.apache.maven.surefire.booter.MasterProcessCommand.decode(MasterProcessCommand.java:115)
+	at org.apache.maven.surefire.booter.CommandReader$CommandRunnable.run(CommandReader.java:391)
+	at java.base/java.lang.Thread.run(Thread.java:1623)
+
+
+# Created at 2023-10-28T20:09:35.457
+Unexpected IOException with stream: 2023-10-28 20:09:35.456  INFO 7098 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+
+
+# Created at 2023-10-28T20:09:35.549
+Unexpected IOException with stream: 2023-10-28 20:09:35.548  INFO 7098 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+
+
+# Created at 2023-10-28T20:09:35.557
+Unexpected IOException with stream: 2023-10-28 20:09:35.556  INFO 7098 --- [           main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+
+# Created at 2023-10-28T20:09:36.051
+Unexpected IOException with stream: 2023-10-28 20:09:36.050  INFO 7098 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+
+
+# Created at 2023-10-28T20:09:36.055
+Unexpected IOException with stream: 2023-10-28 20:09:36.055  INFO 7098 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+
+
+# Created at 2023-10-28T20:09:36.661
+Unexpected IOException with stream: 2023-10-28 20:09:36.661  WARN 7098 --- [           main] o.s.w.c.s.GenericWebApplicationContext   : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'schedulePaymentReminderController': Unsatisfied dependency expressed through field 'schedulePaymentReminderService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'schedulePaymentReminderServiceImpl': Unsatisfied dependency expressed through field 'schedulePaymentReminderRepository'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'schedulePaymentReminderRepository' defined in com.capstone.collectify.repositories.SchedulePaymentReminderRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.List com.capstone.collectify.repositories.SchedulePaymentReminderRepository.findByContract_client_id(java.lang.Long); Reason: Failed to create query for method public abstract java.util.List com.capstone.collectify.repositories.SchedulePaymentReminderRepository.findByContract_client_id(java.lang.Long)! No property 'id' found for type 'Client'; Traversed path: SchedulePaymentReminder.contract.client; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.List com.capstone.collectify.repositories.SchedulePaymentReminderRepository.findByContract_client_id(java.lang.Long)! No property 'id' found for type 'Client'; Traversed path: SchedulePaymentReminder.contract.client
+
+
+# Created at 2023-10-28T20:09:36.664
+Unexpected IOException with stream: 2023-10-28 20:09:36.663  INFO 7098 --- [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+
+
+# Created at 2023-10-28T20:09:36.665
+Unexpected IOException with stream: 2023-10-28 20:09:36.665  INFO 7098 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+
+
+# Created at 2023-10-28T20:09:36.670
+Unexpected IOException with stream: 2023-10-28 20:09:36.669  INFO 7098 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+
+
