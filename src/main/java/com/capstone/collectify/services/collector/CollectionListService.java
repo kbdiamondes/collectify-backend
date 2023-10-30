@@ -10,4 +10,6 @@ public interface CollectionListService {
 
     List<Contract> getAssignedUnpaidContractsForCollector(Long collectorId);
 
+    List<Contract> getAssignedUncollectedContractsForCollector(Long collectorId);
+
 }

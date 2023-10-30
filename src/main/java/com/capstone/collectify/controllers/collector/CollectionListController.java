@@ -31,4 +31,10 @@ public class CollectionListController {
         List<Contract> unpaidContracts = collectionListService.getAssignedUnpaidContractsForCollector(collectorId);
         return new ResponseEntity<>(unpaidContracts, HttpStatus.OK);
     }
+
+    @GetMapping("/{collectorId}/assigned-uncollected-contracts")
+    public ResponseEntity<List<Contract>> getAssignedUncollectedContractsForCollector(@PathVariable Long collectorId) {
+        List<Contract> uncollectedContracts = collectionListService.getAssignedUncollectedContractsForCollector(collectorId);
+        return new ResponseEntity<>(uncollectedContracts, HttpStatus.OK);
+    }
 }

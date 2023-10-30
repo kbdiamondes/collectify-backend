@@ -157,6 +157,7 @@ public class ContractServiceImpl implements ContractService {
 
                         // Set the lastPaymentDate to nextPaymentDate
                         contract.setLastPaymentDate(nextPaymentDate);
+                        contract.setCollected(false);
 
                         // Save the contract and collection history
                         contractRepository.save(contract);
@@ -259,6 +260,7 @@ public class ContractServiceImpl implements ContractService {
                         contract.setPenaltyrate(externalContract.getPenaltyrate());
                         contract.setPaymentterms(externalContract.getPaymentterms());
                         contract.setOrderamount(externalContract.getOrderamount());
+                        contract.setCollected(false);
 
                         // Set other attributes based on your business logic
                         // For relationships, you'll need to populate them as well based on the API data.
@@ -296,6 +298,7 @@ public class ContractServiceImpl implements ContractService {
                                     contract.setFullPrice(fullPrice);
                                     contract.setInstallmentDuration(installmentduration);
                                     contract.setDueAmount(BigDecimal.valueOf(fullPrice/installmentduration));
+                                    contract.setCollected(false);
 
                                     if(installmentduration!=0){
                                         contract.setIsMonthly(true);
