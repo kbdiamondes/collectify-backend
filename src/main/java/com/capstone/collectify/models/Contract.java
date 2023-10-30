@@ -63,6 +63,9 @@ public class Contract {
     @Column
     private double orderamount;
 
+    @Column
+    private boolean isCollected;
+
 
     // Other contract-specific attributes and relationships
 
@@ -248,6 +251,14 @@ public class Contract {
 
     public void setOrderedProducts(List<OrderedProduct> orderedProducts) {
         this.orderedProducts = orderedProducts;
+    }
+
+    public boolean isCollected() {
+        return isCollected;
+    }
+
+    public void setCollected(boolean collected) {
+        isCollected = collected;
     }
 
     //functions

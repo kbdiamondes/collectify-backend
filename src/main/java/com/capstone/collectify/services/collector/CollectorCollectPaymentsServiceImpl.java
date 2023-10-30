@@ -55,6 +55,7 @@ public class CollectorCollectPaymentsServiceImpl implements CollectorCollectPaym
                 // Update the due amount and mark the contract as paid if necessary
                 contract.setDueAmount(BigDecimal.ZERO);
                 contract.setPaid(true);
+                contract.setCollected(true);
                 contractRepository.save(contract);
 
                 // Record the collection history
@@ -96,6 +97,7 @@ public class CollectorCollectPaymentsServiceImpl implements CollectorCollectPaym
                     // Update the due amount and mark the contract as paid if necessary
                     contract.setDueAmount(BigDecimal.ZERO);
                     contract.setPaid(true);
+                    contract.setCollected(true);
                     contractRepository.save(contract);
 
                     // Record the collection history
