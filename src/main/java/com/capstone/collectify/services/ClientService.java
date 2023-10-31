@@ -29,5 +29,7 @@ public interface ClientService {
 
     Contract createContractForClient(Long clientId, Contract contract);
 
+    BigDecimal getTotalDueAmountForClient(Long clientId);
+
 
 }
