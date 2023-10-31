@@ -58,6 +58,19 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public BigDecimal getTotalDueAmountForClient(Long clientId) {
+        List<Contract> contracts = getClientContracts(clientId);
+
+        // Calculate the total due amount for unpaid contracts
+        BigDecimal totalDueAmount = contracts.stream()
+                .filter(contract -> !contract.isPaid()) // Filter unpaid contracts
+                .map(Contract::getDueAmount) // Extract due amounts
+                .reduce(BigDecimal.ZERO, BigDecimal::add); // Sum the due amounts
+
+        return totalDueAmount;
+    }
+
+    @Override
     public List<Contract> getClientContracts(Long clientId) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));

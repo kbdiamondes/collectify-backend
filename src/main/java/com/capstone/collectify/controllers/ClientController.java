@@ -61,5 +61,11 @@ public class ClientController {
         }
     }
 
+    @GetMapping("/{id}/total-due-amount")
+    public ResponseEntity<BigDecimal> getTotalDueAmountForClient(@PathVariable Long id) {
+        BigDecimal totalDueAmount = clientService.getTotalDueAmountForClient(id);
+        return new ResponseEntity<>(totalDueAmount, HttpStatus.OK);
+    }
+
     // Add other endpoints for Client-related operations
 }
