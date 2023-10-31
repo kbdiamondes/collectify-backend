@@ -31,6 +31,8 @@ public class TransactionHistory {
 
     private String clientName;
 
+    private String collectorName;
+
 
     // Add a reference to the Client entity
     @ManyToOne
@@ -106,5 +108,13 @@ public class TransactionHistory {
 
     public void setContract(Contract contract) {
         this.contract = contract;
+    }
+
+    public String getCollectorName() {
+        return collectorName;
+    }
+
+    public void setCollectorName(String collectorName) {
+        this.collectorName = collectorName;
     }
 }
