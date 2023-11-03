@@ -65,6 +65,23 @@ public class CollectorCollectPaymentsServiceImpl implements CollectorCollectPaym
                 history.setCollector(collector);
                 history.setPaymentType(paymentType);
 
+                if (contract.getItemName() != null) {
+                    history.setItemName(contract.getItemName());
+                }
+
+                if (contract.getCollector() != null && contract.getCollector().getUsername() != null) {
+                    history.setCollector_username(contract.getCollector().getUsername());
+                }
+
+                if (contract.getUsername() != null) {
+                    history.setClient_username(contract.getUsername());
+                }
+
+                if (contract.getReseller() != null && contract.getReseller().getUsername() != null) {
+                    history.setReseller_username(contract.getReseller().getUsername());
+                }
+
+
                 // Store the image data and associate it with the contract
                 FileDB fileDB = fileStorageService.store(base64ImageData,fileName, contentType);
                 history.setTransactionProof(fileDB);
@@ -108,6 +125,11 @@ public class CollectorCollectPaymentsServiceImpl implements CollectorCollectPaym
                     history.setPaymentType(paymentType);
                     history.setClient(contract.getClient());
                     history.setReseller(contract.getReseller());
+                    history.setItemName(contract.getItemName());
+                    history.setReseller_username(contract.getReseller().getUsername());
+                    history.setCollector_username(contract.getCollector().getUsername());
+                    history.setClient_username(contract.getUsername());
+
 
                     // Store the image data and associate it with the contract
                     FileDB fileDB = fileStorageService.store(base64ImageData,fileName, contentType);

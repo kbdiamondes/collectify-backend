@@ -18,6 +18,15 @@ public class CollectionHistory {
 
     private String paymentType;
 
+    private String orderid;
+    private String itemName;
+
+    private String reseller_username;
+
+    private String client_username;
+
+    private String collector_username;
+
     @OneToOne
     @JoinColumn(name = "transaction_proof_id")
     private FileDB transactionProof;
@@ -38,11 +47,6 @@ public class CollectionHistory {
     public void setTransactionProof(FileDB transactionProof) {
         this.transactionProof = transactionProof;
     }
-
-
-
-    // Other collection history-specific attributes
-
 
     @ManyToOne
     @JsonBackReference("client_paymentHistory") // Adjust the reference name as needed
@@ -96,5 +100,45 @@ public class CollectionHistory {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public String getOrderid() {
+        return orderid;
+    }
+
+    public void setOrderid(String orderid) {
+        this.orderid = orderid;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public String getReseller_username() {
+        return reseller_username;
+    }
+
+    public void setReseller_username(String reseller_username) {
+        this.reseller_username = reseller_username;
+    }
+
+    public String getClient_username() {
+        return client_username;
+    }
+
+    public void setClient_username(String client_username) {
+        this.client_username = client_username;
+    }
+
+    public String getCollector_username() {
+        return collector_username;
+    }
+
+    public void setCollector_username(String collector_username) {
+        this.collector_username = collector_username;
     }
 }

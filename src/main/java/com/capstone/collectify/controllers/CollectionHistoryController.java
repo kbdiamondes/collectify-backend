@@ -20,5 +20,10 @@ public class CollectionHistoryController {
         return collectionHistoryService.getCollectionHistory(resellerId);
     }
 
+    @GetMapping("/collector/{collectorId}")
+    public List<CollectionHistory> getCollectorCollectionHistory(@PathVariable Long collectorId) {
+        return collectionHistoryService.getCollectorCollectionHistory(collectorId);
+    }
+
     // Add other endpoints for CollectionHistory-related operations
 }
