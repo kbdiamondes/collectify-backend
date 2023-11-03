@@ -163,7 +163,10 @@ public class ResellerServiceImpl implements ResellerService {
         return assignedCollector;
     }
 
-
+    @Override
+    public int countActiveUnpaidContractsForReseller(Long resellerId) {
+        return contractRepository.countActiveUnpaidContractsForReseller(resellerId);
+    }
 
     @Value("${api.endpoint.getDistributors}")
     private String apiUrl;
