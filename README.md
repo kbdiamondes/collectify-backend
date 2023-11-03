@@ -12,16 +12,18 @@ Keith Brylle Diamante
 ### First Increment
 
 - [NEW] Contract Listing
-- [2.1] Due Payments (Customer)
+- Contract New Entries [Data Passed from Other Group]
 
 ### Second Increment
-- [3.1] Collect Payments (Individual) 
-- [4.3] Collector Collections (Reseller) 
-
+- Record Entities from other group to Collectify
 
 ### Third Increment
+- [2.1] Due Payments (Customer)
+- Pay & Collect Dues
+
 ### Fourth Increment
-- To be determined on October 5th (Daylight)
+- [3.1] Collect Payments (Individual) 
+- [4.3] Collector Collections (Reseller) 
 
 # API Documentation
 
@@ -148,6 +150,97 @@ This documentation provides information on how to use the API endpoints provided
 - **Response**:
   - `HTTP Status Code 200 OK` with JSON representing payment records if the collector and records exist.
   - `HTTP Status Code 404 Not Found` if the collector or records do not exist.
+
+## November 3 Update
+### Recent Contracts [For Collector Dashboard]
+- **URL**: `GET /collection-history/collector/{collectorId}`
+- **Description**: Returns a record of collector collection action with a slightly modified JSON data response.
+- **Parameters**:
+  - `collectorId` (Path Variable): The unique identifier for the collector.
+- **Response**:
+  - `HTTP Status Code 200 OK` with a list of `CollectionHistory` if the collector exists.
+  - `HTTP Status Code 404 Not Found` if the collector does not exist.
+
+### Collect [All] Payments with no Collector[Reseller]
+- **URL**: `POST /collectPayments/{resellerId}/contracts/{contractId}/collect-payment`
+- **Description**: Collect payment for a specific contract belonging to a reseller.
+- **Parameters**:
+  - `resellerId` (Path Variable): The unique identifier for the reseller.
+  - `contractId` (Path Variable): The unique identifier for the contract.
+  - `paymentType` (Request Param): Type of payment.
+  - `base64Image` (Request Param): Base64 encoded image data.
+  - `fileName` (Request Param): Name of the file.
+  - `contentType` (Request Param): Type of content.
+- **Response**:
+  - `HTTP Status Code 200 OK` if the payment is collected successfully.
+  - `HTTP Status Code 400 Bad Request` if the base64 image data is empty.
+  - `HTTP Status Code 403 Forbidden` if access is denied.
+  - `HTTP Status Code 500 Internal Server Error` for other failures during payment collection.
+
+### GET Active Contracts [Reseller]
+- **URL**: `GET /unpaid/{resellerId}`
+- **Description**: Get clients with unpaid contracts according to the Reseller ID.
+- **Parameters**:
+  - `resellerId` (Path Variable): The unique identifier for the reseller.
+- **Response**:
+  - `HTTP Status Code 200 OK` with a list of `Contract` objects representing unpaid contracts.
+  
+### CRUD Schedule Payment Reminder [Client]
+- **URL**: `/schedule-payment-reminder`
+- **Description**: Controller for scheduling, getting, and deleting payment reminders for clients.
+- **Endpoints**:
+  - `GET /client/{clientId}/reminders`: Get scheduled reminders for a client.
+  - `POST /set-reminder`: Set a payment reminder for a client.
+  - `DELETE /delete-reminder`: Delete a payment reminder for a client.
+- **Parameters**:
+  - `clientId` (Path Variable): The unique identifier for the client.
+  - `contractId` (Request Param): The unique identifier for the contract.
+  - `reminderTitle` (Request Param): Title of the reminder.
+  - `reminderDateTime` (Request Param): Date and time for the reminder.
+- **Response**:
+  - Various HTTP Status Codes based on success or failure of reminder operations.
+
+### Assigned Tasks [Collector]
+- **URL**: `GET /collection/{collectorId}/assigned-uncollected-contracts`
+- **Description**: GET uncollected & assigned contracts with a specific collector ID.
+- **Parameters**:
+  - `collectorId` (Path Variable): The unique identifier for the collector.
+- **Response**:
+  - `HTTP Status Code 200 OK` with a list of `Contract` objects representing uncollected contracts.
+  
+### Payment Records [Collector & Client]
+- **URL**: `GET /payment-records/client/{clientId}`
+- **Description**: Records the paid dues for a client.
+- **Parameters**:
+  - `clientId` (Path Variable): The unique identifier for the client.
+- **Response**:
+  - `HTTP Status Code 200 OK` with a list of `TransactionHistory` for the client.
+  - `HTTP Status Code 404 Not Found` if the client does not exist.
+
+### Payment Records [Collector]
+- **URL**: `GET /collector-payment-records/collector/{collectorId}`
+- **Description**: Returns a record of all collected contracts with the specific details for a collector.
+- **Parameters**:
+  - `collectorId` (Path Variable): The unique identifier for the collector.
+- **Response**:
+  - `HTTP Status Code 200 OK` with a list of `Contract` objects representing collected payments.
+  - `HTTP Status Code 404 Not Found` if no records are found.
+
+### Total Active & Unpaid Contract Count [Reseller Dashboard]
+- **URL**: `GET /resellers/{resellerId}/active-unpaid-contracts/count`
+- **Description**: Used on the Reseller Dashboard to count active unpaid contracts.
+- **Parameters**:
+  - `resellerId` (Path Variable): The unique identifier for the reseller.
+- **Response**:
+  - `HTTP Status Code 200 OK` with an integer representing the count of active unpaid contracts.
+
+### Total Due Amount of Client Active Contracts [Client Dashboard]
+- **URL**: `GET /clients/{id}/total-due-amount`
+- **Description**: Returns the sum (integer) of the client's unpaid active contracts.
+- **Parameters**:
+  - `id` (Path Variable): The unique identifier for the client.
+- **Response**:
+  - `HTTP Status Code 200 OK` with a `BigDecimal` representing the total due amount for the client.
 
 
 ### Postman Workspace
