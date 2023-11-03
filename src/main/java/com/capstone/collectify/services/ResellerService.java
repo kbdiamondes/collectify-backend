@@ -22,4 +22,6 @@ public interface ResellerService{
     Iterable<Reseller> getReseller();
 
     Collector getAssignedCollector(Long resellerId, Long contractId);
+    int countActiveUnpaidContractsForReseller(Long resellerId);
+
 }

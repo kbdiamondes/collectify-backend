@@ -79,6 +79,10 @@ public class ResellerController {
         }
     }
 
-    // Add other endpoints for Reseller-related operations
+    @GetMapping("/{resellerId}/active-unpaid-contracts/count")
+    public ResponseEntity<Integer> countActiveUnpaidContractsForReseller(@PathVariable Long resellerId) {
+        int count = resellerService.countActiveUnpaidContractsForReseller(resellerId);
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
 }
 
