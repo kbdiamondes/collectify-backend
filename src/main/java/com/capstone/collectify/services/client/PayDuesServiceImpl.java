@@ -49,6 +49,11 @@ public class PayDuesServiceImpl implements PayDuesService {
         Contract contract = contractRepository.findById(contractId)
                 .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + contractId));
 
+        Reseller reseller = contract.getReseller(); // Retrieve the reseller associated with the contract
+
+        // Fetch the reseller's name
+        String resellerName = reseller.getFullName(); // Replace this with the actual field where the reseller's name is stored
+
         if (contract.getClient().equals(client)) {
             if (!contract.isPaid()) {
                 // Retrieve the "amount" from the map as a string
@@ -71,6 +76,8 @@ public class PayDuesServiceImpl implements PayDuesService {
                         transactionHistoryRecord.setPaymentDate(LocalDateTime.now());
 
                         transactionHistoryRecord.setClientName(client.getFullName());
+                        // Set the reseller name in the transaction history
+                        transactionHistoryRecord.setResellerName(resellerName);
                         transactionHistoryRecord.setOrderId(contract.getOrderid());
                         transactionHistoryRecord.setProductName(contract.getItemName());
                         transactionHistoryRecord.setContract(contract);
