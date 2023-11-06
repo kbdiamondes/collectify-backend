@@ -16,4 +16,9 @@ public class TransactionHistoryServiceImpl implements TransactionHistoryService 
     public List<TransactionHistory> getAllTransactionsByClient(Long clientId) {
         return transactionHistoryRepository.findByClientId(clientId);
     }
+
+    @Override
+    public List<TransactionHistory> getAllTransactions() {
+        return transactionHistoryRepository.findAll();
+    }
 }

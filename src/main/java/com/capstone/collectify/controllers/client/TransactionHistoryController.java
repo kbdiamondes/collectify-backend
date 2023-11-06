@@ -20,5 +20,10 @@ public class TransactionHistoryController {
         return transactionHistoryService.getAllTransactionsByClient(clientId);
     }
 
+    @GetMapping("/all")
+    public List<TransactionHistory> getAllTransactions() {
+        return transactionHistoryService.getAllTransactions();
+    }
+
 
 }
