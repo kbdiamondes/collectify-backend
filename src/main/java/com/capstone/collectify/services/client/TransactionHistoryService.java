@@ -7,4 +7,7 @@ import java.util.List;
 public interface TransactionHistoryService {
 
     List<TransactionHistory> getAllTransactionsByClient(Long clientId);
+
+    List<TransactionHistory> getAllTransactions();
+
 }
