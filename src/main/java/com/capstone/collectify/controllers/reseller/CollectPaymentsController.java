@@ -17,15 +17,38 @@ import java.nio.file.AccessDeniedException;
 public class CollectPaymentsController {
 
     @Autowired
-    private final CollectPaymentsService paymentCollectionService;
+    private CollectPaymentsService collectPaymentsService;
 
     @Autowired
     private FileController fileUploadController; // Inject your existing file upload controller
 
+    @PostMapping("/{resellerId}/paymentTransactions/{paymentTransactionId}/collect")
+    public ResponseEntity<String> collectPayment(
+            @PathVariable Long resellerId,
+            @PathVariable Long paymentTransactionId,
+            @RequestParam String paymentType,
+            @RequestParam("base64Image") String base64Image,
+            @RequestParam("fileName") String fileName,
+            @RequestParam("contentType") String contentType) {
 
-    @Autowired
-    public CollectPaymentsController(CollectPaymentsService paymentCollectionService) {
-        this.paymentCollectionService = paymentCollectionService;
+        if (base64Image.isEmpty()) {
+            return ResponseEntity.badRequest().body("Base64 image data is empty.");
+        }
+
+        ResponseEntity<ResponseMessage> uploadResponse = fileUploadController.uploadFile(base64Image, fileName, contentType);
+
+        if (uploadResponse.getStatusCode() == HttpStatus.OK) {
+            try {
+                collectPaymentsService.collectPayments(resellerId, paymentTransactionId, paymentType, base64Image, fileName, contentType);
+                return ResponseEntity.ok("Payment collected successfully");
+            } catch (AccessDeniedException e) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment collection failed: " + e.getMessage());
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment failed: " + uploadResponse.getBody().getMessage());
+        }
     }
 
     /*

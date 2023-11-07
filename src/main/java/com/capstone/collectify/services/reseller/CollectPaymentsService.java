@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 
 public interface CollectPaymentsService {
+    void collectPayments(Long resellerId, Long contractId, String paymentType, String base64ImageData, String fileName, String contentType)
+            throws AccessDeniedException, IOException;
 /*
     void collectPayments(Long resellerId, Long contractId, String paymentType, String base64ImageData, String fileName, String contentType ) throws AccessDeniedException, IOException;
 
