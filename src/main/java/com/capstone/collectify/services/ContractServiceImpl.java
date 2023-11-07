@@ -280,6 +280,7 @@ public class ContractServiceImpl implements ContractService {
                                 transaction.setContract(contract);
                                 transaction.setCollected(false);
                                 transaction.setReseller(contract.getReseller());
+                                transaction.setOrderid(externalTransaction.getOrderid());
 
                                 paymentTransactions.add(paymentTransactionRepository.save(transaction));
                             }

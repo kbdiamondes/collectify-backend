@@ -13,6 +13,9 @@ public class PaymentTransaction {
     private Long payment_transactionid;
 
     @Column
+    private String orderid;
+
+    @Column
     private String paymenttransactionid;
 
     @Column
@@ -148,5 +151,11 @@ public class PaymentTransaction {
         this.reseller = reseller;
     }
 
+    public String getOrderid() {
+        return orderid;
+    }
 
+    public void setOrderid(String orderid) {
+        this.orderid = orderid;
+    }
 }
