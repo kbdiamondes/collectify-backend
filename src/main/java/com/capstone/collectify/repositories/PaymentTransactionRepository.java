@@ -1,6 +1,7 @@
 package com.capstone.collectify.repositories;
 
 import com.capstone.collectify.models.PaymentTransaction;
+import com.capstone.collectify.models.Reseller;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -19,4 +20,9 @@ public interface PaymentTransactionRepository extends CrudRepository<PaymentTran
 
     @Query("SELECT pt FROM PaymentTransaction pt WHERE pt.contract.reseller.reseller_id = :resellerId AND pt.isPaid = false")
     List<PaymentTransaction> findUnpaidPaymentTransactionsByResellerId(@Param("resellerId") Long resellerId);
+
+    @Query("SELECT pt FROM PaymentTransaction pt WHERE pt.reseller.reseller_id = :resellerId")
+    List<PaymentTransaction> findByResellerId(@Param("resellerId") Long resellerId);
+
+
 }
