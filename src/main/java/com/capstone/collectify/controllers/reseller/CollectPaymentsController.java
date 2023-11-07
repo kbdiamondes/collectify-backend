@@ -51,6 +51,34 @@ public class CollectPaymentsController {
         }
     }
 
+    @PostMapping("/{resellerId}/collect-payments-from-all-contracts")
+    public ResponseEntity<String> collectPaymentsFromAllContracts(
+            @PathVariable Long resellerId,
+            @RequestParam String paymentType,
+            @RequestParam("base64Image") String base64Image,
+            @RequestParam("fileName") String fileName,
+            @RequestParam("contentType") String contentType) {
+
+        if (base64Image.isEmpty()) {
+            return ResponseEntity.badRequest().body("Base64 image data is empty.");
+        }
+
+        ResponseEntity<ResponseMessage> uploadResponse = fileUploadController.uploadFile(base64Image, fileName, contentType);
+
+        if (uploadResponse.getStatusCode() == HttpStatus.OK) {
+            try {
+                collectPaymentsService.collectPaymentsFromAllContracts(resellerId, paymentType, base64Image, fileName, contentType);
+                return ResponseEntity.ok("Payments collected successfully from all eligible contracts");
+            } catch (AccessDeniedException e) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment collection from all contracts failed: " + e.getMessage());
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment failed: " + uploadResponse.getBody().getMessage());
+        }
+    }
+
     /*
     @PostMapping("/{resellerId}/contracts/{contractId}/collect-payment")
     public ResponseEntity<String> collectPayment(

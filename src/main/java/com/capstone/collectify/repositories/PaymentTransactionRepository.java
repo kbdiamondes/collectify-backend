@@ -24,4 +24,5 @@ public interface PaymentTransactionRepository extends CrudRepository<PaymentTran
     @Query("SELECT pt FROM PaymentTransaction pt WHERE pt.reseller.reseller_id = :resellerId")
     List<PaymentTransaction> findByResellerId(@Param("resellerId") Long resellerId);
 
+    List<PaymentTransaction> findByResellerAndCollectorIsNullAndIsPaidIsTrueAndIsCollectedIsFalse(Reseller reseller);
 }

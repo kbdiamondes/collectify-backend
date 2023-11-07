@@ -86,7 +86,53 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
              throw new AccessDeniedException("You don't have permission to collect payment for this transaction.");
             }
         }
+
+    @Override
+    public void collectPaymentsFromAllContracts(Long resellerId, String paymentType, String base64ImageData, String fileName, String contentType)
+            throws AccessDeniedException, IOException {
+
+        Reseller reseller = resellerRepository.findById(resellerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Reseller not found with id: " + resellerId));
+
+        List<PaymentTransaction> paymentTransactions = paymentTransactionRepository.findByResellerAndCollectorIsNullAndIsPaidIsTrueAndIsCollectedIsFalse(reseller);
+
+        for (PaymentTransaction paymentTransaction : paymentTransactions) {
+            try {
+                if (paymentTransaction.getReseller().equals(reseller)) {
+                    // Process payment collection logic similar to individual collection function
+                    if (paymentTransaction.getCollector() == null) {
+                        // Example: Save file to storage service
+                        FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
+
+                        // Update the payment transaction
+                        paymentTransaction.setCollected(true);
+                        paymentTransactionRepository.save(paymentTransaction);
+
+                        // Record the collection history
+                        CollectionHistory history = new CollectionHistory();
+                        history.setCollectedAmount(BigDecimal.valueOf(paymentTransaction.getAmountdue()));
+                        history.setCollectionDate(LocalDateTime.now());
+                        history.setReseller(reseller);
+                        history.setPaymentType(paymentType);
+                        history.setTransactionProof(fileDB);
+                        // Other fields for history entity
+
+                        collectionHistoryRepository.save(history);
+                        System.out.println("Payment collected successfully for transaction ID: " + paymentTransaction.getPayment_transactionid());
+                    } else {
+                        throw new IllegalStateException("The payment transaction is currently assigned to a collector");
+                    }
+                } else {
+                    throw new AccessDeniedException("You don't have permission to collect payment for this transaction.");
+                }
+            } catch (Exception e) {
+                // Log or handle exceptions for individual payment transaction collection
+                System.out.println("Failed to collect payment for transaction ID: " + paymentTransaction.getPayment_transactionid() + ". Reason: " + e.getMessage());
+            }
+        }
     }
+
+}
     /*
     @Override
     public void collectPayments(Long resellerId, Long contractId, String paymentType, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException {
