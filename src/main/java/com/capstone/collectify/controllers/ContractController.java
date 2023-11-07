@@ -2,6 +2,7 @@ package com.capstone.collectify.controllers;
 
 import com.capstone.collectify.models.Contract;
 import com.capstone.collectify.services.ContractService;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,9 +35,17 @@ public class ContractController {
         return contractService.getContractById(id);
     }
 
+
     @GetMapping("/client/{clientId}")
     public List<Contract> getClientContracts(@PathVariable Long clientId) {
-        return contractService.getClientContracts(clientId);
+        List<Contract> contracts = contractService.getClientContracts(clientId);
+
+        // Load paymentTransactions eagerly for each contract
+        contracts.forEach(contract -> {
+            Hibernate.initialize(contract.getPaymentTransactions());
+        });
+
+        return contracts;
     }
 
     /*

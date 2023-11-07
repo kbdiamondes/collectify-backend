@@ -1,5 +1,7 @@
 package com.capstone.collectify.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -32,8 +34,13 @@ public class PaymentTransaction {
     private boolean isCollected;
 
     @ManyToOne
+    @JoinColumn(name="contract_id")
+    @JsonBackReference("payment-transactions")
     private Contract contract;
 
+    @OneToOne
+    @JoinColumn(name = "transaction_proof_id") // Adjust the column name as needed
+    private FileDB transactionProof; // Represents the transaction proof image
 
     public Long getPayment_transactionid() {
         return payment_transactionid;
@@ -105,5 +112,13 @@ public class PaymentTransaction {
 
     public void setCollected(boolean collected) {
         isCollected = collected;
+    }
+
+    public FileDB getTransactionProof() {
+        return transactionProof;
+    }
+
+    public void setTransactionProof(FileDB transactionProof) {
+        this.transactionProof = transactionProof;
     }
 }
