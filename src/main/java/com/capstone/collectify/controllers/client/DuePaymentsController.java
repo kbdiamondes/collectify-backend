@@ -20,12 +20,14 @@ public class DuePaymentsController {
     private DuePaymentsService duePaymentsService;
 
 
+    /*
     @GetMapping("/unpaid-contracts")
     public List<Client> getClientsWithUnpaidContracts() {
         List<Client> clientsWithUnpaidContracts = duePaymentsService.getClientsWithUnpaidContracts();
         return clientsWithUnpaidContracts;
-    }
+    }*/
 
+    /*
     @GetMapping("/client/{clientId}/unpaid-contracts")
     public ResponseEntity<Client> getClientWithUnpaidContracts(@PathVariable Long clientId) {
         Client client = duePaymentsService.getClientWithUnpaidContracts(clientId);
@@ -45,5 +47,5 @@ public class DuePaymentsController {
         } else {
             return new ResponseEntity<>( HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
 }

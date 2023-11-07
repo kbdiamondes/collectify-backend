@@ -17,6 +17,7 @@ public class MyCollectorsServiceImpl implements MyCollectorsService {
     @Autowired
     private ContractRepository contractRepository;
 
+    /*
     @Override
     public List<Collector> getCollectorsAssignedByReseller(Long resellerId) {
         return collectorRepository.findCollectorsAssignedByReseller(resellerId);
@@ -26,4 +27,6 @@ public class MyCollectorsServiceImpl implements MyCollectorsService {
     public List<Contract> getContractsAssignedToCollectorByReseller(Long resellerId, Long collectorId) {
         return contractRepository.findContractsAssignedToCollectorByReseller(resellerId, collectorId);
     }
+
+     */
 }

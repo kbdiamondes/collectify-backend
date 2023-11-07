@@ -29,6 +29,7 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private ContractRepository contractRepository;
 
+    /*
     @Override
     public void payDue(Long clientId, Long contractId, BigDecimal amount) throws AccessDeniedException {
         Client client = clientRepository.findById(clientId)
@@ -69,6 +70,8 @@ public class ClientServiceImpl implements ClientService {
 
         return totalDueAmount;
     }
+
+     */
 
     @Override
     public List<Contract> getClientContracts(Long clientId) {

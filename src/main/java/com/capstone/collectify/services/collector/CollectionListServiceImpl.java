@@ -13,9 +13,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class CollectionListServiceImpl implements CollectionListService {
-
+ /*
     @Autowired
     private CollectorRepository collectorRepository;
+
 
     @Override
     public List<Contract> getAssignedPaidContractsForCollector(Long collectorId) {
@@ -51,6 +52,7 @@ public class CollectionListServiceImpl implements CollectionListService {
         return unpaidContracts;
     }
 
+
     @Override
     public List<Contract> getAssignedUncollectedContractsForCollector(Long collectorId) {
         // Retrieve the collector from the database
@@ -67,5 +69,5 @@ public class CollectionListServiceImpl implements CollectionListService {
 
         return uncollectedContracts;
     }
-
+*/
 }

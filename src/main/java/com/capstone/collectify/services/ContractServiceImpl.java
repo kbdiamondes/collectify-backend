@@ -67,11 +67,12 @@ public class ContractServiceImpl implements ContractService {
         return contractRepository.save(contract);
     }
 
+    /*
     @Override
     public List<Contract> getUnpaidContractsForReseller(Long resellerId) {
         return contractRepository.findUnpaidContractsForReseller(resellerId);
     }
-
+*/
     @Override
     public Contract getContractById(Long id) {
         return contractRepository.findById(id)
@@ -121,6 +122,7 @@ public class ContractServiceImpl implements ContractService {
         return contractRepository.findAll();
     }
 
+    /*
     @Scheduled(cron = "0 0 0 1 * ?") // Run at midnight on the 1st day of each month
     public void processMonthlyPayments() throws IOException {
 
@@ -161,7 +163,6 @@ public class ContractServiceImpl implements ContractService {
 
                         // Set the lastPaymentDate to nextPaymentDate
                         contract.setLastPaymentDate(nextPaymentDate);
-                        contract.setCollected(false);
 
                         // Save the contract and collection history
                         contractRepository.save(contract);
@@ -177,7 +178,7 @@ public class ContractServiceImpl implements ContractService {
             }
         }
     }
-
+*/
 
     @Value("${api.endpoint.getOrders}")
     private String apiUrl;
@@ -264,7 +265,6 @@ public class ContractServiceImpl implements ContractService {
                         contract.setPenaltyrate(externalContract.getPenaltyrate());
                         contract.setPaymentterms(externalContract.getPaymentterms());
                         contract.setOrderamount(externalContract.getOrderamount());
-                        contract.setCollected(false);
 
                         List<PaymentTransaction> paymentTransactions = new ArrayList<>();
 
@@ -278,6 +278,7 @@ public class ContractServiceImpl implements ContractService {
                                 transaction.setInstallmentnumber(externalTransaction.getInstallmentnumber());
                                 transaction.setPaid(externalTransaction.isPaid());
                                 transaction.setContract(contract);
+                                transaction.setCollected(false);
 
                                 paymentTransactions.add(paymentTransactionRepository.save(transaction));
                             }
@@ -314,21 +315,14 @@ public class ContractServiceImpl implements ContractService {
                                     product.setCommissionrate(externalProduct.getCommissionrate());
 
                                     //Extra functions
-                                    Long fullPrice = (long) externalProduct.getPrice() * externalOrderedProduct.getQuantity();
-                                    int installmentduration = externalContract.getPaymentterms();
+                                    //Long fullPrice = (long) externalProduct.getPrice() * externalOrderedProduct.getQuantity();
+                                    Long fullPrice = (long) externalContract.getOrderamount();
 
-                                    //Set dueAmount, fullPrice, itemName and installment_duration(paymentterms)
+                                    //Set fullPrice, itemName and installment_duration(paymentterms)
                                     contract.setItemName(externalProduct.getName());
                                     contract.setFullPrice(fullPrice);
-                                    contract.setInstallmentDuration(installmentduration);
-                                    contract.setDueAmount(BigDecimal.valueOf(fullPrice/installmentduration));
-                                    contract.setCollected(false);
 
-                                    if(installmentduration!=0){
-                                        contract.setIsMonthly(true);
-                                    }else{
-                                        contract.setIsMonthly(false);
-                                    }
+
 
 
                                     // Set the relationship between OrderedProduct and Product

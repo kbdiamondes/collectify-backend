@@ -39,6 +39,7 @@ public class CollectorCollectPaymentsServiceImpl implements CollectorCollectPaym
         this.fileStorageService = fileStorageService;
     }
 
+    /*
     @Override
     public void collectPayments(Long collectorId, Long contractId, String paymentType, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException {
         Collector collector = collectorRepository.findById(collectorId)
@@ -146,6 +147,6 @@ public class CollectorCollectPaymentsServiceImpl implements CollectorCollectPaym
             }
         }
     }
-
+*/
 }
 

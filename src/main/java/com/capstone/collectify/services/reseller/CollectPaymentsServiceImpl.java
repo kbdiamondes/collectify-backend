@@ -35,6 +35,7 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
         this.fileStorageService = fileStorageService;
     }
 
+    /*
     @Override
     public void collectPayments(Long resellerId, Long contractId, String paymentType, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException {
         Reseller reseller = resellerRepository.findById(resellerId)
@@ -100,7 +101,9 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
             throw new AccessDeniedException("You don't have permission to collect payment for this contract.");
         }
     }
+*/
 
+    /*
     @Override
     public void collectPaymentsFromAllContracts(Long resellerId, String paymentType, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException {
         Reseller reseller = resellerRepository.findById(resellerId)
@@ -143,7 +146,7 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
             }
         }
     }
-
+*/
 }
 /*
 

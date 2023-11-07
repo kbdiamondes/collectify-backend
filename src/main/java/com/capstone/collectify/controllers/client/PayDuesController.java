@@ -28,6 +28,7 @@ public class PayDuesController {
     @Autowired
     private FileController fileUploadController; // Inject your existing file upload controller
 
+    /*
     @PostMapping("/client/{clientId}/contracts/{contractId}/pay")
     public ResponseEntity<String> payDues(
             @PathVariable Long clientId,
@@ -58,6 +59,8 @@ public class PayDuesController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment failed: " + e.getMessage());
         }
     }
+
+     */
 }
 
 

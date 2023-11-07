@@ -18,7 +18,8 @@ public interface CollectorRepository extends CrudRepository<Collector, Object> {
 
     Optional<Object> findByUsername(String username);
 
+    /*
     @Query("SELECT c FROM Collector c JOIN c.assignedContract ac WHERE ac.reseller.reseller_id = :resellerId")
     List<Collector> findCollectorsAssignedByReseller(@Param("resellerId") Long resellerId);
-
+*/
 }

@@ -37,6 +37,7 @@ public class SchedulePaymentReminderServiceImpl implements SchedulePaymentRemind
                 .collect(Collectors.toList());
     }
 
+
     private SchedulePaymentReminderDTO mapReminderToDTO(SchedulePaymentReminder reminder) {
         SchedulePaymentReminderDTO dto = new SchedulePaymentReminderDTO();
         dto.setId(reminder.getId());
@@ -45,13 +46,15 @@ public class SchedulePaymentReminderServiceImpl implements SchedulePaymentRemind
 
         Contract contract = reminder.getContract();
         if (contract != null) {
-            dto.setDueAmount(contract.getDueAmount());
-            dto.setPaid(contract.isPaid());
+            //dto.setDueAmount(contract.getDueAmount());
+            //dto.setPaid(contract.isPaid());
             // Add more contract-related information if needed
         }
 
         return dto;
     }
+
+
     @Override
     public void schedulePaymentReminder(Long clientId, Long contractId, String reminderTitle, LocalDateTime reminderDateTime) throws AccessDeniedException {
         Client client = clientRepository.findById(clientId)

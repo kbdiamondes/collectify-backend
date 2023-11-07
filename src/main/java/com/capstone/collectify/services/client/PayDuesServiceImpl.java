@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Service
 public class PayDuesServiceImpl implements PayDuesService {
-
+    /*
     private final ClientRepository clientRepository;
     private final ContractRepository contractRepository;
     private final CollectionHistoryRepository collectionHistoryRepository;
@@ -40,6 +40,7 @@ public class PayDuesServiceImpl implements PayDuesService {
         this.fileStorageService = fileStorageService;
         this.transactionHistoryRepository = transactionHistoryRepository;
     }
+
 
     @Override
     public void payDues(Long clientId, Long contractId, Map<String, String> amounts, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException {
@@ -109,7 +110,10 @@ public class PayDuesServiceImpl implements PayDuesService {
             throw new AccessDeniedException("You don't have permission to pay dues for this contract.");
         }
     }
+*/
 
+
+    /*
     @Override
     public void processMonthlyPayments() {
         // Get the current date and time
@@ -159,5 +163,8 @@ public class PayDuesServiceImpl implements PayDuesService {
             }
         }
     }
+
+
+     */
 }
 

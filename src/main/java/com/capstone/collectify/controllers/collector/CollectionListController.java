@@ -20,6 +20,7 @@ public class CollectionListController {
     @Autowired
     private CollectionListService collectionListService;
 
+    /*
     @GetMapping("/{collectorId}/assigned-paid-contracts")
     public ResponseEntity<List<Contract>> getAssignedPaidContractsForCollector(@PathVariable Long collectorId) {
         List<Contract> paidContracts = collectionListService.getAssignedPaidContractsForCollector(collectorId);
@@ -31,10 +32,11 @@ public class CollectionListController {
         List<Contract> unpaidContracts = collectionListService.getAssignedUnpaidContractsForCollector(collectorId);
         return new ResponseEntity<>(unpaidContracts, HttpStatus.OK);
     }
-
+*/
+    /*
     @GetMapping("/{collectorId}/assigned-uncollected-contracts")
     public ResponseEntity<List<Contract>> getAssignedUncollectedContractsForCollector(@PathVariable Long collectorId) {
         List<Contract> uncollectedContracts = collectionListService.getAssignedUncollectedContractsForCollector(collectorId);
         return new ResponseEntity<>(uncollectedContracts, HttpStatus.OK);
-    }
+    }*/
 }

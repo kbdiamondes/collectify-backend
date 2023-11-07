@@ -50,6 +50,7 @@ public class ClientController {
         return clientService.createContractForClient(clientId, contract);
     }
 
+    /*
     @PostMapping("/{clientId}/contracts/{contractId}/pay")
     public void payDue(@PathVariable Long clientId, @PathVariable Long contractId, @RequestBody Map<String, BigDecimal> requestBody) {
         BigDecimal amount = requestBody.get("amount");
@@ -66,6 +67,6 @@ public class ClientController {
         BigDecimal totalDueAmount = clientService.getTotalDueAmountForClient(id);
         return new ResponseEntity<>(totalDueAmount, HttpStatus.OK);
     }
-
+*/
     // Add other endpoints for Client-related operations
 }

@@ -28,6 +28,9 @@ public class PaymentTransaction {
     @Column
     private boolean isPaid;
 
+    @Column
+    private boolean isCollected;
+
     @ManyToOne
     private Contract contract;
 
@@ -94,5 +97,13 @@ public class PaymentTransaction {
 
     public void setContract(Contract contract) {
         this.contract = contract;
+    }
+
+    public boolean isCollected() {
+        return isCollected;
+    }
+
+    public void setCollected(boolean collected) {
+        isCollected = collected;
     }
 }

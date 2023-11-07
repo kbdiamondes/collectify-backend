@@ -22,6 +22,7 @@ public class MyCollectorsController {
     private MyCollectorsService myCollectorsService;
 
 
+    /*
     @GetMapping("/assigned/{resellerId}")
     public ResponseEntity<Map<String, List<?>>> getCollectorsAndContractsAssignedByReseller(@PathVariable Long resellerId) {
         List<Collector> collectors = myCollectorsService.getCollectorsAssignedByReseller(resellerId);
@@ -33,7 +34,7 @@ public class MyCollectorsController {
         }
 
         return ResponseEntity.ok(response);
-    }
+    }*/
 
 
 

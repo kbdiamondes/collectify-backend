@@ -14,7 +14,7 @@ public interface ClientService {
 
     Client createClient(Client client);
 
-    void payDue(Long clientId, Long contractId, BigDecimal amount) throws AccessDeniedException;
+    //void payDue(Long clientId, Long contractId, BigDecimal amount) throws AccessDeniedException;
     List<Contract> getClientContracts(Long clientId);
 
     Iterable<Client> getClient();
@@ -29,7 +29,7 @@ public interface ClientService {
 
     Contract createContractForClient(Long clientId, Contract contract);
 
-    BigDecimal getTotalDueAmountForClient(Long clientId);
+    //BigDecimal getTotalDueAmountForClient(Long clientId);
 
 
 }

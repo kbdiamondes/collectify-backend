@@ -19,6 +19,7 @@ public class PaymentRecordController {
     @Autowired
     private PaymentRecordService paymentRecordService;
 
+    /*
     @GetMapping("/collector/{collectorId}")
     public ResponseEntity<List<Contract>> getPaymentRecordsForCollector(@PathVariable Long collectorId) {
         List<Contract> paymentRecords = paymentRecordService.getPaymentRecordsForCollector(collectorId);
@@ -28,5 +29,6 @@ public class PaymentRecordController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
+
 }

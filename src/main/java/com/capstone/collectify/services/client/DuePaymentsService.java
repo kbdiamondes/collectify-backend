@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface DuePaymentsService {
 
-    List<Client> getClientsWithUnpaidContracts();
+    //List<Client> getClientsWithUnpaidContracts();
 
-    Client getClientWithUnpaidContracts(Long clientId);
+    //Client getClientWithUnpaidContracts(Long clientId);
 
-    Client getClientWithPaidContracts(Long clientId);
+    //Client getClientWithPaidContracts(Long clientId);
 
 }

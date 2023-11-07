@@ -49,7 +49,6 @@ public class ResellerServiceImpl implements ResellerService {
         contract.setUsername(clientUsername);
         contract.setItemName(itemName);
         contract.setFullPrice(fullPrice);
-        contract.setPaid(isPaid);
         contract.setInstallmentDuration(installmentDuration);
         contract.setIsMonthly(isMonthly);
         contract.setOrderdate(LocalDate.now());
@@ -105,7 +104,7 @@ public class ResellerServiceImpl implements ResellerService {
                 // Update the due amount and mark the contract as paid if necessary
                 contract.setDueAmount(contract.getDueAmount().subtract(amount));
                 if (contract.getDueAmount().compareTo(BigDecimal.ZERO) == 0) {
-                    contract.setPaid(true);
+                   // contract.setPaid(true);
                 }
                 contractRepository.save(contract);
 
@@ -165,10 +164,11 @@ public class ResellerServiceImpl implements ResellerService {
         return assignedCollector;
     }
 
+    /*
     @Override
     public int countActiveUnpaidContractsForReseller(Long resellerId) {
         return contractRepository.countActiveUnpaidContractsForReseller(resellerId);
-    }
+    }*/
 
     @Value("${api.endpoint.getDistributors}")
     private String apiUrl;

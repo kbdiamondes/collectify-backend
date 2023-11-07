@@ -19,12 +19,14 @@ public class DuePaymentsServiceImpl implements DuePaymentsService {
     @Autowired
     private ContractRepository contractRepository;
 
+    /*
     @Override
     public List<Client> getClientsWithUnpaidContracts() {
         // Use the ClientRepository to retrieve clients with contracts where isPaid is false
         return clientRepository.findClientsWithUnpaidContracts();
-    }
+    }*/
 
+    /*
     @Override
     public Client getClientWithUnpaidContracts(Long clientId) {
         Client client = clientRepository.findById(clientId)
@@ -52,4 +54,6 @@ public class DuePaymentsServiceImpl implements DuePaymentsService {
 
         return client;
     }
+
+     */
 }

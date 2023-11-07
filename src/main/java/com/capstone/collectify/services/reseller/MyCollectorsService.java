@@ -6,6 +6,8 @@ import com.capstone.collectify.models.Contract;
 import java.util.List;
 
 public interface MyCollectorsService {
+
+    /*
     List<Collector> getCollectorsAssignedByReseller(Long resellerId);
-    List<Contract> getContractsAssignedToCollectorByReseller(Long resellerId, Long collectorId);
+    List<Contract> getContractsAssignedToCollectorByReseller(Long resellerId, Long collectorId);*/
 }

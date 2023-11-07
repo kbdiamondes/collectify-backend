@@ -28,6 +28,7 @@ public class CollectPaymentsController {
         this.paymentCollectionService = paymentCollectionService;
     }
 
+    /*
     @PostMapping("/{resellerId}/contracts/{contractId}/collect-payment")
     public ResponseEntity<String> collectPayment(
             @PathVariable Long resellerId,
@@ -84,7 +85,7 @@ public class CollectPaymentsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment collection failed: " + e.getMessage());
         }
     }
-
+*/
 }
 
 /*

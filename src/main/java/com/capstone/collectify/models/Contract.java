@@ -32,9 +32,6 @@ public class Contract {
     private Long fullPrice;
 
     @Column
-    private boolean isPaid;
-
-    @Column
     private int installmentDuration;
 
     @Column
@@ -62,9 +59,6 @@ public class Contract {
 
     @Column
     private double orderamount;
-
-    @Column
-    private boolean isCollected;
 
 
     // Other contract-specific attributes and relationships
@@ -145,14 +139,6 @@ public class Contract {
 
     public void setFullPrice(Long fullPrice) {
         this.fullPrice = fullPrice;
-    }
-
-    public boolean isPaid() {
-        return isPaid;
-    }
-
-    public void setPaid(boolean paid) {
-        isPaid = paid;
     }
 
     public Client getClient() {
@@ -257,14 +243,6 @@ public class Contract {
 
     public void setOrderedProducts(List<OrderedProduct> orderedProducts) {
         this.orderedProducts = orderedProducts;
-    }
-
-    public boolean isCollected() {
-        return isCollected;
-    }
-
-    public void setCollected(boolean collected) {
-        isCollected = collected;
     }
 
     //functions
