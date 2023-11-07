@@ -2,8 +2,11 @@ package com.capstone.collectify.services.client;
 
 import com.capstone.collectify.models.Client;
 import com.capstone.collectify.models.Contract;
+import com.capstone.collectify.models.PaymentTransaction;
 import com.capstone.collectify.repositories.ClientRepository;
 import com.capstone.collectify.repositories.ContractRepository;
+import com.capstone.collectify.repositories.PaymentTransactionRepository;
+import com.capstone.collectify.repositories.ResellerRepository;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +18,23 @@ import java.util.List;
 public class DuePaymentsServiceImpl implements DuePaymentsService {
 
     @Autowired
+    private PaymentTransactionRepository paymentTransactionRepository;
+    @Autowired
     private ClientRepository clientRepository;
     @Autowired
-    private ContractRepository contractRepository;
+    private ResellerRepository resellerRepository;
+
+    // Method to get unpaid payment transactions by Client ID
+    @Override
+    public List<PaymentTransaction> getUnpaidPaymentTransactionsByClientId(Long clientId) {
+        return paymentTransactionRepository.findUnpaidPaymentTransactionsByClientId(clientId);
+    }
+
+    // Method to get unpaid payment transactions by Reseller ID
+    @Override
+    public List<PaymentTransaction> getUnpaidPaymentTransactionsByResellerId(Long resellerId) {
+        return paymentTransactionRepository.findUnpaidPaymentTransactionsByResellerId(resellerId);
+    }
 
     /*
     @Override

@@ -12,4 +12,11 @@ import java.util.List;
 public interface PaymentTransactionRepository extends CrudRepository<PaymentTransaction, Object> {
     @Query("SELECT pt FROM PaymentTransaction pt WHERE pt.contract.client.client_id = :clientId")
     List<PaymentTransaction> findPaymentTransactionsByClientId(@Param("clientId") Long clientId);
+
+
+    @Query("SELECT pt FROM PaymentTransaction pt WHERE pt.contract.client.client_id = :clientId AND pt.isPaid = false")
+    List<PaymentTransaction> findUnpaidPaymentTransactionsByClientId(@Param("clientId") Long clientId);
+
+    @Query("SELECT pt FROM PaymentTransaction pt WHERE pt.contract.reseller.reseller_id = :resellerId AND pt.isPaid = false")
+    List<PaymentTransaction> findUnpaidPaymentTransactionsByResellerId(@Param("resellerId") Long resellerId);
 }
