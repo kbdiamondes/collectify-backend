@@ -6,6 +6,8 @@ import com.capstone.collectify.repositories.PaymentTransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PaymentTransactionServiceImpl implements PaymentTransactionService {
 
@@ -16,6 +18,12 @@ public class PaymentTransactionServiceImpl implements PaymentTransactionService 
     @Override
     public Iterable<PaymentTransaction> getPaymentTransaction() {
         return paymentTransactionRepository.findAll();
+    }
+
+    @Override
+    public List<PaymentTransaction> getPaymentTransactionsByClientId(Long clientId) {
+        // Implement this method to fetch payment transactions by client ID
+        return paymentTransactionRepository.findPaymentTransactionsByClientId(clientId);
     }
 
 

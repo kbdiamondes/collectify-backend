@@ -10,6 +10,7 @@ com/capstone/collectify/DiscussionApplication.class
 com/capstone/collectify/models/TransactionHistory.class
 com/capstone/collectify/repositories/ClientRepository.class
 com/capstone/collectify/models/SchedulePaymentReminderDTO.class
+com/capstone/collectify/controllers/others/PaymentTransactionController.class
 com/capstone/collectify/services/client/DuePaymentsService.class
 com/capstone/collectify/services/ContractServiceImpl.class
 com/capstone/collectify/controllers/reseller/MyCollectorsController.class

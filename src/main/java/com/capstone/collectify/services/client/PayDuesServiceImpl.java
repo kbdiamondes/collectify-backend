@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class PayDuesServiceImpl implements PayDuesService {
@@ -39,29 +40,81 @@ public class PayDuesServiceImpl implements PayDuesService {
     }
 
         // Method to pay dues for an individual transaction
-    @Override
-    public void payTransactionDues(Long paymentTransactionId, BigDecimal amount, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException {
-        PaymentTransaction paymentTransaction = paymentTransactionRepository.findById(paymentTransactionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Payment transaction not found with ID: " + paymentTransactionId));
+        @Override
+        public void payTransactionDues(Long paymentTransactionId, BigDecimal amount, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException {
+            PaymentTransaction paymentTransaction = paymentTransactionRepository.findById(paymentTransactionId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Payment transaction not found with ID: " + paymentTransactionId));
 
-        if (!paymentTransaction.isPaid()) {
-            if (amount.compareTo(BigDecimal.valueOf(paymentTransaction.getAmountdue())) == 0) {
-                paymentTransaction.setPaid(true);
-                paymentTransaction.setEnddate(LocalDate.now()); // Set the end date to mark the completion of the payment
+            if (!paymentTransaction.isPaid()) {
+                if (amount.compareTo(BigDecimal.valueOf(paymentTransaction.getAmountdue())) == 0) {
+                    paymentTransaction.setPaid(true);
+                    paymentTransaction.setEnddate(LocalDate.now()); // Set the end date to mark the completion of the payment
 
-                // Your existing logic to store image data and payment proof
-                FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
-                paymentTransaction.setTransactionProof(fileDB);
+                    // Create a new transaction history record for this payment
+                    TransactionHistory transactionHistoryRecord = new TransactionHistory();
+                    transactionHistoryRecord.setAmountPaid(amount);
+                    transactionHistoryRecord.setPaymentDate(LocalDateTime.now());
 
-                // Save the updated payment transaction entity
-                paymentTransactionRepository.save(paymentTransaction);
+                    // Retrieve associated objects and check for null to avoid potential NullPointerException
+                    Contract paymentContract = paymentTransaction.getContract();
+                    if (paymentContract != null) {
+                        transactionHistoryRecord.setContract(paymentContract);
+
+                        // Retrieve associated objects and check for null to avoid potential NullPointerException
+                        Client client = paymentContract.getClient();
+                        Reseller reseller = paymentContract.getReseller();
+                        Collector collector = paymentContract.getCollector();
+
+                        if (client != null) {
+                            transactionHistoryRecord.setClientName(client.getFullName());
+                        } else {
+                            transactionHistoryRecord.setClientName("Client Unknown");
+                        }
+
+                        if (reseller != null) {
+                            transactionHistoryRecord.setResellerName(reseller.getFullName());
+                        } else {
+                            transactionHistoryRecord.setResellerName("Reseller Unknown");
+                        }
+
+                        if (collector != null) {
+                            transactionHistoryRecord.setCollectorName(collector.getFullName());
+                        } else {
+                            transactionHistoryRecord.setCollectorName("No Collector Assigned");
+                        }
+
+                        transactionHistoryRecord.setOrderId(paymentContract.getOrderid());
+                        transactionHistoryRecord.setProductName(paymentContract.getItemName());
+                        transactionHistoryRecord.setTransactionProof(paymentTransaction.getTransactionProof()); // Set the payment proof
+
+                        // Add the payment history record to the client's history
+                        if (client != null) {
+                            client.addPaymentHistory(transactionHistoryRecord);
+                        }
+
+                        // Your existing logic to store image data and payment proof for the payment transaction
+                        FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
+                        paymentTransaction.setTransactionProof(fileDB);
+                        transactionHistoryRecord.setTransactionProof(fileDB);
+
+                        // Save the updated payment transaction entity
+                        paymentTransactionRepository.save(paymentTransaction);
+
+                        // Save the payment history record to the database
+                        transactionHistoryRepository.save(transactionHistoryRecord);
+                    } else {
+                        throw new IllegalStateException("The contract associated with the payment transaction is null.");
+                    }
+                } else {
+                    throw new IllegalArgumentException("Paid amount is not equal to the due amount.");
+                }
             } else {
-                throw new IllegalArgumentException("Paid amount is not equal to the due amount.");
+                throw new IllegalStateException("The transaction is already paid.");
             }
-        } else {
-            throw new IllegalStateException("The transaction is already paid.");
         }
-    }
+
+
+
 
 /*
     @Override
