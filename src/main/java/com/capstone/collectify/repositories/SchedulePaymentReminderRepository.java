@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface SchedulePaymentReminderRepository extends JpaRepository<SchedulePaymentReminder, Long> {
-    @Query("SELECT r FROM SchedulePaymentReminder r JOIN r.contract c WHERE c.client.id = :clientId")
+    @Query("SELECT r FROM SchedulePaymentReminder r " +
+            "JOIN r.paymentTransaction pt " +
+            "WHERE pt.contract.client.client_id = :clientId")
     List<SchedulePaymentReminder> findRemindersByClientId(Long clientId);
 }
