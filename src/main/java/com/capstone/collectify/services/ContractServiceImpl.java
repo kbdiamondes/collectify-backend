@@ -17,6 +17,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,6 +49,9 @@ public class ContractServiceImpl implements ContractService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private PaymentTransactionRepository paymentTransactionRepository;
 
     private String base64ImageData;
     private String fileName;
@@ -261,6 +265,26 @@ public class ContractServiceImpl implements ContractService {
                         contract.setPaymentterms(externalContract.getPaymentterms());
                         contract.setOrderamount(externalContract.getOrderamount());
                         contract.setCollected(false);
+
+                        List<PaymentTransaction> paymentTransactions = new ArrayList<>();
+
+                        if (externalContract.getPaymentTransactions() != null) {
+                            for (PaymentTransaction externalTransaction : externalContract.getPaymentTransactions()) {
+                                PaymentTransaction transaction = new PaymentTransaction();
+                                transaction.setPaymenttransactionid(externalTransaction.getPaymenttransactionid());
+                                transaction.setAmountdue(externalTransaction.getAmountdue());
+                                transaction.setStartingdate(externalTransaction.getStartingdate());
+                                transaction.setEnddate(externalTransaction.getEnddate());
+                                transaction.setInstallmentnumber(externalTransaction.getInstallmentnumber());
+                                transaction.setPaid(externalTransaction.isPaid());
+                                transaction.setContract(contract);
+
+                                paymentTransactions.add(paymentTransactionRepository.save(transaction));
+                            }
+
+                        }
+
+                        contract.setPaymentTransactions(paymentTransactions); // Update contract with payment transactions
 
                         // Set other attributes based on your business logic
                         // For relationships, you'll need to populate them as well based on the API data.

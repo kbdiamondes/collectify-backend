@@ -93,6 +93,12 @@ public class Contract {
     @JsonBackReference("ordered-products")
     private List<OrderedProduct> orderedProducts;
 
+    @JsonProperty("paymenttransactions")
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.PERSIST)
+    @JsonBackReference("payment-transactions")
+    private List<PaymentTransaction> paymentTransactions;
+
+
     public FileDB getTransactionProof() {
         return transactionProof;
     }
@@ -276,4 +282,11 @@ public class Contract {
     }
 
 
+    public List<PaymentTransaction> getPaymentTransactions() {
+        return paymentTransactions;
+    }
+
+    public void setPaymentTransactions(List<PaymentTransaction> paymentTransactions) {
+        this.paymentTransactions = paymentTransactions;
+    }
 }
