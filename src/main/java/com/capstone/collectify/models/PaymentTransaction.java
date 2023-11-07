@@ -42,6 +42,10 @@ public class PaymentTransaction {
     @JoinColumn(name = "transaction_proof_id") // Adjust the column name as needed
     private FileDB transactionProof; // Represents the transaction proof image
 
+    @ManyToOne
+    @JoinColumn(name = "collector_id")
+    private Collector collector;
+
     public Long getPayment_transactionid() {
         return payment_transactionid;
     }
@@ -120,5 +124,13 @@ public class PaymentTransaction {
 
     public void setTransactionProof(FileDB transactionProof) {
         this.transactionProof = transactionProof;
+    }
+
+    public Collector getCollector() {
+        return collector;
+    }
+
+    public void setCollector(Collector collector) {
+        this.collector = collector;
     }
 }
