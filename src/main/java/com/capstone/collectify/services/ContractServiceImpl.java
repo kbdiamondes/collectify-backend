@@ -279,6 +279,7 @@ public class ContractServiceImpl implements ContractService {
                                 transaction.setPaid(externalTransaction.isPaid());
                                 transaction.setContract(contract);
                                 transaction.setCollected(false);
+                                transaction.setReseller(contract.getReseller());
 
                                 paymentTransactions.add(paymentTransactionRepository.save(transaction));
                             }

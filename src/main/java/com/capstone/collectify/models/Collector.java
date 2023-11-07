@@ -44,6 +44,9 @@ public class Collector {
     private List<Contract> assignedContract = new ArrayList<>();
 
     @OneToMany(mappedBy = "collector")
+    @JsonManagedReference("collector-paymenttransactions")
+    private List<PaymentTransaction> assignedPaymentTransactions = new ArrayList<>();
+    @OneToMany(mappedBy = "collector")
     @JsonManagedReference("collector_collectionHistory")
     private List<CollectionHistory> collectionHistory;
 

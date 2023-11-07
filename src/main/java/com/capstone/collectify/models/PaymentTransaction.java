@@ -44,7 +44,13 @@ public class PaymentTransaction {
 
     @ManyToOne
     @JoinColumn(name = "collector_id")
+    @JsonBackReference("collector-paymenttransactions")
     private Collector collector;
+
+    @ManyToOne
+    @JoinColumn(name = "reseller_id")
+    @JsonBackReference("reseller-payment-transactions")
+    private Reseller reseller;
 
     public Long getPayment_transactionid() {
         return payment_transactionid;
@@ -132,5 +138,13 @@ public class PaymentTransaction {
 
     public void setCollector(Collector collector) {
         this.collector = collector;
+    }
+
+    public Reseller getReseller() {
+        return reseller;
+    }
+
+    public void setReseller(Reseller reseller) {
+        this.reseller = reseller;
     }
 }

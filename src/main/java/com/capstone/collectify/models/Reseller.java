@@ -45,6 +45,11 @@ public class Reseller {
     private List<Contract> contracts;
 
     @OneToMany(mappedBy = "reseller")
+    @JsonManagedReference("reseller-payment-transactions")
+    private List<PaymentTransaction> paymentTransactions;
+
+
+    @OneToMany(mappedBy = "reseller")
     @JsonManagedReference("reseller_collectionHistory")
     private List<CollectionHistory> collectionHistory;
 
@@ -141,4 +146,17 @@ public class Reseller {
     }
 
 // Getters and setters
+
+
+    public void setReseller_id(Long reseller_id) {
+        this.reseller_id = reseller_id;
+    }
+
+    public List<PaymentTransaction> getPaymentTransactions() {
+        return paymentTransactions;
+    }
+
+    public void setPaymentTransactions(List<PaymentTransaction> paymentTransactions) {
+        this.paymentTransactions = paymentTransactions;
+    }
 }
