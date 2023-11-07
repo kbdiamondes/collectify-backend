@@ -28,6 +28,29 @@ public class PayDuesController {
     @Autowired
     private FileController fileUploadController; // Inject your existing file upload controller
 
+    @PostMapping("/transaction/{paymentTransactionId}/pay")
+    public ResponseEntity<String> payTransactionDues(
+            @PathVariable Long paymentTransactionId,
+            @RequestParam BigDecimal amount,
+            @RequestParam("base64Image") String base64Image,
+            @RequestParam("fileName") String fileName,
+            @RequestParam("contentType") String contentType
+    ) {
+        try {
+            if (base64Image.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Base64 image data is empty.");
+            }
+
+            // Make payment for the specific transaction
+            payDuesService.payTransactionDues(paymentTransactionId, amount, base64Image, fileName, contentType);
+            return ResponseEntity.ok("Payment successful");
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment failed: " + e.getMessage());
+        }
+    }
+
     /*
     @PostMapping("/client/{clientId}/contracts/{contractId}/pay")
     public ResponseEntity<String> payDues(

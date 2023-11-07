@@ -1,10 +1,7 @@
 package com.capstone.collectify.services.client;
 
 import com.capstone.collectify.models.*;
-import com.capstone.collectify.repositories.ClientRepository;
-import com.capstone.collectify.repositories.CollectionHistoryRepository;
-import com.capstone.collectify.repositories.ContractRepository;
-import com.capstone.collectify.repositories.TransactionHistoryRepository;
+import com.capstone.collectify.repositories.*;
 import com.capstone.collectify.services.filehandling.FileStorageService;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +9,12 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.nio.file.AccessDeniedException;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
 
 @Service
 public class PayDuesServiceImpl implements PayDuesService {
-    /*
+
     private final ClientRepository clientRepository;
     private final ContractRepository contractRepository;
     private final CollectionHistoryRepository collectionHistoryRepository;
@@ -28,20 +22,48 @@ public class PayDuesServiceImpl implements PayDuesService {
 
     private final TransactionHistoryRepository transactionHistoryRepository;
 
+    private final PaymentTransactionRepository paymentTransactionRepository;
+
     @Autowired
     public PayDuesServiceImpl(
             ClientRepository clientRepository,
             ContractRepository contractRepository,
             CollectionHistoryRepository collectionHistoryRepository,
-            FileStorageService fileStorageService, TransactionHistoryRepository transactionHistoryRepository) {
+            FileStorageService fileStorageService, TransactionHistoryRepository transactionHistoryRepository, PaymentTransactionRepository paymentTransactionRepository) {
         this.clientRepository = clientRepository;
         this.contractRepository = contractRepository;
         this.collectionHistoryRepository = collectionHistoryRepository;
         this.fileStorageService = fileStorageService;
         this.transactionHistoryRepository = transactionHistoryRepository;
+        this.paymentTransactionRepository = paymentTransactionRepository;
     }
 
+        // Method to pay dues for an individual transaction
+    @Override
+    public void payTransactionDues(Long paymentTransactionId, BigDecimal amount, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException {
+        PaymentTransaction paymentTransaction = paymentTransactionRepository.findById(paymentTransactionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Payment transaction not found with ID: " + paymentTransactionId));
 
+        if (!paymentTransaction.isPaid()) {
+            if (amount.compareTo(BigDecimal.valueOf(paymentTransaction.getAmountdue())) == 0) {
+                paymentTransaction.setPaid(true);
+                paymentTransaction.setEnddate(LocalDate.now()); // Set the end date to mark the completion of the payment
+
+                // Your existing logic to store image data and payment proof
+                FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
+                paymentTransaction.setTransactionProof(fileDB);
+
+                // Save the updated payment transaction entity
+                paymentTransactionRepository.save(paymentTransaction);
+            } else {
+                throw new IllegalArgumentException("Paid amount is not equal to the due amount.");
+            }
+        } else {
+            throw new IllegalStateException("The transaction is already paid.");
+        }
+    }
+
+/*
     @Override
     public void payDues(Long clientId, Long contractId, Map<String, String> amounts, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException {
         Client client = clientRepository.findById(clientId)
