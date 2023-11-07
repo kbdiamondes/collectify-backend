@@ -71,6 +71,23 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
                         history.setTransactionProof(fileDB);
                         // Other fields for history entity
 
+                        if (paymentTransaction.getContract().getOrderid()!=null){
+                            history.setOrderid(paymentTransaction.getContract().getOrderid());
+                        }
+
+                        if (paymentTransaction.getContract().getItemName()!=null) {
+                            history.setItemName(paymentTransaction.getContract().getItemName());
+                        }
+
+                        if (paymentTransaction.getContract().getReseller().getFullName() != null) {
+                            history.setResellerName(paymentTransaction.getContract().getReseller().getFullName());
+                        }
+
+                        if (paymentTransaction.getContract().getClient().getFullName() != null) {
+                            history.setClientName(paymentTransaction.getContract().getClient().getFullName());
+                        }
+
+
                         collectionHistoryRepository.save(history);
                         System.out.println("Payment collected successfully");
                         }else {
@@ -116,6 +133,23 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
                         history.setPaymentType(paymentType);
                         history.setTransactionProof(fileDB);
                         // Other fields for history entity
+
+                        if (paymentTransaction.getContract().getOrderid()!=null){
+                            history.setOrderid(paymentTransaction.getContract().getOrderid());
+                        }
+
+                        if (paymentTransaction.getContract().getItemName()!=null) {
+                            history.setItemName(paymentTransaction.getContract().getItemName());
+                        }
+
+                        if (paymentTransaction.getContract().getReseller().getFullName() != null) {
+                            history.setResellerName(paymentTransaction.getContract().getReseller().getFullName());
+                        }
+
+                        if (paymentTransaction.getContract().getClient().getFullName() != null) {
+                            history.setClientName(paymentTransaction.getContract().getClient().getFullName());
+                        }
+
 
                         collectionHistoryRepository.save(history);
                         System.out.println("Payment collected successfully for transaction ID: " + paymentTransaction.getPayment_transactionid());
