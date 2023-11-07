@@ -68,6 +68,7 @@ public class ResellerController {
         resellerService.assignCollector(resellerId, contractId, collectorId);
     }
 
+    /*
     @PostMapping("/{resellerId}/contracts/{contractId}/collect-payment")
     public ResponseEntity<String> collectPayment(@PathVariable Long resellerId, @PathVariable Long contractId, @RequestBody Map<String,BigDecimal> requestBody) {
         BigDecimal amount = requestBody.get("amount");
@@ -79,6 +80,7 @@ public class ResellerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment collection failed: " + e.getMessage());
         }
     }
+    */
 
     /*
     @GetMapping("/{resellerId}/active-unpaid-contracts/count")

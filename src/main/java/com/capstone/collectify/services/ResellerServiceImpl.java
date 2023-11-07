@@ -35,6 +35,7 @@ public class ResellerServiceImpl implements ResellerService {
     @Autowired
     private CollectionHistoryRepository collectionHistoryRepository;
 
+    /*
     @Override
     public Contract createContract(Long resellerId, String clientUsername, String username, String itemName, Long fullPrice, Boolean isPaid, int installmentDuration, boolean isMonthly) {
         Reseller reseller = resellerRepository.findById(resellerId)
@@ -70,7 +71,7 @@ public class ResellerServiceImpl implements ResellerService {
         // Save the contract and return it
         return contractRepository.save(contract);
     }
-
+*/
     @Override
     public void assignCollector(Long resellerId, Long contractId, Long collectorId) throws AccessDeniedException {
         Reseller reseller = resellerRepository.findById(resellerId)
@@ -90,6 +91,7 @@ public class ResellerServiceImpl implements ResellerService {
         }
     }
 
+    /*
     @Override
     public void collectPayment(Long resellerId, Long contractId, BigDecimal amount) throws AccessDeniedException {
         Reseller reseller = resellerRepository.findById(resellerId)
@@ -123,7 +125,7 @@ public class ResellerServiceImpl implements ResellerService {
             throw new AccessDeniedException("You don't have permission to collect payment for this contract.");
         }
     }
-
+*/
     @Override
     public List<CollectionHistory> getCollectionHistory(Long resellerId) {
         Reseller reseller = resellerRepository.findById(resellerId)

@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CollectorService {
-    void assignCollectorToClient(Long collectorId, Long clientId);
-
     Collector createCollector(Collector collector);
 
     Optional<Collector> getCollectorById(Long id);

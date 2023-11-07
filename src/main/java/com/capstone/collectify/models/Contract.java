@@ -26,9 +26,6 @@ public class Contract {
     private String itemName;
 
     @Column
-    private BigDecimal dueAmount;
-
-    @Column
     private Long fullPrice;
 
     @Column
@@ -123,14 +120,6 @@ public class Contract {
 
     public void setItemName(String itemName) {
         this.itemName = itemName;
-    }
-
-    public BigDecimal getDueAmount() {
-        return dueAmount;
-    }
-
-    public void setDueAmount(BigDecimal dueAmount) {
-        this.dueAmount = dueAmount;
     }
 
     public Long getFullPrice() {
@@ -244,21 +233,6 @@ public class Contract {
     public void setOrderedProducts(List<OrderedProduct> orderedProducts) {
         this.orderedProducts = orderedProducts;
     }
-
-    //functions
-    //Used in ContractServiceImpl
-    public BigDecimal calculateMonthlyInstallmentAmount(Boolean isMonthly) {
-        if (isMonthly) {
-            if (installmentDuration > 0) {
-                return dueAmount.divide(BigDecimal.valueOf(installmentDuration), 2, RoundingMode.HALF_UP);
-            } else {
-                throw new IllegalArgumentException("Invalid installment duration");
-            }
-        } else {
-            return dueAmount; // For non-monthly payments, the due amount remains the same
-        }
-    }
-
 
     public List<PaymentTransaction> getPaymentTransactions() {
         return paymentTransactions;

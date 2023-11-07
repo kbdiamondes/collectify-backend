@@ -25,6 +25,7 @@ public class PaymentRecordsController {
     @Autowired
     private ClientService clientService;
 
+    /*
     @GetMapping("/client/{clientId}")
     public ResponseEntity<List<TransactionHistory>> getPaymentRecordsForClient(@PathVariable Long clientId) {
         // Get the client by ID
@@ -49,5 +50,5 @@ public class PaymentRecordsController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+*/
 }

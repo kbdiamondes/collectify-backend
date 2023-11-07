@@ -17,6 +17,7 @@ public class PaymentRecordsServiceImpl implements PaymentRecordsService {
     @Autowired
     private TransactionHistoryRepository transactionHistoryRepository;
 
+    /*
     @Override
     public List<TransactionHistory> getPaymentRecordsForClient(Client client) {
         List<TransactionHistory> paymentRecords = transactionHistoryRepository.findPaymentRecordsWithZeroAmount(client.getClient_id());
@@ -39,5 +40,7 @@ public class PaymentRecordsServiceImpl implements PaymentRecordsService {
 
         return paymentRecords;
     }
+
+     */
 
 }
