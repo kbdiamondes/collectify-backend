@@ -65,6 +65,7 @@ com/capstone/collectify/services/collector/PaymentRecordService.class
 com/capstone/collectify/models/FileDB.class
 com/capstone/collectify/controllers/ResellerController.class
 com/capstone/collectify/models/PaymentTransaction.class
+com/capstone/collectify/models/PaymentTransactionWithItemNameDTO.class
 com/capstone/collectify/controllers/ContractController.class
 com/capstone/collectify/services/client/PaymentRecordsService.class
 com/capstone/collectify/services/filehandling/FileStorageService.class
