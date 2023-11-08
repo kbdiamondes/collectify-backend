@@ -28,4 +28,8 @@ public interface PaymentTransactionRepository extends CrudRepository<PaymentTran
     List<PaymentTransaction> findByResellerAndCollectorIsNullAndIsPaidIsTrueAndIsCollectedIsFalse(Reseller reseller);
 
     List<PaymentTransaction> findByCollectorAndIsPaidAndIsCollected(Collector collector, boolean isPaid, boolean isCollected);
+
+    @Query("SELECT pt, c.itemName FROM PaymentTransaction pt JOIN pt.contract c JOIN c.client client WHERE pt.isPaid = false AND client.client_id = :clientId")
+    List<Object[]> findUnpaidPaymentTransactionsWithItemNames(@Param("clientId") Long clientId);
+
 }

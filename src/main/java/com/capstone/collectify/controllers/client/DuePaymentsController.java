@@ -2,6 +2,7 @@ package com.capstone.collectify.controllers.client;
 
 import com.capstone.collectify.models.Client;
 import com.capstone.collectify.models.PaymentTransaction;
+import com.capstone.collectify.models.PaymentTransactionWithItemNameDTO;
 import com.capstone.collectify.services.ClientService;
 import com.capstone.collectify.services.client.DuePaymentsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,17 @@ public class DuePaymentsController {
     @GetMapping("/client/{clientId}/unpaid-payments")
     public ResponseEntity<List<PaymentTransaction>> getUnpaidPaymentsByClientId(@PathVariable Long clientId) {
         List<PaymentTransaction> unpaidPayments = duePaymentsService.getUnpaidPaymentTransactionsByClientId(clientId);
+
+        if (!unpaidPayments.isEmpty()) {
+            return new ResponseEntity<>(unpaidPayments, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/client/{clientId}/unpaid-transactions")
+    public ResponseEntity<List<PaymentTransactionWithItemNameDTO>> getUnpaidPaymentsWithItemNameByClientId(@PathVariable Long clientId) {
+        List<PaymentTransactionWithItemNameDTO> unpaidPayments = duePaymentsService.getUnpaidPaymentTransactionsWithItemNamesByClientId(clientId);
 
         if (!unpaidPayments.isEmpty()) {
             return new ResponseEntity<>(unpaidPayments, HttpStatus.OK);
