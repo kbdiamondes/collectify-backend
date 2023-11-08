@@ -1,5 +1,6 @@
 package com.capstone.collectify.repositories;
 
+import com.capstone.collectify.models.Collector;
 import com.capstone.collectify.models.PaymentTransaction;
 import com.capstone.collectify.models.Reseller;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +26,6 @@ public interface PaymentTransactionRepository extends CrudRepository<PaymentTran
     List<PaymentTransaction> findByResellerId(@Param("resellerId") Long resellerId);
 
     List<PaymentTransaction> findByResellerAndCollectorIsNullAndIsPaidIsTrueAndIsCollectedIsFalse(Reseller reseller);
+
+    List<PaymentTransaction> findByCollectorAndIsPaidAndIsCollected(Collector collector, boolean isPaid, boolean isCollected);
 }

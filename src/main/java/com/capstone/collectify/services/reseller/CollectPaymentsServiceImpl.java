@@ -38,7 +38,7 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
         this.fileStorageService = fileStorageService;
     }
 
-    public void collectPayments(Long resellerId, Long contractId, String paymentType, String base64ImageData, String fileName, String contentType)
+    public void collectPayments(Long resellerId, Long paymentTransactionId, String paymentType, String base64ImageData, String fileName, String contentType)
             throws AccessDeniedException, IOException {
 
         // Your existing logic to ensure access and other necessary checks can be added here
@@ -46,8 +46,8 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
         Reseller reseller = resellerRepository.findById(resellerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reseller not found with id: " + resellerId));
 
-        PaymentTransaction paymentTransaction = paymentTransactionRepository.findById(contractId)
-                .orElseThrow(() -> new ResourceNotFoundException("Payment Transaction not found with id: " + contractId));
+        PaymentTransaction paymentTransaction = paymentTransactionRepository.findById(paymentTransactionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Payment Transaction not found with id: " + paymentTransactionId));
 
         if (paymentTransaction.getReseller().equals(reseller)) {
             if (paymentTransaction.isPaid()) {

@@ -2,6 +2,7 @@ package com.capstone.collectify.controllers.collector;
 
 import com.capstone.collectify.controllers.filehandling.FileController;
 import com.capstone.collectify.messages.ResponseMessage;
+import com.capstone.collectify.models.FileDB;
 import com.capstone.collectify.services.collector.CollectorCollectPaymentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,63 @@ public class CollectorCollectPaymentsController {
     public CollectorCollectPaymentsController(CollectorCollectPaymentsService paymentCollectionService) {
         this.paymentCollectionService = paymentCollectionService;
     }
+
+    @PostMapping("/collectPayment/{collectorId}/transactions/{transactionId}/collect-payment")
+    public ResponseEntity<String> collectPayment(
+            @PathVariable Long collectorId,
+            @PathVariable Long transactionId,
+            @RequestParam String paymentType,
+            @RequestParam("base64Image") String base64Image,
+            @RequestParam("fileName") String fileName,
+            @RequestParam("contentType") String contentType) {
+        try {
+            if (base64Image.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Base64 image data is empty.");
+            }
+
+            ResponseEntity<ResponseMessage> uploadResponse = fileUploadController.uploadFile(base64Image, fileName, contentType);
+
+            if (uploadResponse.getStatusCode() == HttpStatus.OK) {
+                paymentCollectionService.collectPayments(collectorId, transactionId, paymentType, base64Image, fileName, contentType);
+                return ResponseEntity.ok("Payment collected successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment collection failed: " + uploadResponse.getBody().getMessage());
+            }
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment collection failed: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/collectPayments/{collectorId}/collect-all-payments")
+    public ResponseEntity<String> collectPaymentsFromAllTransactions(
+            @PathVariable Long collectorId,
+            @RequestParam String paymentType,
+            @RequestParam("base64Image") String base64Image,
+            @RequestParam("fileName") String fileName,
+            @RequestParam("contentType") String contentType) {
+        try {
+            if (base64Image.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Base64 image data is empty.");
+            }
+
+            ResponseEntity<ResponseMessage> uploadResponse = fileUploadController.uploadFile(base64Image, fileName, contentType);
+
+            if (uploadResponse.getStatusCode() == HttpStatus.OK) {
+                paymentCollectionService.collectPaymentsFromAllTransactions(collectorId, paymentType, base64Image, fileName, contentType);
+                return ResponseEntity.ok("Payment collected successfully for all transactions assigned to the collector");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment collection failed: " + uploadResponse.getBody().getMessage());
+            }
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment collection failed: " + e.getMessage());
+        }
+    }
+
+
 /*
     @PostMapping("/collectPayment/{collectorId}/contracts/{contractId}/collect-payment")
     public ResponseEntity<String> collectPayment(
