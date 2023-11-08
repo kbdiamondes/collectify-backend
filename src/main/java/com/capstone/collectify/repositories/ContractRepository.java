@@ -23,9 +23,11 @@ public interface ContractRepository extends JpaRepository<Contract, Object> {
 
     boolean existsByOrderid(String orderid);
 
-    List<Contract> findByIsPaidFalse();
+    //List<Contract> findByIsPaidFalse();
 
-    List<Contract> findByClientAndIsPaid(Client client, boolean b);
+    //List<Contract> findByClientAndIsPaid(Client client, boolean b);
+
+    /*
     @Query("SELECT c FROM Contract c " +
             "WHERE c.collector.collector_id = :collectorId " +
             "AND c.dueAmount = :dueAmount")
@@ -47,4 +49,6 @@ public interface ContractRepository extends JpaRepository<Contract, Object> {
 
     @Query("SELECT COUNT(c) FROM Contract c WHERE c.reseller.id = :resellerId AND c.isCollected = false AND c.isPaid = false")
     int countActiveUnpaidContractsForReseller(@Param("resellerId") Long resellerId);
+
+     */
 }

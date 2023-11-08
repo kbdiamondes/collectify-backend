@@ -17,6 +17,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,6 +50,9 @@ public class ContractServiceImpl implements ContractService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private PaymentTransactionRepository paymentTransactionRepository;
+
     private String base64ImageData;
     private String fileName;
     private String contentType;
@@ -63,11 +67,12 @@ public class ContractServiceImpl implements ContractService {
         return contractRepository.save(contract);
     }
 
+    /*
     @Override
     public List<Contract> getUnpaidContractsForReseller(Long resellerId) {
         return contractRepository.findUnpaidContractsForReseller(resellerId);
     }
-
+*/
     @Override
     public Contract getContractById(Long id) {
         return contractRepository.findById(id)
@@ -117,6 +122,7 @@ public class ContractServiceImpl implements ContractService {
         return contractRepository.findAll();
     }
 
+    /*
     @Scheduled(cron = "0 0 0 1 * ?") // Run at midnight on the 1st day of each month
     public void processMonthlyPayments() throws IOException {
 
@@ -157,7 +163,6 @@ public class ContractServiceImpl implements ContractService {
 
                         // Set the lastPaymentDate to nextPaymentDate
                         contract.setLastPaymentDate(nextPaymentDate);
-                        contract.setCollected(false);
 
                         // Save the contract and collection history
                         contractRepository.save(contract);
@@ -173,7 +178,7 @@ public class ContractServiceImpl implements ContractService {
             }
         }
     }
-
+*/
 
     @Value("${api.endpoint.getOrders}")
     private String apiUrl;
@@ -260,7 +265,29 @@ public class ContractServiceImpl implements ContractService {
                         contract.setPenaltyrate(externalContract.getPenaltyrate());
                         contract.setPaymentterms(externalContract.getPaymentterms());
                         contract.setOrderamount(externalContract.getOrderamount());
-                        contract.setCollected(false);
+                        contract.setClosed(externalContract.isClosed());
+                        List<PaymentTransaction> paymentTransactions = new ArrayList<>();
+
+                        if (externalContract.getPaymentTransactions() != null) {
+                            for (PaymentTransaction externalTransaction : externalContract.getPaymentTransactions()) {
+                                PaymentTransaction transaction = new PaymentTransaction();
+                                transaction.setPaymenttransactionid(externalTransaction.getPaymenttransactionid());
+                                transaction.setAmountdue(externalTransaction.getAmountdue());
+                                transaction.setStartingdate(externalTransaction.getStartingdate());
+                                transaction.setEnddate(externalTransaction.getEnddate());
+                                transaction.setInstallmentnumber(externalTransaction.getInstallmentnumber());
+                                transaction.setPaid(externalTransaction.isPaid());
+                                transaction.setContract(contract);
+                                transaction.setCollected(false);
+                                transaction.setReseller(contract.getReseller());
+                                transaction.setOrderid(externalTransaction.getOrderid());
+
+                                paymentTransactions.add(paymentTransactionRepository.save(transaction));
+                            }
+
+                        }
+
+                        contract.setPaymentTransactions(paymentTransactions); // Update contract with payment transactions
 
                         // Set other attributes based on your business logic
                         // For relationships, you'll need to populate them as well based on the API data.
@@ -290,21 +317,14 @@ public class ContractServiceImpl implements ContractService {
                                     product.setCommissionrate(externalProduct.getCommissionrate());
 
                                     //Extra functions
-                                    Long fullPrice = (long) externalProduct.getPrice() * externalOrderedProduct.getQuantity();
-                                    int installmentduration = externalContract.getPaymentterms();
+                                    //Long fullPrice = (long) externalProduct.getPrice() * externalOrderedProduct.getQuantity();
+                                    Long fullPrice = (long) externalContract.getOrderamount();
 
-                                    //Set dueAmount, fullPrice, itemName and installment_duration(paymentterms)
+                                    //Set fullPrice, itemName and installment_duration(paymentterms)
                                     contract.setItemName(externalProduct.getName());
                                     contract.setFullPrice(fullPrice);
-                                    contract.setInstallmentDuration(installmentduration);
-                                    contract.setDueAmount(BigDecimal.valueOf(fullPrice/installmentduration));
-                                    contract.setCollected(false);
 
-                                    if(installmentduration!=0){
-                                        contract.setIsMonthly(true);
-                                    }else{
-                                        contract.setIsMonthly(false);
-                                    }
+
 
 
                                     // Set the relationship between OrderedProduct and Product

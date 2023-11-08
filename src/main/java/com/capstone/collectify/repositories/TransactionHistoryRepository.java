@@ -14,6 +14,6 @@ public interface TransactionHistoryRepository extends JpaRepository<TransactionH
     @Query("SELECT t FROM TransactionHistory t WHERE t.client.client_id = :clientId")
     List<TransactionHistory> findByClientId(@Param("clientId") Long clientId);
 
-    @Query("SELECT t FROM TransactionHistory t WHERE t.client.client_id = :clientId AND t.contract.dueAmount = 0")
-    List<TransactionHistory> findPaymentRecordsWithZeroAmount(@Param("clientId") Long clientId);
+    /*@Query("SELECT t FROM TransactionHistory t WHERE t.client.client_id = :clientId AND t.contract.dueAmount = 0")
+    List<TransactionHistory> findPaymentRecordsWithZeroAmount(@Param("clientId") Long clientId);*/
 }

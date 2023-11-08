@@ -22,7 +22,7 @@ public class FileDB {
     private byte[] data;
 
     @OneToOne(mappedBy = "transactionProof")
-    private Contract contract; // Represents the contract associated with this file
+    private PaymentTransaction paymentTransaction;
 
     @OneToOne(mappedBy="transactionProof")
     private CollectionHistory collectionHistory;

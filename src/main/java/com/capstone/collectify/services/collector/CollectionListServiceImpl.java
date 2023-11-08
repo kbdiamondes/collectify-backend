@@ -2,6 +2,7 @@ package com.capstone.collectify.services.collector;
 
 import com.capstone.collectify.models.Collector;
 import com.capstone.collectify.models.Contract;
+import com.capstone.collectify.models.PaymentTransaction;
 import com.capstone.collectify.repositories.CollectorRepository;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,15 @@ public class CollectionListServiceImpl implements CollectionListService {
 
     @Autowired
     private CollectorRepository collectorRepository;
+
+    @Override
+    public List<PaymentTransaction> getAssignedUncollectedPaymentTransactionsForCollector(Long collectorId) {
+        return collectorRepository.findUncollectedPaymentTransactionsByCollectorId(collectorId);
+    }
+ /*
+    @Autowired
+    private CollectorRepository collectorRepository;
+
 
     @Override
     public List<Contract> getAssignedPaidContractsForCollector(Long collectorId) {
@@ -51,6 +61,7 @@ public class CollectionListServiceImpl implements CollectionListService {
         return unpaidContracts;
     }
 
+
     @Override
     public List<Contract> getAssignedUncollectedContractsForCollector(Long collectorId) {
         // Retrieve the collector from the database
@@ -67,5 +78,5 @@ public class CollectionListServiceImpl implements CollectionListService {
 
         return uncollectedContracts;
     }
-
+*/
 }

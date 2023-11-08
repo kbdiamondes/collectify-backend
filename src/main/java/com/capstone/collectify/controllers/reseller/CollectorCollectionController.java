@@ -17,19 +17,19 @@ public class CollectorCollectionController {
 
     private final CollectorCollectionService collectorAssignmentService;
 
+
     @Autowired
     public CollectorCollectionController(CollectorCollectionService collectorAssignmentService) {
         this.collectorAssignmentService = collectorAssignmentService;
     }
 
-    @PostMapping("/{resellerId}/contracts/{contractId}/assign-collector")
+    @PostMapping("/{resellerId}/paymenttransactions/{paymentTransactionId}/assign-collector")
     public ResponseEntity<String> assignCollector(
             @PathVariable Long resellerId,
-            @PathVariable Long contractId,
+            @PathVariable Long paymentTransactionId,
             @RequestParam Long collectorId) {
         try {
-            collectorAssignmentService.assignCollector(resellerId, contractId, collectorId);
-
+            collectorAssignmentService.assignCollector(resellerId, paymentTransactionId, collectorId);
             return ResponseEntity.ok("Collector Assigned Successfully!");
         } catch (AccessDeniedException e) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage(), e);

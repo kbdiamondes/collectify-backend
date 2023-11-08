@@ -20,6 +20,7 @@ public class PaymentRecordServiceImpl implements PaymentRecordService {
     @Autowired
     private CollectorRepository collectorRepository; // Add this
 
+    /*
     @Override
     public List<Contract> getPaymentRecordsForCollector(Long collectorId) {
         // Retrieve the Collector entity by ID
@@ -32,5 +33,7 @@ public class PaymentRecordServiceImpl implements PaymentRecordService {
 
         return new ArrayList<>();
     }
+
+     */
 }
 

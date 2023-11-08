@@ -35,6 +35,7 @@
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/client/SchedulePaymentReminderService.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/repositories/ClientRepository.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/models/CollectionHistory.java
+/Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/controllers/others/PaymentTransactionController.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/controllers/reseller/MyCollectorsController.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/controllers/collector/CollectionListController.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/collector/CollectionListServiceImpl.java

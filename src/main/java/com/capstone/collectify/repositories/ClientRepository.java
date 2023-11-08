@@ -16,8 +16,9 @@ public interface ClientRepository extends CrudRepository<Client, Object> {
 
    boolean existsByEmail(String email);
 
+   /*
    @Query("SELECT DISTINCT c FROM Client c JOIN c.contracts ct WHERE ct.isPaid = false")
    List<Client> findClientsWithUnpaidContracts();
-
+*/
 
 }

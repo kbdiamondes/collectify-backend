@@ -1,5 +1,7 @@
 package com.capstone.collectify.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -9,6 +11,9 @@ public class PaymentTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long payment_transactionid;
+
+    @Column
+    private String orderid;
 
     @Column
     private String paymenttransactionid;
@@ -28,9 +33,27 @@ public class PaymentTransaction {
     @Column
     private boolean isPaid;
 
+    @Column
+    private boolean isCollected;
+
     @ManyToOne
+    @JoinColumn(name="contract_id")
+    @JsonBackReference("payment-transactions")
     private Contract contract;
 
+    @OneToOne
+    @JoinColumn(name = "transaction_proof_id") // Adjust the column name as needed
+    private FileDB transactionProof; // Represents the transaction proof image
+
+    @ManyToOne
+    @JoinColumn(name = "collector_id")
+    @JsonBackReference("collector-paymenttransactions")
+    private Collector collector;
+
+    @ManyToOne
+    @JoinColumn(name = "reseller_id")
+    @JsonBackReference("reseller-payment-transactions")
+    private Reseller reseller;
 
     public Long getPayment_transactionid() {
         return payment_transactionid;
@@ -94,5 +117,45 @@ public class PaymentTransaction {
 
     public void setContract(Contract contract) {
         this.contract = contract;
+    }
+
+    public boolean isCollected() {
+        return isCollected;
+    }
+
+    public void setCollected(boolean collected) {
+        isCollected = collected;
+    }
+
+    public FileDB getTransactionProof() {
+        return transactionProof;
+    }
+
+    public void setTransactionProof(FileDB transactionProof) {
+        this.transactionProof = transactionProof;
+    }
+
+    public Collector getCollector() {
+        return collector;
+    }
+
+    public void setCollector(Collector collector) {
+        this.collector = collector;
+    }
+
+    public Reseller getReseller() {
+        return reseller;
+    }
+
+    public void setReseller(Reseller reseller) {
+        this.reseller = reseller;
+    }
+
+    public String getOrderid() {
+        return orderid;
+    }
+
+    public void setOrderid(String orderid) {
+        this.orderid = orderid;
     }
 }

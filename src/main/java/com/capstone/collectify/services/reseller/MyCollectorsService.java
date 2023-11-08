@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface MyCollectorsService {
     List<Collector> getCollectorsAssignedByReseller(Long resellerId);
-    List<Contract> getContractsAssignedToCollectorByReseller(Long resellerId, Long collectorId);
+    /*
+    List<Collector> getCollectorsAssignedByReseller(Long resellerId);
+    List<Contract> getContractsAssignedToCollectorByReseller(Long resellerId, Long collectorId);*/
 }

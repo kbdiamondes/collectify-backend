@@ -21,11 +21,11 @@ public class CollectionHistory {
     private String orderid;
     private String itemName;
 
-    private String reseller_username;
+    private String resellerName;
 
-    private String client_username;
+    private String clientName;
 
-    private String collector_username;
+    private String collectorName;
 
     @OneToOne
     @JoinColumn(name = "transaction_proof_id")
@@ -121,27 +121,43 @@ public class CollectionHistory {
         this.itemName = itemName;
     }
 
-    public String getReseller_username() {
-        return reseller_username;
+    public Long getCollectionhistory_id() {
+        return collectionhistory_id;
     }
 
-    public void setReseller_username(String reseller_username) {
-        this.reseller_username = reseller_username;
+    public void setCollectionhistory_id(Long collectionhistory_id) {
+        this.collectionhistory_id = collectionhistory_id;
     }
 
-    public String getClient_username() {
-        return client_username;
+    public String getResellerName() {
+        return resellerName;
     }
 
-    public void setClient_username(String client_username) {
-        this.client_username = client_username;
+    public void setResellerName(String resellerName) {
+        this.resellerName = resellerName;
     }
 
-    public String getCollector_username() {
-        return collector_username;
+    public String getClientName() {
+        return clientName;
     }
 
-    public void setCollector_username(String collector_username) {
-        this.collector_username = collector_username;
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public String getCollectorName() {
+        return collectorName;
+    }
+
+    public void setCollectorName(String collectorName) {
+        this.collectorName = collectorName;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public Reseller getReseller() {
+        return reseller;
     }
 }

@@ -1,10 +1,7 @@
 package com.capstone.collectify.services.client;
 
 import com.capstone.collectify.models.*;
-import com.capstone.collectify.repositories.ClientRepository;
-import com.capstone.collectify.repositories.CollectionHistoryRepository;
-import com.capstone.collectify.repositories.ContractRepository;
-import com.capstone.collectify.repositories.TransactionHistoryRepository;
+import com.capstone.collectify.repositories.*;
 import com.capstone.collectify.services.filehandling.FileStorageService;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class PayDuesServiceImpl implements PayDuesService {
@@ -28,19 +23,100 @@ public class PayDuesServiceImpl implements PayDuesService {
 
     private final TransactionHistoryRepository transactionHistoryRepository;
 
+    private final PaymentTransactionRepository paymentTransactionRepository;
+
     @Autowired
     public PayDuesServiceImpl(
             ClientRepository clientRepository,
             ContractRepository contractRepository,
             CollectionHistoryRepository collectionHistoryRepository,
-            FileStorageService fileStorageService, TransactionHistoryRepository transactionHistoryRepository) {
+            FileStorageService fileStorageService, TransactionHistoryRepository transactionHistoryRepository, PaymentTransactionRepository paymentTransactionRepository) {
         this.clientRepository = clientRepository;
         this.contractRepository = contractRepository;
         this.collectionHistoryRepository = collectionHistoryRepository;
         this.fileStorageService = fileStorageService;
         this.transactionHistoryRepository = transactionHistoryRepository;
+        this.paymentTransactionRepository = paymentTransactionRepository;
     }
 
+        // Method to pay dues for an individual transaction
+        @Override
+        public void payTransactionDues(Long paymentTransactionId, BigDecimal amount, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException {
+            PaymentTransaction paymentTransaction = paymentTransactionRepository.findById(paymentTransactionId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Payment transaction not found with ID: " + paymentTransactionId));
+
+            if (!paymentTransaction.isPaid()) {
+                if (amount.compareTo(BigDecimal.valueOf(paymentTransaction.getAmountdue())) == 0) {
+                    paymentTransaction.setPaid(true);
+                    paymentTransaction.setEnddate(LocalDate.now()); // Set the end date to mark the completion of the payment
+
+                    // Create a new transaction history record for this payment
+                    TransactionHistory transactionHistoryRecord = new TransactionHistory();
+                    transactionHistoryRecord.setAmountPaid(amount);
+                    transactionHistoryRecord.setPaymentDate(LocalDateTime.now());
+
+                    // Retrieve associated objects and check for null to avoid potential NullPointerException
+                    Contract paymentContract = paymentTransaction.getContract();
+                    if (paymentContract != null) {
+                        transactionHistoryRecord.setContract(paymentContract);
+
+                        // Retrieve associated objects and check for null to avoid potential NullPointerException
+                        Client client = paymentContract.getClient();
+                        Reseller reseller = paymentContract.getReseller();
+                        Collector collector = paymentContract.getCollector();
+
+                        if (client != null) {
+                            transactionHistoryRecord.setClientName(client.getFullName());
+                        } else {
+                            transactionHistoryRecord.setClientName("Client Unknown");
+                        }
+
+                        if (reseller != null) {
+                            transactionHistoryRecord.setResellerName(reseller.getFullName());
+                        } else {
+                            transactionHistoryRecord.setResellerName("Reseller Unknown");
+                        }
+
+                        if (collector != null) {
+                            transactionHistoryRecord.setCollectorName(collector.getFullName());
+                        } else {
+                            transactionHistoryRecord.setCollectorName("No Collector Assigned");
+                        }
+
+                        transactionHistoryRecord.setOrderId(paymentContract.getOrderid());
+                        transactionHistoryRecord.setProductName(paymentContract.getItemName());
+                        transactionHistoryRecord.setTransactionProof(paymentTransaction.getTransactionProof()); // Set the payment proof
+
+                        // Add the payment history record to the client's history
+                        if (client != null) {
+                            client.addPaymentHistory(transactionHistoryRecord);
+                        }
+
+                        // Your existing logic to store image data and payment proof for the payment transaction
+                        FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
+                        paymentTransaction.setTransactionProof(fileDB);
+                        transactionHistoryRecord.setTransactionProof(fileDB);
+
+                        // Save the updated payment transaction entity
+                        paymentTransactionRepository.save(paymentTransaction);
+
+                        // Save the payment history record to the database
+                        transactionHistoryRepository.save(transactionHistoryRecord);
+                    } else {
+                        throw new IllegalStateException("The contract associated with the payment transaction is null.");
+                    }
+                } else {
+                    throw new IllegalArgumentException("Paid amount is not equal to the due amount.");
+                }
+            } else {
+                throw new IllegalStateException("The transaction is already paid.");
+            }
+        }
+
+
+
+
+/*
     @Override
     public void payDues(Long clientId, Long contractId, Map<String, String> amounts, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException {
         Client client = clientRepository.findById(clientId)
@@ -48,6 +124,11 @@ public class PayDuesServiceImpl implements PayDuesService {
 
         Contract contract = contractRepository.findById(contractId)
                 .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + contractId));
+
+        Reseller reseller = contract.getReseller(); // Retrieve the reseller associated with the contract
+
+        // Fetch the reseller's name
+        String resellerName = reseller.getFullName(); // Replace this with the actual field where the reseller's name is stored
 
         if (contract.getClient().equals(client)) {
             if (!contract.isPaid()) {
@@ -71,6 +152,8 @@ public class PayDuesServiceImpl implements PayDuesService {
                         transactionHistoryRecord.setPaymentDate(LocalDateTime.now());
 
                         transactionHistoryRecord.setClientName(client.getFullName());
+                        // Set the reseller name in the transaction history
+                        transactionHistoryRecord.setResellerName(resellerName);
                         transactionHistoryRecord.setOrderId(contract.getOrderid());
                         transactionHistoryRecord.setProductName(contract.getItemName());
                         transactionHistoryRecord.setContract(contract);
@@ -102,7 +185,10 @@ public class PayDuesServiceImpl implements PayDuesService {
             throw new AccessDeniedException("You don't have permission to pay dues for this contract.");
         }
     }
+*/
 
+
+    /*
     @Override
     public void processMonthlyPayments() {
         // Get the current date and time
@@ -152,5 +238,8 @@ public class PayDuesServiceImpl implements PayDuesService {
             }
         }
     }
+
+
+     */
 }
 

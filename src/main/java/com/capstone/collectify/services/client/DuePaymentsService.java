@@ -1,15 +1,19 @@
 package com.capstone.collectify.services.client;
 
 import com.capstone.collectify.models.Client;
+import com.capstone.collectify.models.PaymentTransaction;
 
 import java.util.List;
 
 public interface DuePaymentsService {
+    List<PaymentTransaction> getUnpaidPaymentTransactionsByResellerId(Long resellerId);
 
-    List<Client> getClientsWithUnpaidContracts();
+    List<PaymentTransaction> getUnpaidPaymentTransactionsByClientId(Long clientId);
 
-    Client getClientWithUnpaidContracts(Long clientId);
+    //List<Client> getClientsWithUnpaidContracts();
 
-    Client getClientWithPaidContracts(Long clientId);
+    //Client getClientWithUnpaidContracts(Long clientId);
+
+    //Client getClientWithPaidContracts(Long clientId);
 
 }

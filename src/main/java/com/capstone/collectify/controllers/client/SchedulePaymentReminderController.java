@@ -31,11 +31,11 @@ public class SchedulePaymentReminderController {
     @PostMapping("/set-reminder")
     public ResponseEntity<String> setReminder(
             @RequestParam Long clientId,
-            @RequestParam Long contractId,
+            @RequestParam Long paymentTransactionId,
             @RequestParam String reminderTitle,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime reminderDateTime) {
         try {
-            schedulePaymentReminderService.schedulePaymentReminder(clientId, contractId, reminderTitle, reminderDateTime);
+            schedulePaymentReminderService.schedulePaymentReminder(clientId, paymentTransactionId, reminderTitle, reminderDateTime);
             return ResponseEntity.ok("Payment reminder scheduled successfully");
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());

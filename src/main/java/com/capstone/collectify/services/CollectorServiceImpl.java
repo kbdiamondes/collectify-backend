@@ -32,30 +32,6 @@ public class CollectorServiceImpl implements CollectorService {
     private ContractRepository contractRepository;
 
     @Override
-    public void assignCollectorToClient(Long collectorId, Long clientId) {
-        Collector collector = collectorRepository.findById(collectorId)
-                .orElseThrow(() -> new ResourceNotFoundException("Collector not found with id: " + collectorId));
-
-        Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
-
-        // Create a new Contract and set its properties
-        Contract contract = new Contract();
-        contract.setClient(client);
-        contract.setCollector(collector);
-        contract.setDueAmount(BigDecimal.ZERO); // Set your desired default values
-
-        // Save the Contract first to ensure that it gets a valid ID
-        contractRepository.save(contract);
-
-        // Update the Collector with the assigned Contract
-        collector.getAssignedContract().add(contract);
-
-        // Save the Collector
-        collectorRepository.save(collector);
-    }
-
-    @Override
     public Collector createCollector(Collector collector) {
         return collectorRepository.save(collector);
     }

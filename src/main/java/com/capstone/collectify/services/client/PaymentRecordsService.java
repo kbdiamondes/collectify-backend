@@ -6,5 +6,5 @@ import com.capstone.collectify.models.TransactionHistory;
 import java.util.List;
 
 public interface PaymentRecordsService {
-    List<TransactionHistory> getPaymentRecordsForClient(Client client);
+    //List<TransactionHistory> getPaymentRecordsForClient(Client client);
 }

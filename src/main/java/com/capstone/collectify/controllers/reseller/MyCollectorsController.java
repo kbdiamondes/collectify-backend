@@ -22,6 +22,18 @@ public class MyCollectorsController {
     private MyCollectorsService myCollectorsService;
 
 
+    @GetMapping("/reseller/{resellerId}/collectors")
+    public ResponseEntity<List<Collector>> getCollectorsByReseller(@PathVariable Long resellerId) {
+        List<Collector> collectors = myCollectorsService.getCollectorsAssignedByReseller(resellerId);
+
+        if (collectors.isEmpty()) {
+            // Handle when no collectors are found for the given reseller
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(collectors);
+    }
+    /*
     @GetMapping("/assigned/{resellerId}")
     public ResponseEntity<Map<String, List<?>>> getCollectorsAndContractsAssignedByReseller(@PathVariable Long resellerId) {
         List<Collector> collectors = myCollectorsService.getCollectorsAssignedByReseller(resellerId);
@@ -33,8 +45,6 @@ public class MyCollectorsController {
         }
 
         return ResponseEntity.ok(response);
-    }
-
-
+    }*/
 
 }

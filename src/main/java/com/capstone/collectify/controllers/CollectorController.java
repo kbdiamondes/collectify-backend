@@ -34,15 +34,6 @@ public class CollectorController {
         return collectorService.getCollectorById(id);
     }
 
-    @PostMapping("/{collectorId}/assign-client/{clientId}")
-    public void assignCollectorToClient(@PathVariable Long collectorId, @PathVariable Long clientId) {
-        try {
-            collectorService.assignCollectorToClient(collectorId, clientId);
-        } catch (Exception e) {
-            throw new RuntimeException("Error assigning collector to client: " + e.getMessage(), e);
-        }
-    }
-
     // Add other endpoints for Collector-related operations
 
 }
