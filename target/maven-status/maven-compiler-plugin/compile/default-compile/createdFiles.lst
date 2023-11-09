@@ -22,6 +22,7 @@ com/capstone/collectify/models/Product.class
 com/capstone/collectify/services/CollectionHistoryService.class
 com/capstone/collectify/services/collector/CollectionListServiceImpl.class
 com/capstone/collectify/repositories/CollectorRepository.class
+com/capstone/collectify/models/PaymentTransactionWithClientAndItemDTO.class
 com/capstone/collectify/services/others/OrderedProductService.class
 com/capstone/collectify/controllers/CollectionHistoryController.class
 com/capstone/collectify/services/client/TransactionHistoryService.class

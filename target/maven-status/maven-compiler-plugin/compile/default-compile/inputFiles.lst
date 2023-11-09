@@ -66,6 +66,7 @@
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/others/OrderedProductService.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/repositories/CollectorRepository.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/models/SchedulePaymentReminderDTO.java
+/Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/models/PaymentTransactionWithClientAndItemDTO.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/reseller/CollectPaymentsService.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/repositories/OrderedProductRepository.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/DiscussionApplication.java
