@@ -32,6 +32,7 @@ com/capstone/collectify/services/reseller/CollectPaymentsService.class
 com/capstone/collectify/repositories/CollectionHistoryRepository.class
 com/capstone/collectify/exceptions/UserException.class
 com/capstone/collectify/services/ContractService.class
+com/capstone/collectify/models/PaymentTransactionForCollectionListDTO.class
 com/capstone/collectify/services/filehandling/FileStorageServiceImpl.class
 com/capstone/collectify/controllers/reseller/CollectorCollectionController.class
 com/capstone/collectify/services/reseller/CollectorCollectionService.class

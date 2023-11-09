@@ -42,6 +42,7 @@
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/collector/CollectionListServiceImpl.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/client/DuePaymentsServiceImpl.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/ClientService.java
+/Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/models/PaymentTransactionForCollectionListDTO.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/collector/CollectorCollectPaymentsService.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/services/client/TransactionHistoryService.java
 /Users/keithdoesmedia/Code/GitHub/collectify-backend/src/main/java/com/capstone/collectify/controllers/reseller/CollectPaymentsController.java
