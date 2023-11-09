@@ -34,7 +34,9 @@ public class PaymentTransactionController {
 
         if (!paymentTransactions.isEmpty()) {
             return new ResponseEntity<>(paymentTransactions, HttpStatus.OK);
-        } else {
+        } else if(paymentTransactions.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -45,7 +47,9 @@ public class PaymentTransactionController {
 
         if (!paymentTransactions.isEmpty()) {
             return new ResponseEntity<>(paymentTransactions, HttpStatus.OK);
-        } else {
+        } else if(paymentTransactions.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
