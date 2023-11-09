@@ -50,6 +50,7 @@ com/capstone/collectify/services/reseller/CollectPaymentsServiceImpl.class
 com/capstone/collectify/services/client/PayDuesServiceImpl.class
 com/capstone/collectify/config/FileUpload.class
 com/capstone/collectify/repositories/ProductRepository.class
+com/capstone/collectify/models/PaymentTransactionWithCollectorDTO.class
 com/capstone/collectify/models/CollectionHistory.class
 com/capstone/collectify/models/Client.class
 com/capstone/collectify/services/client/PaymentRecordsServiceImpl.class

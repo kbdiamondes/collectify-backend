@@ -4,6 +4,7 @@ import com.capstone.collectify.models.Collector;
 import com.capstone.collectify.models.PaymentTransaction;
 import com.capstone.collectify.models.PaymentTransactionWithClientAndItemDTO;
 import com.capstone.collectify.models.Reseller;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PaymentTransactionRepository extends CrudRepository<PaymentTransaction, Object> {
+public interface PaymentTransactionRepository extends JpaRepository<PaymentTransaction, Object> {
     @Query("SELECT pt FROM PaymentTransaction pt WHERE pt.contract.client.client_id = :clientId")
     List<PaymentTransaction> findPaymentTransactionsByClientId(@Param("clientId") Long clientId);
 
@@ -51,6 +52,20 @@ public interface PaymentTransactionRepository extends CrudRepository<PaymentTran
             "JOIN pt.contract c " +
             "WHERE c.client.client_id = :clientId AND pt.isPaid = false")
     Double getSumOfUnpaidTransactionsByClientId(@Param("clientId") Long clientId);
+
+    // Method to retrieve assigned payment transactions for a collector by a specific reseller
+    @Query("SELECT DISTINCT pt FROM PaymentTransaction pt " +
+            "JOIN pt.contract c " +
+            "WHERE c.reseller.reseller_id = :resellerId " +
+            "AND pt.collector IS NOT NULL")
+    List<PaymentTransaction> findAssignedPaymentTransactionsByResellerId(@Param("resellerId") Long resellerId);
+
+    @Query("SELECT DISTINCT pt, c.fullName as collectorName FROM PaymentTransaction pt " +
+            "JOIN pt.collector c " +
+            "JOIN pt.contract co " +
+            "WHERE co.reseller.reseller_id = :resellerId " +
+            "AND pt.collector IS NOT NULL")
+    List<Object[]> findAssignedPaymentTransactionsByResellerIdWithCollectorName(@Param("resellerId") Long resellerId);
 
 
 }
