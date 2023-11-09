@@ -29,7 +29,9 @@ public class CollectionListController {
 
         if (!unpaidTransactions.isEmpty()) {
             return new ResponseEntity<>(unpaidTransactions, HttpStatus.OK);
-        } else {
+        }else if (unpaidTransactions.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
             return ResponseEntity.notFound().build();
         }
     }
