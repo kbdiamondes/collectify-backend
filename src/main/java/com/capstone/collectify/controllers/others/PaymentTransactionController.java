@@ -28,8 +28,22 @@ public class PaymentTransactionController {
         return paymentTransactionService.getPaymentTransactionsByClientId(clientId);
     }
 
-    @GetMapping("/reseller/unpaid/{resellerId}")
+    @GetMapping("/reseller/{resellerId}")
     public ResponseEntity<List<PaymentTransactionWithClientAndItemDTO>> getPaymentTransactionsByResellerId(@PathVariable Long resellerId) {
+        List<PaymentTransactionWithClientAndItemDTO> paymentTransactions = paymentTransactionService.getPaymentTransactionsWithClientAndItemByResellerId(resellerId);
+
+        if (!paymentTransactions.isEmpty()) {
+            return new ResponseEntity<>(paymentTransactions, HttpStatus.OK);
+        } else if(paymentTransactions.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    @GetMapping("/reseller/unpaid/{resellerId}")
+    public ResponseEntity<List<PaymentTransactionWithClientAndItemDTO>> getUnpaidPaymentTransactionsByResellerId(@PathVariable Long resellerId) {
         List<PaymentTransactionWithClientAndItemDTO> paymentTransactions = paymentTransactionService.getUnpaidPaymentTransactionsWithClientAndItemByResellerId(resellerId);
 
         if (!paymentTransactions.isEmpty()) {

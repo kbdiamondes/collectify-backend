@@ -12,6 +12,7 @@ public interface PaymentTransactionService {
 
     List<PaymentTransaction> getPaymentTransactionsByClientId(Long clientId);
 
+    List<PaymentTransactionWithClientAndItemDTO> getPaymentTransactionsWithClientAndItemByResellerId(Long resellerId);
 
     List<PaymentTransactionWithClientAndItemDTO> getUnpaidPaymentTransactionsWithClientAndItemByResellerId(Long resellerId);
 

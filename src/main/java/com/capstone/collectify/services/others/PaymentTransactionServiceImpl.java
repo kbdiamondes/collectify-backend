@@ -29,6 +29,25 @@ public class PaymentTransactionServiceImpl implements PaymentTransactionService 
     }
 
     @Override
+    public List<PaymentTransactionWithClientAndItemDTO> getPaymentTransactionsWithClientAndItemByResellerId(Long resellerId) {
+        List<Object[]> paymentTransactions = paymentTransactionRepository.findPaymentTransactionsWithItemNamesByResellerId(resellerId);
+        List<PaymentTransactionWithClientAndItemDTO> transactionsWithClientAndItem = new ArrayList<>();
+
+        for (Object[] row : paymentTransactions) {
+            PaymentTransaction pt = (PaymentTransaction) row[0];
+            String itemName = (String) row[2];
+            String clientName = (String) row[1];
+
+            PaymentTransactionWithClientAndItemDTO dto = new PaymentTransactionWithClientAndItemDTO(pt, itemName, clientName);
+            transactionsWithClientAndItem.add(dto);
+        }
+
+        return transactionsWithClientAndItem;
+    }
+
+
+
+    @Override
     public List<PaymentTransactionWithClientAndItemDTO> getUnpaidPaymentTransactionsWithClientAndItemByResellerId(Long resellerId) {
         List<Object[]> unpaidPayments = paymentTransactionRepository.findUnpaidPaymentTransactionsWithNamesAndClientByResellerId(resellerId);
         List<PaymentTransactionWithClientAndItemDTO> transactionsWithNamesAndClient = new ArrayList<>();
