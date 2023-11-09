@@ -32,7 +32,9 @@ public class MyCollectorsController {
         List<PaymentTransaction> assignedPaymentTransactions = myCollectorsService.getAssignedPaymentTransactionsByReseller(resellerId);
 
         if (!assignedPaymentTransactions.isEmpty()) {
-            return ResponseEntity.ok(assignedPaymentTransactions);
+            return new ResponseEntity<>(assignedPaymentTransactions, HttpStatus.OK);
+        }else if(assignedPaymentTransactions.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -42,8 +44,11 @@ public class MyCollectorsController {
     public ResponseEntity<List<PaymentTransactionWithCollectorDTO>> getAssignedPaymentTransactionsByResellerWithCollectorName(@PathVariable Long resellerId) {
         List<PaymentTransactionWithCollectorDTO> assignedPaymentTransactions = myCollectorsService.getAssignedPaymentTransactionsByResellerWithCollectorName(resellerId);
 
+
         if (!assignedPaymentTransactions.isEmpty()) {
-            return ResponseEntity.ok(assignedPaymentTransactions);
+            return new ResponseEntity<>(assignedPaymentTransactions, HttpStatus.OK);
+        }else if(assignedPaymentTransactions.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }
