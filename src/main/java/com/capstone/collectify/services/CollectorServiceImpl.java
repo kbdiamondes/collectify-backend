@@ -45,7 +45,16 @@ public class CollectorServiceImpl implements CollectorService {
         return collectorRepository.findAll();
     }
 
+    @Override
+    public int getTotalAssignedPaymentTransactions(Long collectorId) {
+        Collector collector = collectorRepository.findById(collectorId).orElse(null);
 
+        if (collector != null) {
+            return collector.getAssignedPaymentTransactions().size();
+        } else {
+            return 0;
+        }
+    }
 
     @Value("${api.endpoint.getEmployees}")
     private String apiUrl;

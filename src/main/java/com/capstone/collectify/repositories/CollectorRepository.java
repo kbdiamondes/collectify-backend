@@ -20,9 +20,16 @@ public interface CollectorRepository extends JpaRepository<Collector, Object> {
 
     Optional<Object> findByUsername(String username);
 
+    //CollectionList
     @Query("SELECT pt FROM Collector c JOIN c.assignedPaymentTransactions pt " +
             "WHERE c.collector_id = :collectorId AND pt.isCollected = false")
     List<PaymentTransaction> findUncollectedPaymentTransactionsByCollectorId(@Param("collectorId") Long collectorId);
+
+    //Payment Records
+    @Query("SELECT pt FROM Collector c JOIN c.assignedPaymentTransactions pt " +
+            "WHERE c.collector_id = :collectorId AND pt.isCollected = true")
+    List<PaymentTransaction> findCollectedPaymentsByCollectorId(@Param("collectorId") Long collectorId);
+
     /*
     @Query("SELECT c FROM Collector c JOIN c.assignedContract ac WHERE ac.reseller.reseller_id = :resellerId")
     List<Collector> findCollectorsAssignedByReseller(@Param("resellerId") Long resellerId);

@@ -34,6 +34,13 @@ public class CollectorController {
         return collectorService.getCollectorById(id);
     }
 
+    @GetMapping("/{collectorId}/total-assigned-transactions")
+    public ResponseEntity<Integer> getTotalAssignedTransactionsForCollector(@PathVariable Long collectorId) {
+        int totalTransactions = collectorService.getTotalAssignedPaymentTransactions(collectorId);
+
+        return new ResponseEntity<>(totalTransactions, HttpStatus.OK);
+    }
+
     // Add other endpoints for Collector-related operations
 
 }
