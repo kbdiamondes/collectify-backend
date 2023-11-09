@@ -64,7 +64,7 @@ public class PaymentTransactionServiceImpl implements PaymentTransactionService 
 
     @Override
     public List<PaymentTransactionWithClientAndItemDTO> getUncollectedAndUnassignedPaymentTransactionsWithClientAndItemByResellerId(Long resellerId) {
-        List<Object[]> uncollectedAndunassignedPayments = paymentTransactionRepository.findUncollectedPaymentTransactionsWithNamesAndClientByResellerId(resellerId);
+        List<Object[]> uncollectedAndunassignedPayments = paymentTransactionRepository.findUncollectedAndUnassignedPaymentTransactionsWithNamesAndClientByResellerId(resellerId);
         List<PaymentTransactionWithClientAndItemDTO> transactionsWithNamesAndClient = new ArrayList<>();
 
         for (Object[] row : uncollectedAndunassignedPayments) {

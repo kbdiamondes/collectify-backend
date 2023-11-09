@@ -22,7 +22,7 @@ public class MyCollectorsController {
     private MyCollectorsService myCollectorsService;
 
 
-    @GetMapping("/reseller/{resellerId}/collectors")
+    @GetMapping("/assigned/{resellerId}")
     public ResponseEntity<List<Collector>> getCollectorsByReseller(@PathVariable Long resellerId) {
         List<Collector> collectors = myCollectorsService.getCollectorsAssignedByReseller(resellerId);
 
