@@ -42,6 +42,15 @@ public interface PaymentTransactionRepository extends CrudRepository<PaymentTran
     List<Object[]> findUncollectedAndUnassignedPaymentTransactionsWithNamesAndClientByResellerId(@Param("resellerId") Long resellerId);
 
 
+    @Query("SELECT SUM(pt.amountdue) FROM PaymentTransaction pt " +
+            "JOIN pt.contract c " +
+            "WHERE c.reseller.reseller_id = :resellerId AND pt.isPaid = false")
+    Double getSumOfUnpaidTransactionsByResellerId(@Param("resellerId") Long resellerId);
+
+    @Query("SELECT SUM(pt.amountdue) FROM PaymentTransaction pt " +
+            "JOIN pt.contract c " +
+            "WHERE c.client.client_id = :clientId AND pt.isPaid = false")
+    Double getSumOfUnpaidTransactionsByClientId(@Param("clientId") Long clientId);
 
 
 }

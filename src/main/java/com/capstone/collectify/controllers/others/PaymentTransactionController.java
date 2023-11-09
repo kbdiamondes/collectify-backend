@@ -81,4 +81,31 @@ public class PaymentTransactionController {
         }
     }
 
+    @GetMapping("/reseller/{resellerId}/total-unpaid-amount")
+    public ResponseEntity<Double> getTotalUnpaidAmountByResellerId(@PathVariable Long resellerId) {
+        Double totalUnpaidAmount = paymentTransactionService.getTotalUnpaidAmountByResellerId(resellerId);
+
+        if (totalUnpaidAmount != null) {
+            return new ResponseEntity<>(totalUnpaidAmount, HttpStatus.OK);
+        }else if (totalUnpaidAmount == null){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/client/{clientId}/total-unpaid-amount")
+    public ResponseEntity<Double> getTotalUnpaidAmountByClientId(@PathVariable Long clientId) {
+        Double totalUnpaidAmount = paymentTransactionService.getTotalUnpaidAmountByClientId(clientId);
+
+        if (totalUnpaidAmount != null) {
+            return new ResponseEntity<>(totalUnpaidAmount, HttpStatus.OK);
+        } else if (totalUnpaidAmount == null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }

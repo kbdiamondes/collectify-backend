@@ -19,5 +19,8 @@ public interface PaymentTransactionService {
     List<PaymentTransactionWithClientAndItemDTO> getUncollectedPaymentTransactionsWithClientAndItemByResellerId(Long resellerId);
 
     List<PaymentTransactionWithClientAndItemDTO> getUncollectedAndUnassignedPaymentTransactionsWithClientAndItemByResellerId(Long resellerId);
+    Double getTotalUnpaidAmountByResellerId(Long resellerId);
+
+    Double getTotalUnpaidAmountByClientId(Long clientId);
 
 }

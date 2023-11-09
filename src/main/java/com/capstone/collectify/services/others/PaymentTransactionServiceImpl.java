@@ -98,7 +98,13 @@ public class PaymentTransactionServiceImpl implements PaymentTransactionService 
         return transactionsWithNamesAndClient;
     }
 
+    @Override
+    public Double getTotalUnpaidAmountByResellerId(Long resellerId) {
+        return paymentTransactionRepository.getSumOfUnpaidTransactionsByResellerId(resellerId);
+    }
 
-
-}
+    @Override
+    public Double getTotalUnpaidAmountByClientId(Long clientId) {
+        return paymentTransactionRepository.getSumOfUnpaidTransactionsByClientId(clientId);
+}   }
 
