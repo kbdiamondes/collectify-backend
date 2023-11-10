@@ -2,6 +2,7 @@ package com.capstone.collectify.controllers.client;
 
 
 import com.capstone.collectify.models.Client;
+import com.capstone.collectify.models.PaymentTransactionForCollectionListDTO;
 import com.capstone.collectify.models.TransactionHistory;
 import com.capstone.collectify.services.ClientService;
 import com.capstone.collectify.services.client.PaymentRecordsService;
@@ -24,6 +25,22 @@ public class PaymentRecordsController {
     private PaymentRecordsService paymentRecordsService;
     @Autowired
     private ClientService clientService;
+
+
+
+    @GetMapping("/clients/{clientId}/paid-and-collected-transactions")
+    public ResponseEntity<List<PaymentTransactionForCollectionListDTO>> getClientPaidAndCollectedTransactions(@PathVariable Long clientId) {
+        List<PaymentTransactionForCollectionListDTO> transactions = paymentRecordsService.getClientPaidAndCollectedPaymentTransactions(clientId);
+
+        if (!transactions.isEmpty()) {
+            return new ResponseEntity<>(transactions, HttpStatus.OK);
+        }else if (transactions.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
     /*
     @GetMapping("/client/{clientId}")

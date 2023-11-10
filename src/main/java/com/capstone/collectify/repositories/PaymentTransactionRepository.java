@@ -68,4 +68,6 @@ public interface PaymentTransactionRepository extends JpaRepository<PaymentTrans
     List<Object[]> findAssignedPaymentTransactionsByResellerIdWithCollectorName(@Param("resellerId") Long resellerId);
 
 
+    @Query("SELECT pt FROM PaymentTransaction pt WHERE pt.contract.client.client_id = :clientId AND pt.isPaid = true AND pt.isCollected = true")
+    List<PaymentTransaction> findPaidAndCollectedPaymentTransactionsByClientId(@Param("clientId") Long clientId);
 }
