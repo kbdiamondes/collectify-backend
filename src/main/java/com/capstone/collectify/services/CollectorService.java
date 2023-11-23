@@ -12,5 +12,8 @@ public interface CollectorService {
     Optional<Collector> getCollectorById(Long id);
 
     Iterable<Collector> getCollector();
+
+    int getTotalAssignedPaymentTransactions(Long collectorId);
+
 }
 

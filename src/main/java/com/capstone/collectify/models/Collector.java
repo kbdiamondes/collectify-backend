@@ -50,6 +50,14 @@ public class Collector {
     @JsonManagedReference("collector_collectionHistory")
     private List<CollectionHistory> collectionHistory;
 
+    @ManyToMany
+    @JoinTable(
+            name = "collector_reseller",
+            joinColumns = @JoinColumn(name = "collector_id"),
+            inverseJoinColumns = @JoinColumn(name = "reseller_id")
+    )
+    private List<Reseller> resellers;
+
     public String getFullName() {
         return fullName;
     }
@@ -156,5 +164,29 @@ public class Collector {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public List<PaymentTransaction> getAssignedPaymentTransactions() {
+        return assignedPaymentTransactions;
+    }
+
+    public void setAssignedPaymentTransactions(List<PaymentTransaction> assignedPaymentTransactions) {
+        this.assignedPaymentTransactions = assignedPaymentTransactions;
+    }
+
+    public List<CollectionHistory> getCollectionHistory() {
+        return collectionHistory;
+    }
+
+    public void setCollectionHistory(List<CollectionHistory> collectionHistory) {
+        this.collectionHistory = collectionHistory;
+    }
+
+    public List<Reseller> getResellers() {
+        return resellers;
+    }
+
+    public void setResellers(List<Reseller> resellers) {
+        this.resellers = resellers;
     }
 }

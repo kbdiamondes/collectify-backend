@@ -1,6 +1,7 @@
 package com.capstone.collectify.controllers.collector;
 
 import com.capstone.collectify.models.Contract;
+import com.capstone.collectify.models.PaymentTransactionForCollectionListDTO;
 import com.capstone.collectify.services.collector.PaymentRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,19 @@ public class PaymentRecordController {
 
     @Autowired
     private PaymentRecordService paymentRecordService;
+
+    @GetMapping("/{collectorId}/collected-transactions")
+    public ResponseEntity<List<PaymentTransactionForCollectionListDTO>> getCollectedPaymentsForCollector(@PathVariable Long collectorId) {
+        List<PaymentTransactionForCollectionListDTO> collectedPayments = paymentRecordService.getCollectedPaymentsForCollector(collectorId);
+
+        if (!collectedPayments.isEmpty()) {
+            return new ResponseEntity<>(collectedPayments, HttpStatus.OK);
+        }else if(collectedPayments.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     /*
     @GetMapping("/collector/{collectorId}")

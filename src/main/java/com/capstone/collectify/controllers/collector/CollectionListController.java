@@ -2,6 +2,7 @@ package com.capstone.collectify.controllers.collector;
 
 import com.capstone.collectify.models.Contract;
 import com.capstone.collectify.models.PaymentTransaction;
+import com.capstone.collectify.models.PaymentTransactionForCollectionListDTO;
 import com.capstone.collectify.services.CollectorService;
 import com.capstone.collectify.services.collector.CollectionListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,16 @@ public class CollectionListController {
 
 
     @GetMapping("/{collectorId}/assigned-uncollected-transactions")
-    public ResponseEntity<List<PaymentTransaction>> getAssignedUncollectedPaymentTransactionsForCollector(@PathVariable Long collectorId) {
-        List<PaymentTransaction> unpaidTransactions = collectionListService.getAssignedUncollectedPaymentTransactionsForCollector(collectorId);
-        return new ResponseEntity<>(unpaidTransactions, HttpStatus.OK);
+    public ResponseEntity<List<PaymentTransactionForCollectionListDTO>> getAssignedUncollectedPaymentsTransactionsForCollector(@PathVariable Long collectorId) {
+        List<PaymentTransactionForCollectionListDTO> unpaidTransactions = collectionListService.getAssignedUncollectedPaymentsTransactionsForCollector(collectorId);
+
+        if (!unpaidTransactions.isEmpty()) {
+            return new ResponseEntity<>(unpaidTransactions, HttpStatus.OK);
+        }else if (unpaidTransactions.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /*

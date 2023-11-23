@@ -39,6 +39,8 @@ public class DuePaymentsController {
 
         if (!unpaidPayments.isEmpty()) {
             return new ResponseEntity<>(unpaidPayments, HttpStatus.OK);
+        }else if(unpaidPayments.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

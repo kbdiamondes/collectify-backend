@@ -39,11 +39,14 @@ public class CollectorCollectionServiceImpl implements CollectorCollectionServic
         PaymentTransaction paymentTransaction = paymentTransactionRepository.findById(paymentTransactionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment transaction not found with id: " + paymentTransactionId));
 
+
         if (paymentTransaction.getContract().getReseller().equals(reseller)) {
             Collector collector = collectorRepository.findById(collectorId)
                     .orElseThrow(() -> new ResourceNotFoundException("Collector not found with id: " + collectorId));
 
             paymentTransaction.setCollector(collector);
+            collector.getResellers().add(reseller);
+            collectorRepository.save(collector);
             paymentTransactionRepository.save(paymentTransaction);
         } else {
             throw new AccessDeniedException("You don't have permission to assign a collector to this payment transaction.");

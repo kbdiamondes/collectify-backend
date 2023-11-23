@@ -16,7 +16,7 @@ public class Client {
 
     @Column
     private String username;
-    @Column
+    @Column(name="full_name")
     private String fullName;
 
     @Column

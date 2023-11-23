@@ -2,12 +2,15 @@ package com.capstone.collectify.services.collector;
 
 import com.capstone.collectify.models.Contract;
 import com.capstone.collectify.models.PaymentTransaction;
+import com.capstone.collectify.models.PaymentTransactionForCollectionListDTO;
+import com.capstone.collectify.models.PaymentTransactionWithCollectorDTO;
 
 import java.util.List;
 
 public interface CollectionListService {
-    List<PaymentTransaction> getAssignedUncollectedPaymentTransactionsForCollector(Long collectorId);
+    //List<PaymentTransaction> getAssignedUncollectedPaymentsTransactionsForCollector(Long collectorId);
 
+    List<PaymentTransactionForCollectionListDTO> getAssignedUncollectedPaymentsTransactionsForCollector(Long collectorId);
     /*
     List<Contract> getAssignedPaidContractsForCollector(Long collectorId);
 
