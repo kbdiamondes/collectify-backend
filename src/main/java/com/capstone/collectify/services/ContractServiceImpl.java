@@ -119,6 +119,32 @@ public class ContractServiceImpl implements ContractService {
         return contractRepository.findAll();
     }
 
+    @Scheduled(cron = "0 0 0 */15 * ?") // Run every 15 days at midnight
+    public void checkPaymentStatus() {
+        LocalDate currentDate = LocalDate.now();
+
+        // Fetch contracts with payment transactions
+        List<Contract> contracts = contractRepository.findAll();
+
+        for (Contract contract : contracts) {
+            List<PaymentTransaction> paymentTransactions = contract.getPaymentTransactions();
+
+            for (PaymentTransaction paymentTransaction : paymentTransactions) {
+                if (!paymentTransaction.isPaid() && currentDate.isAfter(paymentTransaction.getEnddate())) {
+                    // Payment is overdue, increase amountdue by penaltyrate
+                    double penaltyAmount = paymentTransaction.getAmountdue() * contract.getPenaltyrate();
+                    paymentTransaction.setAmountdue(paymentTransaction.getAmountdue() + penaltyAmount);
+
+                    // Set other attributes as needed
+                    paymentTransaction.setPaid(false); // Optionally, reset the paid status
+                    paymentTransaction.setCollected(false); // Optionally, reset the collected status
+
+                    // Save the updated payment transaction
+                    paymentTransactionRepository.save(paymentTransaction);
+                }
+            }
+        }
+    }
     /*
     @Scheduled(cron = "0 0 0 1 * ?") // Run at midnight on the 1st day of each month
     public void processMonthlyPayments() throws IOException {
