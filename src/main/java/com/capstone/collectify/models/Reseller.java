@@ -3,7 +3,6 @@ package com.capstone.collectify.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -36,7 +35,7 @@ public class Reseller {
     private String email;
 
     @Column
-    @JsonProperty(value = "password", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     private String password;
 
     // Other reseller-specific attributes and relationships
