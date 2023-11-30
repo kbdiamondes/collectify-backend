@@ -22,6 +22,8 @@ public interface ResellerService{
     Iterable<Reseller> getReseller();
 
     Collector getAssignedCollector(Long resellerId, Long contractId);
-   // int countActiveUnpaidContractsForReseller(Long resellerId);
+
+    Contract createContract(Long resellerId, String clientUsername, Contract contract);
+    // int countActiveUnpaidContractsForReseller(Long resellerId);
 
 }

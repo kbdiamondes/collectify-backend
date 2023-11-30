@@ -56,11 +56,11 @@ public class ResellerController {
         return resellerService.getCollectionHistory(id);
     }
 
-    /*
     @PostMapping("/{resellerId}/clients/{clientUsername}/contracts")
-    public Contract createContractForClientByReseller(@PathVariable Long resellerId, @PathVariable String clientUsername , @RequestBody Contract contract) {
-        return resellerService.createContract(resellerId, clientUsername, contract.getUsername(), contract.getItemName(), contract.getFullPrice(), contract.isPaid(), contract.getInstallmentDuration(), contract.isIsMonthly());
-    }*/
+    public Contract createContractForClientByReseller(@PathVariable Long resellerId, @PathVariable String clientUsername, @RequestBody Contract contract) {
+        return resellerService.createContract(resellerId, clientUsername, contract);
+    }
+
 
     @PostMapping("/{resellerId}/contracts/{contractId}/assign-collector")
     public void assignCollector(@PathVariable Long resellerId, @PathVariable Long contractId, @RequestBody Collector request) throws AccessDeniedException {

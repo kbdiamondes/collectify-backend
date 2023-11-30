@@ -19,10 +19,6 @@ public class ContractController {
     @Autowired
     private ContractService contractService;
 
-    @PostMapping
-    public Contract createContract(@RequestBody Contract contract) {
-        return contractService.createContract(contract);
-    }
 
 
     @GetMapping

@@ -10,6 +10,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,9 +32,20 @@ public class CollectorServiceImpl implements CollectorService {
     @Autowired
     private ContractRepository contractRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public Collector createCollector(Collector collector) {
-        return collectorRepository.save(collector);
+        String rawPassword = collector.getPassword();
+
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+
+        collector.setPassword(encodedPassword);
+
+        collectorRepository.save(collector);
+
+        return collector;
     }
 
     @Override
