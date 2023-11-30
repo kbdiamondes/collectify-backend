@@ -6,6 +6,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -40,6 +41,25 @@ public class ResellerServiceImpl implements ResellerService {
 
     @Autowired
     private PaymentTransactionRepository paymentTransactionRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
+    @Override
+    public Reseller createReseller(Reseller reseller){
+        String rawPassword = reseller.getPassword();
+
+        // Perform password hashing using Spring Security's PasswordEncoder
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+
+
+        reseller.setPassword(encodedPassword);
+
+        resellerRepository.save(reseller);
+
+        return reseller;
+    }
 
     @Transactional
     public Contract createContract(Long resellerId, String clientUsername, Contract contract) {
@@ -209,10 +229,6 @@ public class ResellerServiceImpl implements ResellerService {
         return collectionHistoryRepository.findByReseller(reseller);
     }
 
-    @Override
-    public Reseller createReseller(Reseller reseller) {
-        return resellerRepository.save(reseller);
-    }
 
     @Override
     public Optional<Reseller> getResellerById(Long id) {
