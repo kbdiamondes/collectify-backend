@@ -16,11 +16,13 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.Optional;
 
 
 @Service
@@ -61,11 +63,6 @@ public class ContractServiceImpl implements ContractService {
         this.fileStorageService = fileStorageService;
     }
 
-    @Override
-    public Contract createContract(Contract contract) {
-        // Implement the logic to create a new contract
-        return contractRepository.save(contract);
-    }
 
     /*
     @Override
@@ -201,25 +198,27 @@ public class ContractServiceImpl implements ContractService {
                         // Create a new Contract entity
                         Contract contract = new Contract();
 
-
                         // Check if the distributor (reseller) information exists in the external data
                         Reseller externalDistributor = externalContract.getReseller();
+                        Reseller reseller = null;
                         if (externalDistributor != null) {
-                            Reseller reseller = new Reseller();
-                            // Map and set distributor attributes
-                            String username = externalDistributor.getFirstname()+"."+externalDistributor.getLastname();
+                            // Check if the reseller with the same username already exists
+                            Optional<Reseller> existingReseller = resellerRepository.findByUsername(externalDistributor.getUsername());
 
-                            reseller.setFullName(externalDistributor.getFirstname()+" " + externalDistributor.getMiddlename()+" "+externalDistributor.getLastname());
-                            reseller.setUsername(username);
-                            reseller.setFirstname(externalDistributor.getFirstname());
-                            reseller.setMiddlename(externalDistributor.getMiddlename());
-                            reseller.setLastname(externalDistributor.getLastname());
-                            reseller.setEmail(externalDistributor.getEmail());
-                            reseller.setAddress(externalDistributor.getAddress());
-                            reseller.setPassword(externalDistributor.getPassword());
+                            reseller = existingReseller.orElseGet(() -> {
+                                Reseller newReseller = new Reseller();
+                                // Map and set distributor attributes
+                                newReseller.setUsername(externalDistributor.getUsername());
+                                newReseller.setFullName(externalDistributor.getFirstname() + " " + externalDistributor.getMiddlename() + " " + externalDistributor.getLastname());
+                                newReseller.setFirstname(externalDistributor.getFirstname());
+                                newReseller.setMiddlename(externalDistributor.getMiddlename());
+                                newReseller.setLastname(externalDistributor.getLastname());
+                                newReseller.setEmail(externalDistributor.getEmail());
+                                newReseller.setAddress(externalDistributor.getAddress());
+                                newReseller.setPassword(externalDistributor.getPassword());
+                                return resellerRepository.save(newReseller);
+                            });
 
-                            // ...
-                            resellerRepository.save(reseller);
                             contract.setReseller(reseller);
                             System.out.println("External Reseller: " + reseller);
                         } else {
@@ -230,26 +229,32 @@ public class ContractServiceImpl implements ContractService {
 
                         // Check if the dealer (client) information exists in the external data
                         Client externalDealer = externalContract.getClient();
+                        Client client = null;
                         if (externalDealer != null) {
-                            Client client = new Client();
-                            // Map and set dealer attributes
+                            // Check if the client with the same username already exists
+                            Optional<Client> existingClient = clientRepository.findByUsername(externalDealer.getUsername());
 
-                            String username = externalDealer.getFirstname()+"."+externalDealer.getLastname();
+                            client = existingClient.orElseGet(() -> {
+                                Client newClient = new Client();
+                                // Map and set dealer attributes
+                                newClient.setUsername(externalDealer.getUsername());
 
-                            client.setFullName(externalDealer.getFirstname()+" " + externalDealer.getMiddlename()+" "+externalDealer.getLastname());
-                            client.setUsername(username);
-                            client.setFirstname(externalDealer.getFirstname());
-                            client.setMiddlename(externalDealer.getMiddlename());
-                            client.setLastname(externalDealer.getLastname());
-                            client.setEmail(externalDealer.getEmail());
-                            client.setAddress(externalDealer.getAddress());
-                            client.setPassword(externalDealer.getPassword());
+                                String username = externalDealer.getFirstname() + "." + externalDealer.getLastname();
 
-                            //Set Contract Client's username
-                            contract.setUsername(username);
+                                newClient.setFullName(externalDealer.getFirstname() + " " + externalDealer.getMiddlename() + " " + externalDealer.getLastname());
+                                newClient.setUsername(username);
+                                newClient.setFirstname(externalDealer.getFirstname());
+                                newClient.setMiddlename(externalDealer.getMiddlename());
+                                newClient.setLastname(externalDealer.getLastname());
+                                newClient.setEmail(externalDealer.getEmail());
+                                newClient.setAddress(externalDealer.getAddress());
+                                newClient.setPassword(externalDealer.getPassword());
 
-                            // ...
-                            clientRepository.save(client);
+                                // Set Contract Client's username
+                                contract.setUsername(username);
+                                return clientRepository.save(newClient);
+                            });
+
                             contract.setClient(client);
                             System.out.println("External Client: " + client);
                         } else {

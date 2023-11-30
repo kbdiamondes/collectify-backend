@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ContractService {
-    Contract createContract(Contract contract);
 
     //List<Contract> getUnpaidContractsForReseller(Long resellerId);
 

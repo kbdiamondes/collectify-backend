@@ -13,5 +13,5 @@ public interface ResellerRepository extends CrudRepository<Reseller, Object> {
 
     boolean existsByEmail(String email);
 
-    Optional<Object> findByUsername(String username);
+    Optional<Reseller> findByUsername(String username);
 }
