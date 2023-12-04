@@ -49,7 +49,20 @@ public class Client {
     @JsonManagedReference("client-paymentHistory")
     private List<TransactionHistory> transactionHistory = new ArrayList<>();
 
-    //functions
+    public Client(){}
+    public Client(Long client_id, String username, String fullName, String address, String email, String password, String firstname, String middlename, String lastname) {
+        this.client_id= client_id;
+        this.username = username;
+        this.fullName = fullName;
+        this.address = address;
+        this.email = email;
+        this.password = password;
+        this.firstname = firstname;
+        this.middlename = middlename;
+        this.lastname = lastname;
+    }
+
+//functions
 
     // Add a method to add payment history records
     public void addPaymentHistory(TransactionHistory transactionHistoryRecord) {

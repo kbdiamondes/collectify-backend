@@ -60,9 +60,13 @@
 			<artifactId>spring-security-core</artifactId>
 			<version>5.2.0.RELEASE</version>
 		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
 
 
-		<!--		&lt;!&ndash; "Spring Security" is a powerful and highly customizable authentication and access-control framework. &ndash;&gt;-->
+        <!--		&lt;!&ndash; "Spring Security" is a powerful and highly customizable authentication and access-control framework. &ndash;&gt;-->
 <!--		<dependency>-->
 <!--			<groupId>org.springframework.security</groupId>-->
 <!--			<artifactId>spring-security-core</artifactId>-->
