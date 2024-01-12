@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ContractRepository extends JpaRepository<Contract, Object> {
@@ -22,6 +23,8 @@ public interface ContractRepository extends JpaRepository<Contract, Object> {
     List<Contract> findByIsMonthly(boolean isMonthly);
 
     boolean existsByOrderid(String orderid);
+
+    Optional<Contract> findByOrderid(String externalOrderId);
 
     //List<Contract> findByIsPaidFalse();
 
