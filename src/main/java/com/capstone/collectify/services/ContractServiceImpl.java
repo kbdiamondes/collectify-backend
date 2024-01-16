@@ -408,6 +408,43 @@ public class ContractServiceImpl implements ContractService {
                         System.out.println("External Reseller is null.");
                     }
 
+                    // Check if the distributor (collector) information exists in the external data
+                    Collector externalCollector = externalContract.getCollector();
+                    Collector collector = null;
+
+                    if (externalCollector != null) {
+                        // Check if the collector with the same username already exists
+                        Optional<Collector> existingCollector = collectorRepository.findByUsername(externalCollector.getUsername());
+
+                        if (existingCollector.isPresent()) {
+                            // Use the existing Collector
+                            collector = existingCollector.get();
+                        } else {
+                            // Create a new Collector and save it to the database
+                            Collector newCollector = new Collector();
+                            // Map and set collector attributes
+                            newCollector.setUsername(externalCollector.getUsername());
+                            newCollector.setFullName(externalCollector.getFirstname() + " " + externalCollector.getMiddlename() + " " + externalCollector.getLastname());
+                            newCollector.setFirstname(externalCollector.getFirstname());
+                            newCollector.setMiddlename(externalCollector.getMiddlename());
+                            newCollector.setLastname(externalCollector.getLastname());
+                            newCollector.setEmail(externalCollector.getEmail());
+                            newCollector.setAddress(externalCollector.getAddress());
+                            newCollector.setPassword(externalCollector.getPassword());
+
+                            // Save the new Collector to the database
+                            collector = collectorRepository.save(newCollector);
+                        }
+
+                        contract.setCollector(collector);
+                        System.out.println("External Collector: " + collector);
+                    } else {
+                        // External collector is null, set the field to null
+                        contract.setCollector(null);
+                        System.out.println("External Collector is null.");
+                    }
+
+
                     /*
                     // Check if the distributor (reseller) information exists in the external data
                     Reseller externalDistributor = externalContract.getReseller();
@@ -482,10 +519,12 @@ public class ContractServiceImpl implements ContractService {
                     contract.setPaymentterms(externalContract.getPaymentterms());
                     contract.setOrderamount(externalContract.getOrderamount());
                     contract.setClosed(externalContract.isClosed());
+                    contract.setUsername((externalDealer.getUsername()));
                     List<PaymentTransaction> paymentTransactions = new ArrayList<>();
 
                     if (externalContract.getPaymentTransactions() != null) {
                         for (PaymentTransaction externalTransaction : externalContract.getPaymentTransactions()) {
+
                             PaymentTransaction transaction = new PaymentTransaction();
                             transaction.setPaymenttransactionid(externalTransaction.getPaymenttransactionid());
                             transaction.setAmountdue(externalTransaction.getAmountdue());
@@ -495,20 +534,7 @@ public class ContractServiceImpl implements ContractService {
                             transaction.setPaid(externalTransaction.isPaid());
                             transaction.setContract(contract);
                             transaction.setCollected(false);
-
-                            // Check if Reseller is set for the Contract
-                            if (contract.getReseller() != null) {
-                                // Fetch the Reseller from the repository using the Reseller's username
-                                Reseller resellers = resellerRepository.findByUsername(contract.getReseller().getUsername())
-                                        .orElse(null);
-
-                                // Set the fetched Reseller for the PaymentTransaction
-                                transaction.setReseller(resellers);
-                            } else {
-                                // Handle the case where Reseller is not set for the Contract
-                                // You may choose to set a default Reseller or handle it according to your logic
-                                transaction.setReseller(null); // Set a default value or handle accordingly
-                            }
+                            transaction.setReseller(reseller);
 
                             transaction.setOrderid(externalTransaction.getOrderid());
 

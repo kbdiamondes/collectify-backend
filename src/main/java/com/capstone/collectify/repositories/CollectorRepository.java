@@ -18,7 +18,7 @@ public interface CollectorRepository extends JpaRepository<Collector, Object> {
 
     boolean existsByEmail(String email);
 
-    Optional<Object> findByUsername(String username);
+    Optional<Collector> findByUsername(String username);
 
     //CollectionList
     @Query("SELECT pt FROM Collector c JOIN c.assignedPaymentTransactions pt " +
