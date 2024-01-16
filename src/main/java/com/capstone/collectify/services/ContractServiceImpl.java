@@ -389,18 +389,27 @@ public class ContractServiceImpl implements ContractService {
                     Reseller reseller = null;
 
                     if (externalDistributor != null) {
+                        Optional<Reseller> existingReseller = resellerRepository.findByUsername(externalDistributor.getUsername());
                         Reseller newReseller = new Reseller();
-                        // Map and set distributor attributes
-                        newReseller.setUsername(externalDistributor.getUsername());
-                        newReseller.setFullName(externalDistributor.getFirstname() + " " + externalDistributor.getMiddlename() + " " + externalDistributor.getLastname());
-                        newReseller.setFirstname(externalDistributor.getFirstname());
-                        newReseller.setMiddlename(externalDistributor.getMiddlename());
-                        newReseller.setLastname(externalDistributor.getLastname());
-                        newReseller.setEmail(externalDistributor.getEmail());
-                        newReseller.setAddress(externalDistributor.getAddress());
-                        newReseller.setPassword(externalDistributor.getPassword());
 
-                        reseller = newReseller;
+                        // Map and set distributor attributes
+
+                        reseller = existingReseller.orElseGet(()->{
+
+                            String username = externalDistributor.getFirstname() + "." + externalDistributor.getLastname();
+                            newReseller.setUsername(externalDistributor.getUsername());
+                            newReseller.setFullName(externalDistributor.getFirstname() + " " + externalDistributor.getMiddlename() + " " + externalDistributor.getLastname());
+                            newReseller.setFirstname(externalDistributor.getFirstname());
+                            newReseller.setMiddlename(externalDistributor.getMiddlename());
+                            newReseller.setLastname(externalDistributor.getLastname());
+                            newReseller.setEmail(externalDistributor.getEmail());
+                            newReseller.setAddress(externalDistributor.getAddress());
+                            newReseller.setPassword(externalDistributor.getPassword());
+
+
+                            contract.setUsername(username);
+                            return resellerRepository.save(newReseller);
+                        });
 
                         contract.setReseller(reseller);
                         System.out.println("External Reseller: " + reseller);
