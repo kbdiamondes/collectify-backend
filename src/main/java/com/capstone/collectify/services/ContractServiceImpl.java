@@ -400,7 +400,9 @@ public class ContractServiceImpl implements ContractService {
                         newReseller.setAddress(externalDistributor.getAddress());
                         newReseller.setPassword(externalDistributor.getPassword());
 
-                        contract.setReseller(newReseller);
+                        reseller = newReseller;
+
+                        contract.setReseller(reseller);
                         System.out.println("External Reseller: " + reseller);
                     } else {
                         // External distributor is null, set the field to null
@@ -444,36 +446,6 @@ public class ContractServiceImpl implements ContractService {
                         System.out.println("External Collector is null.");
                     }
 
-
-                    /*
-                    // Check if the distributor (reseller) information exists in the external data
-                    Reseller externalDistributor = externalContract.getReseller();
-                    Reseller reseller = null;
-                    if (externalDistributor != null) {
-                        // Check if the reseller with the same username already exists
-                        Optional<Reseller> existingReseller = resellerRepository.findByUsername(externalDistributor.getUsername());
-
-                        reseller = existingReseller.orElseGet(() -> {
-                            Reseller newReseller = new Reseller();
-                            // Map and set distributor attributes
-                            newReseller.setUsername(externalDistributor.getUsername());
-                            newReseller.setFullName(externalDistributor.getFirstname() + " " + externalDistributor.getMiddlename() + " " + externalDistributor.getLastname());
-                            newReseller.setFirstname(externalDistributor.getFirstname());
-                            newReseller.setMiddlename(externalDistributor.getMiddlename());
-                            newReseller.setLastname(externalDistributor.getLastname());
-                            newReseller.setEmail(externalDistributor.getEmail());
-                            newReseller.setAddress(externalDistributor.getAddress());
-                            newReseller.setPassword(externalDistributor.getPassword());
-                            return resellerRepository.save(newReseller);
-                        });
-
-                        contract.setReseller(reseller);
-                        System.out.println("External Reseller: " + reseller);
-                    } else {
-                        // External distributor is null, set the field to null
-                        contract.setReseller(null);
-                        System.out.println("External Reseller is null.");
-                    }*/
 
                     // Check if the dealer (client) information exists in the external data
                     Client externalDealer = externalContract.getClient();
@@ -535,6 +507,7 @@ public class ContractServiceImpl implements ContractService {
                             transaction.setContract(contract);
                             transaction.setCollected(false);
                             transaction.setReseller(reseller);
+                            transaction.setCollector(collector);
 
                             transaction.setOrderid(externalTransaction.getOrderid());
 
