@@ -289,7 +289,7 @@ public class ResellerServiceImpl implements ResellerService {
                 reseller.setUsername(userName);
                 reseller.setFullName(fullName);
                 reseller.setEmail(email);
-                reseller.setPassword(password);
+                reseller.setPassword(passwordEncoder.encode(password));
                 reseller.setAddress(collectorAddress);
 
                 // Check if the collector already exists in the database using some unique identifier (e.g., username or email)

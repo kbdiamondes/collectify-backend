@@ -8,6 +8,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -54,6 +55,9 @@ public class ContractServiceImpl implements ContractService {
 
     @Autowired
     private PaymentTransactionRepository paymentTransactionRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private String base64ImageData;
     private String fileName;
@@ -404,7 +408,18 @@ public class ContractServiceImpl implements ContractService {
                             newReseller.setLastname(externalDistributor.getLastname());
                             newReseller.setEmail(externalDistributor.getEmail());
                             newReseller.setAddress(externalDistributor.getAddress());
-                            newReseller.setPassword(externalDistributor.getPassword());
+
+                            // Encrypt the password before saving
+                            String rawPassword = externalDistributor.getLastname()+"123";
+
+                            // Add null check for rawPassword
+                            if (rawPassword != null) {
+                                String encodedPassword = passwordEncoder.encode(rawPassword);
+                                newReseller.setPassword(encodedPassword);
+                            } else {
+                                // Handle the case where the password is null (e.g., throw an exception or set a default password)
+                            }
+
 
 
                             contract.setUsername(username);
@@ -441,7 +456,17 @@ public class ContractServiceImpl implements ContractService {
                             newCollector.setLastname(externalCollector.getLastname());
                             newCollector.setEmail(externalCollector.getEmail());
                             newCollector.setAddress(externalCollector.getAddress());
-                            newCollector.setPassword(externalCollector.getPassword());
+
+                            // Encrypt the password before saving
+                            String rawPassword = externalCollector.getLastname()+"123";
+
+                            // Add null check for rawPassword
+                            if (rawPassword != null) {
+                                String encodedPassword = passwordEncoder.encode(rawPassword);
+                                newCollector.setPassword(encodedPassword);
+                            } else {
+                                // Handle the case where the password is null (e.g., throw an exception or set a default password)
+                            }
 
                             // Save the new Collector to the database
                             collector = collectorRepository.save(newCollector);
@@ -478,6 +503,17 @@ public class ContractServiceImpl implements ContractService {
                             newClient.setEmail(externalDealer.getEmail());
                             newClient.setAddress(externalDealer.getAddress());
                             newClient.setPassword(externalDealer.getPassword());
+
+                            // Encrypt the password before saving
+                            String rawPassword = externalDealer.getLastname() + "123";
+
+                            // Add null check for rawPassword
+                            if (rawPassword != null) {
+                                String encodedPassword = passwordEncoder.encode(rawPassword);
+                                newClient.setPassword(encodedPassword);
+                            } else {
+                                // Handle the case where the password is null (e.g., throw an exception or set a default password)
+                            }
 
                             // Set Contract Client's username
                             contract.setUsername(username);

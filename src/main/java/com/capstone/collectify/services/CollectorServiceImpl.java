@@ -96,7 +96,7 @@ public class CollectorServiceImpl implements CollectorService {
                 collector.setUsername(userName);
                 collector.setFullName(fullName);
                 collector.setEmail(email);
-                collector.setPassword(password);
+                collector.setPassword(passwordEncoder.encode(password));
                 collector.setAddress(collectorAddress);
 
                 // Check if the collector already exists in the database using some unique identifier (e.g., username or email)

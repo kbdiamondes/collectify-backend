@@ -169,7 +169,7 @@ public class ClientServiceImpl implements ClientService {
                 client.setUsername(userName);
                 client.setFullName(fullName);
                 client.setEmail(email);
-                client.setPassword(password);
+                client.setPassword(passwordEncoder.encode(password));
                 client.setAddress(clientAddress);
 
                 // Check if the client already exists in the database using some unique identifier (e.g., username or email)
