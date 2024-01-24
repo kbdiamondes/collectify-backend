@@ -263,6 +263,7 @@ public class ResellerServiceImpl implements ResellerService {
         return contractRepository.countActiveUnpaidContractsForReseller(resellerId);
     }*/
 
+    /*
     @Value("${api.endpoint.getDistributors}")
     private String apiUrl;
 
@@ -306,7 +307,7 @@ public class ResellerServiceImpl implements ResellerService {
     @Scheduled(fixedRate = 5000) // 5 minutes = 300,000 milliseconds
     public void scheduleFetchAndSave() {
         fetchDataAndSaveToDatabase();
-    }
+    }*/
 
 
 }
