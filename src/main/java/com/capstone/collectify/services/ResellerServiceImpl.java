@@ -263,6 +263,7 @@ public class ResellerServiceImpl implements ResellerService {
         return contractRepository.countActiveUnpaidContractsForReseller(resellerId);
     }*/
 
+    /*
     @Value("${api.endpoint.getDistributors}")
     private String apiUrl;
 
@@ -307,7 +308,7 @@ public class ResellerServiceImpl implements ResellerService {
     public void scheduleFetchAndSave() {
         fetchDataAndSaveToDatabase();
     }
-
+*/
 
 }
 
