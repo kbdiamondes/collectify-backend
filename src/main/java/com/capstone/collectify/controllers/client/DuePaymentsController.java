@@ -1,7 +1,6 @@
 package com.capstone.collectify.controllers.client;
 
 import com.capstone.collectify.models.Client;
-import com.capstone.collectify.services.ClientService;
 import com.capstone.collectify.services.client.DuePaymentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
