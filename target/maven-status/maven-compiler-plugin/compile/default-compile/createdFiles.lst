@@ -1,5 +1,5 @@
-com/capstone/collectify/services/client/SchedulePaymentReminderService.class
-com/capstone/collectify/models/SchedulePaymentReminderDTO.class
-com/capstone/collectify/models/SchedulePaymentReminder.class
-com/capstone/collectify/repositories/SchedulePaymentReminderRepository.class
-com/capstone/collectify/controllers/client/SchedulePaymentReminderController.class
+com\capstone\collectify\services\client\SchedulePaymentReminderService.class
+com\capstone\collectify\controllers\client\SchedulePaymentReminderController.class
+com\capstone\collectify\models\SchedulePaymentReminderDTO.class
+com\capstone\collectify\models\SchedulePaymentReminder.class
+com\capstone\collectify\repositories\SchedulePaymentReminderRepository.class
