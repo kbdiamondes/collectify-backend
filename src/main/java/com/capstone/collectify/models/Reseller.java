@@ -3,6 +3,7 @@ package com.capstone.collectify.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -35,7 +36,7 @@ public class Reseller {
     private String email;
 
     @Column
-    @JsonIgnore
+    @JsonProperty(value = "password", access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     // Other reseller-specific attributes and relationships
@@ -43,6 +44,11 @@ public class Reseller {
     @OneToMany(mappedBy = "reseller")
     @JsonManagedReference("reseller-contracts")
     private List<Contract> contracts;
+
+    @OneToMany(mappedBy = "reseller")
+    @JsonManagedReference("reseller-payment-transactions")
+    private List<PaymentTransaction> paymentTransactions;
+
 
     @OneToMany(mappedBy = "reseller")
     @JsonManagedReference("reseller_collectionHistory")
@@ -141,4 +147,17 @@ public class Reseller {
     }
 
 // Getters and setters
+
+
+    public void setReseller_id(Long reseller_id) {
+        this.reseller_id = reseller_id;
+    }
+
+    public List<PaymentTransaction> getPaymentTransactions() {
+        return paymentTransactions;
+    }
+
+    public void setPaymentTransactions(List<PaymentTransaction> paymentTransactions) {
+        this.paymentTransactions = paymentTransactions;
+    }
 }

@@ -36,7 +36,7 @@ public class Collector {
     private String email;
 
     @Column
-    @JsonIgnore
+    @JsonProperty(value = "password", access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @OneToMany(mappedBy="collector")
@@ -44,8 +44,19 @@ public class Collector {
     private List<Contract> assignedContract = new ArrayList<>();
 
     @OneToMany(mappedBy = "collector")
+    @JsonManagedReference("collector-paymenttransactions")
+    private List<PaymentTransaction> assignedPaymentTransactions = new ArrayList<>();
+    @OneToMany(mappedBy = "collector")
     @JsonManagedReference("collector_collectionHistory")
     private List<CollectionHistory> collectionHistory;
+
+    @ManyToMany
+    @JoinTable(
+            name = "collector_reseller",
+            joinColumns = @JoinColumn(name = "collector_id"),
+            inverseJoinColumns = @JoinColumn(name = "reseller_id")
+    )
+    private List<Reseller> resellers;
 
     public String getFullName() {
         return fullName;
@@ -103,34 +114,6 @@ public class Collector {
         this.assignedContract = assignedContract;
     }
 
-/*
-    public void setAssignedClient(Client client) {
-        // Implement logic to set the assigned client by creating a new contract
-        if (client != null) {
-            Contract newContract = new Contract();
-            newContract.setClient(client);
-            newContract.setCollector(this);
-
-            // You may need to set other contract properties such as dueAmount and isPaid
-            // newContract.setDueAmount(dueAmount);
-            // newContract.setIsPaid(isPaid);
-
-            this.assignedContract = newContract;
-        } else {
-            // If client is null, clear the assigned contract
-            this.assignedContract = null;
-        }
-    }
-
-    public Client getAssignedClient() {
-        // Implement logic to get the assigned client from the assigned contract
-        if (assignedContract != null) {
-            return assignedContract.getClient();
-        } else {
-            return null; // No client is assigned
-        }
-    }*/
-
     public String getFirstname() {
         return firstname;
     }
@@ -153,5 +136,29 @@ public class Collector {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public List<PaymentTransaction> getAssignedPaymentTransactions() {
+        return assignedPaymentTransactions;
+    }
+
+    public void setAssignedPaymentTransactions(List<PaymentTransaction> assignedPaymentTransactions) {
+        this.assignedPaymentTransactions = assignedPaymentTransactions;
+    }
+
+    public List<CollectionHistory> getCollectionHistory() {
+        return collectionHistory;
+    }
+
+    public void setCollectionHistory(List<CollectionHistory> collectionHistory) {
+        this.collectionHistory = collectionHistory;
+    }
+
+    public List<Reseller> getResellers() {
+        return resellers;
+    }
+
+    public void setResellers(List<Reseller> resellers) {
+        this.resellers = resellers;
     }
 }

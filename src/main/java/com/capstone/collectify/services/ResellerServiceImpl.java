@@ -6,16 +6,20 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ResellerServiceImpl implements ResellerService {
@@ -35,6 +39,98 @@ public class ResellerServiceImpl implements ResellerService {
     @Autowired
     private CollectionHistoryRepository collectionHistoryRepository;
 
+    @Autowired
+    private PaymentTransactionRepository paymentTransactionRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
+    @Override
+    public Reseller createReseller(Reseller reseller){
+        String rawPassword = reseller.getPassword();
+
+        // Perform password hashing using Spring Security's PasswordEncoder
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+
+
+        reseller.setPassword(encodedPassword);
+
+        resellerRepository.save(reseller);
+
+        return reseller;
+    }
+
+    @Transactional
+    public Contract createContract(Long resellerId, String clientUsername, Contract contract) {
+        // Fetch the Reseller entity
+        Reseller reseller = resellerRepository.findById(resellerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Reseller not found with id: " + resellerId));
+
+        // Fetch the Client entity
+        Client client = clientRepository.findByUsername(clientUsername)
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found with username: " + clientUsername));
+
+
+        LocalDate orderDate = LocalDate.now();
+
+        // Set the Reseller and Client on the Contract
+        contract.setReseller(reseller);
+        contract.setClient(client);
+
+        contract.setOrderdate(orderDate);
+        contract.setOrderid(UUID.randomUUID().toString());
+
+        // Save the contract
+        Contract savedContract = contractRepository.save(contract);
+
+        // Calculate starting date (order date + 15 days)
+        LocalDate startingDate = contract.getOrderdate().plus(15, ChronoUnit.DAYS);
+
+
+        contract.setDistributiondate(orderDate);
+        // Check if installment duration is greater than 0
+        if (contract.getInstallmentDuration() > 0) {
+            double installmentAmount = contract.getFullPrice() / contract.getInstallmentDuration();
+
+            // Create payment transactions
+            for (int i = 1; i <= contract.getInstallmentDuration(); i++) {
+                PaymentTransaction paymentTransaction = new PaymentTransaction();
+                paymentTransaction.setContract(savedContract);
+                paymentTransaction.setReseller(reseller);  // Set the Reseller on the PaymentTransaction
+                paymentTransaction.setAmountdue(installmentAmount);
+                paymentTransaction.setStartingdate(startingDate);
+                paymentTransaction.setEnddate(startingDate.plus(15, ChronoUnit.DAYS));
+                paymentTransaction.setInstallmentnumber(i);
+                // Set other payment transaction attributes as needed
+                paymentTransactionRepository.save(paymentTransaction);
+
+                // Generate a random orderid
+                paymentTransaction.setOrderid(UUID.randomUUID().toString());
+                paymentTransaction.setPaymenttransactionid(UUID.randomUUID().toString());
+
+
+                // Update starting date for the next installment
+                startingDate = startingDate.plus(15, ChronoUnit.DAYS);
+            }
+        } else {
+            // Installment duration is 0, create a single payment transaction
+            PaymentTransaction paymentTransaction = new PaymentTransaction();
+            paymentTransaction.setContract(savedContract);
+            paymentTransaction.setReseller(reseller);  // Set the Reseller on the PaymentTransaction
+            paymentTransaction.setAmountdue(contract.getFullPrice());
+            paymentTransaction.setStartingdate(startingDate);
+            paymentTransaction.setEnddate(startingDate.plus(15, ChronoUnit.DAYS));
+            paymentTransaction.setInstallmentnumber(0); // Adjust as needed
+            // Set other payment transaction attributes as needed
+            paymentTransactionRepository.save(paymentTransaction);
+        }
+
+        return savedContract;
+    }
+
+
+    /*
     @Override
     public Contract createContract(Long resellerId, String clientUsername, String username, String itemName, Long fullPrice, Boolean isPaid, int installmentDuration, boolean isMonthly) {
         Reseller reseller = resellerRepository.findById(resellerId)
@@ -49,7 +145,6 @@ public class ResellerServiceImpl implements ResellerService {
         contract.setUsername(clientUsername);
         contract.setItemName(itemName);
         contract.setFullPrice(fullPrice);
-        contract.setPaid(isPaid);
         contract.setInstallmentDuration(installmentDuration);
         contract.setIsMonthly(isMonthly);
         contract.setOrderdate(LocalDate.now());
@@ -71,7 +166,7 @@ public class ResellerServiceImpl implements ResellerService {
         // Save the contract and return it
         return contractRepository.save(contract);
     }
-
+*/
     @Override
     public void assignCollector(Long resellerId, Long contractId, Long collectorId) throws AccessDeniedException {
         Reseller reseller = resellerRepository.findById(resellerId)
@@ -91,6 +186,7 @@ public class ResellerServiceImpl implements ResellerService {
         }
     }
 
+    /*
     @Override
     public void collectPayment(Long resellerId, Long contractId, BigDecimal amount) throws AccessDeniedException {
         Reseller reseller = resellerRepository.findById(resellerId)
@@ -105,7 +201,7 @@ public class ResellerServiceImpl implements ResellerService {
                 // Update the due amount and mark the contract as paid if necessary
                 contract.setDueAmount(contract.getDueAmount().subtract(amount));
                 if (contract.getDueAmount().compareTo(BigDecimal.ZERO) == 0) {
-                    contract.setPaid(true);
+                   // contract.setPaid(true);
                 }
                 contractRepository.save(contract);
 
@@ -124,7 +220,7 @@ public class ResellerServiceImpl implements ResellerService {
             throw new AccessDeniedException("You don't have permission to collect payment for this contract.");
         }
     }
-
+*/
     @Override
     public List<CollectionHistory> getCollectionHistory(Long resellerId) {
         Reseller reseller = resellerRepository.findById(resellerId)
@@ -133,10 +229,6 @@ public class ResellerServiceImpl implements ResellerService {
         return collectionHistoryRepository.findByReseller(reseller);
     }
 
-    @Override
-    public Reseller createReseller(Reseller reseller) {
-        return resellerRepository.save(reseller);
-    }
 
     @Override
     public Optional<Reseller> getResellerById(Long id) {
@@ -165,11 +257,13 @@ public class ResellerServiceImpl implements ResellerService {
         return assignedCollector;
     }
 
+    /*
     @Override
     public int countActiveUnpaidContractsForReseller(Long resellerId) {
         return contractRepository.countActiveUnpaidContractsForReseller(resellerId);
-    }
+    }*/
 
+    /*
     @Value("${api.endpoint.getDistributors}")
     private String apiUrl;
 
@@ -196,7 +290,7 @@ public class ResellerServiceImpl implements ResellerService {
                 reseller.setUsername(userName);
                 reseller.setFullName(fullName);
                 reseller.setEmail(email);
-                reseller.setPassword(password);
+                reseller.setPassword(passwordEncoder.encode(password));
                 reseller.setAddress(collectorAddress);
 
                 // Check if the collector already exists in the database using some unique identifier (e.g., username or email)
@@ -214,7 +308,7 @@ public class ResellerServiceImpl implements ResellerService {
     public void scheduleFetchAndSave() {
         fetchDataAndSaveToDatabase();
     }
-
+*/
 
 }
 

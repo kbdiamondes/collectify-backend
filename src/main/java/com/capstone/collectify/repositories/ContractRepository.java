@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ContractRepository extends JpaRepository<Contract, Object> {
@@ -23,9 +24,13 @@ public interface ContractRepository extends JpaRepository<Contract, Object> {
 
     boolean existsByOrderid(String orderid);
 
-    List<Contract> findByIsPaidFalse();
+    Optional<Contract> findByOrderid(String externalOrderId);
 
-    List<Contract> findByClientAndIsPaid(Client client, boolean b);
+    //List<Contract> findByIsPaidFalse();
+
+    //List<Contract> findByClientAndIsPaid(Client client, boolean b);
+
+    /*
     @Query("SELECT c FROM Contract c " +
             "WHERE c.collector.collector_id = :collectorId " +
             "AND c.dueAmount = :dueAmount")
@@ -47,4 +52,6 @@ public interface ContractRepository extends JpaRepository<Contract, Object> {
 
     @Query("SELECT COUNT(c) FROM Contract c WHERE c.reseller.id = :resellerId AND c.isCollected = false AND c.isPaid = false")
     int countActiveUnpaidContractsForReseller(@Param("resellerId") Long resellerId);
+
+     */
 }

@@ -26,13 +26,7 @@ public class Contract {
     private String itemName;
 
     @Column
-    private BigDecimal dueAmount;
-
-    @Column
     private Long fullPrice;
-
-    @Column
-    private boolean isPaid;
 
     @Column
     private int installmentDuration;
@@ -64,7 +58,7 @@ public class Contract {
     private double orderamount;
 
     @Column
-    private boolean isCollected;
+    private boolean isClosed;
 
 
     // Other contract-specific attributes and relationships
@@ -84,22 +78,16 @@ public class Contract {
     @JsonBackReference("collector-assignedcontract")
     private Collector collector;
 
-    @OneToOne
-    @JoinColumn(name = "transaction_proof_id") // Adjust the column name as needed
-    private FileDB transactionProof; // Represents the transaction proof image
-
     @JsonProperty("orderedproducts")
     @OneToMany(mappedBy = "contract", cascade = CascadeType.PERSIST)
     @JsonBackReference("ordered-products")
     private List<OrderedProduct> orderedProducts;
 
-    public FileDB getTransactionProof() {
-        return transactionProof;
-    }
+    @JsonProperty("paymenttransactions")
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JsonManagedReference("payment-transactions")
+    private List<PaymentTransaction> paymentTransactions;
 
-    public void setTransactionProof(FileDB transactionProof) {
-        this.transactionProof = transactionProof;
-    }
 
     public Long getContract_id() {
         return contract_id;
@@ -125,28 +113,12 @@ public class Contract {
         this.itemName = itemName;
     }
 
-    public BigDecimal getDueAmount() {
-        return dueAmount;
-    }
-
-    public void setDueAmount(BigDecimal dueAmount) {
-        this.dueAmount = dueAmount;
-    }
-
     public Long getFullPrice() {
         return fullPrice;
     }
 
     public void setFullPrice(Long fullPrice) {
         this.fullPrice = fullPrice;
-    }
-
-    public boolean isPaid() {
-        return isPaid;
-    }
-
-    public void setPaid(boolean paid) {
-        isPaid = paid;
     }
 
     public Client getClient() {
@@ -253,27 +225,19 @@ public class Contract {
         this.orderedProducts = orderedProducts;
     }
 
-    public boolean isCollected() {
-        return isCollected;
+    public List<PaymentTransaction> getPaymentTransactions() {
+        return paymentTransactions;
     }
 
-    public void setCollected(boolean collected) {
-        isCollected = collected;
+    public void setPaymentTransactions(List<PaymentTransaction> paymentTransactions) {
+        this.paymentTransactions = paymentTransactions;
     }
 
-    //functions
-    //Used in ContractServiceImpl
-    public BigDecimal calculateMonthlyInstallmentAmount(Boolean isMonthly) {
-        if (isMonthly) {
-            if (installmentDuration > 0) {
-                return dueAmount.divide(BigDecimal.valueOf(installmentDuration), 2, RoundingMode.HALF_UP);
-            } else {
-                throw new IllegalArgumentException("Invalid installment duration");
-            }
-        } else {
-            return dueAmount; // For non-monthly payments, the due amount remains the same
-        }
+    public boolean isClosed() {
+        return isClosed;
     }
 
-
+    public void setClosed(boolean closed) {
+        isClosed = closed;
+    }
 }

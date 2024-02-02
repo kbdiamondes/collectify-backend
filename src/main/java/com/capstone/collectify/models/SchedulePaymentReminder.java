@@ -10,8 +10,8 @@ public class SchedulePaymentReminder {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "contract_id")
-    private Contract contract;
+    @JoinColumn(name = "payment_transaction_id") // Update the column name to match your database schema
+    private PaymentTransaction paymentTransaction;
 
     private String reminderTitle;
 
@@ -27,12 +27,12 @@ public class SchedulePaymentReminder {
         this.id = id;
     }
 
-    public Contract getContract() {
-        return contract;
+    public PaymentTransaction getPaymentTransaction() {
+        return paymentTransaction;
     }
 
-    public void setContract(Contract contract) {
-        this.contract = contract;
+    public void setPaymentTransaction(PaymentTransaction paymentTransaction) {
+        this.paymentTransaction = paymentTransaction;
     }
 
     public String getReminderTitle() {

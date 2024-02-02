@@ -10,6 +10,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,33 +32,20 @@ public class CollectorServiceImpl implements CollectorService {
     @Autowired
     private ContractRepository contractRepository;
 
-    @Override
-    public void assignCollectorToClient(Long collectorId, Long clientId) {
-        Collector collector = collectorRepository.findById(collectorId)
-                .orElseThrow(() -> new ResourceNotFoundException("Collector not found with id: " + collectorId));
-
-        Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
-
-        // Create a new Contract and set its properties
-        Contract contract = new Contract();
-        contract.setClient(client);
-        contract.setCollector(collector);
-        contract.setDueAmount(BigDecimal.ZERO); // Set your desired default values
-
-        // Save the Contract first to ensure that it gets a valid ID
-        contractRepository.save(contract);
-
-        // Update the Collector with the assigned Contract
-        collector.getAssignedContract().add(contract);
-
-        // Save the Collector
-        collectorRepository.save(collector);
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Collector createCollector(Collector collector) {
-        return collectorRepository.save(collector);
+        String rawPassword = collector.getPassword();
+
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+
+        collector.setPassword(encodedPassword);
+
+        collectorRepository.save(collector);
+
+        return collector;
     }
 
     @Override
@@ -69,6 +57,17 @@ public class CollectorServiceImpl implements CollectorService {
         return collectorRepository.findAll();
     }
 
+
+    @Override
+    public int getTotalAssignedPaymentTransactions(Long collectorId) {
+        Collector collector = collectorRepository.findById(collectorId).orElse(null);
+
+        if (collector != null) {
+            return collector.getAssignedPaymentTransactions().size();
+        } else {
+            return 0;
+        }
+    }
 
 
     @Value("${api.endpoint.getEmployees}")
@@ -97,7 +96,7 @@ public class CollectorServiceImpl implements CollectorService {
                 collector.setUsername(userName);
                 collector.setFullName(fullName);
                 collector.setEmail(email);
-                collector.setPassword(password);
+                collector.setPassword(passwordEncoder.encode(password));
                 collector.setAddress(collectorAddress);
 
                 // Check if the collector already exists in the database using some unique identifier (e.g., username or email)

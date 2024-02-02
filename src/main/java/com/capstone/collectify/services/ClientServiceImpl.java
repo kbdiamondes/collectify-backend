@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,6 +30,11 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private ContractRepository contractRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
+    /*
     @Override
     public void payDue(Long clientId, Long contractId, BigDecimal amount) throws AccessDeniedException {
         Client client = clientRepository.findById(clientId)
@@ -70,6 +76,8 @@ public class ClientServiceImpl implements ClientService {
         return totalDueAmount;
     }
 
+     */
+
     @Override
     public List<Contract> getClientContracts(Long clientId) {
         Client client = clientRepository.findById(clientId)
@@ -80,10 +88,21 @@ public class ClientServiceImpl implements ClientService {
 
 
     // Create user
+    @Override
     public Client createClient(Client client) {
+        // Assuming that you have some password validation logic here
+        String rawPassword = client.getPassword();
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+
+        // Set the password for registration
+        client.setPassword(encodedPassword);
+
+        // Save the client
         clientRepository.save(client);
+
         return client;
     }
+
 
     // Get users
     public Iterable<Client> getClient() {
@@ -150,7 +169,7 @@ public class ClientServiceImpl implements ClientService {
                 client.setUsername(userName);
                 client.setFullName(fullName);
                 client.setEmail(email);
-                client.setPassword(password);
+                client.setPassword(passwordEncoder.encode(password));
                 client.setAddress(clientAddress);
 
                 // Check if the client already exists in the database using some unique identifier (e.g., username or email)

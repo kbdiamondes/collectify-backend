@@ -1,6 +1,8 @@
 package com.capstone.collectify.controllers.collector;
 
 import com.capstone.collectify.models.Contract;
+import com.capstone.collectify.models.PaymentTransaction;
+import com.capstone.collectify.models.PaymentTransactionForCollectionListDTO;
 import com.capstone.collectify.services.CollectorService;
 import com.capstone.collectify.services.collector.CollectionListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,21 @@ public class CollectionListController {
     @Autowired
     private CollectionListService collectionListService;
 
+
+    @GetMapping("/{collectorId}/assigned-uncollected-transactions")
+    public ResponseEntity<List<PaymentTransactionForCollectionListDTO>> getAssignedUncollectedPaymentsTransactionsForCollector(@PathVariable Long collectorId) {
+        List<PaymentTransactionForCollectionListDTO> unpaidTransactions = collectionListService.getAssignedUncollectedPaymentsTransactionsForCollector(collectorId);
+
+        if (!unpaidTransactions.isEmpty()) {
+            return new ResponseEntity<>(unpaidTransactions, HttpStatus.OK);
+        }else if (unpaidTransactions.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /*
     @GetMapping("/{collectorId}/assigned-paid-contracts")
     public ResponseEntity<List<Contract>> getAssignedPaidContractsForCollector(@PathVariable Long collectorId) {
         List<Contract> paidContracts = collectionListService.getAssignedPaidContractsForCollector(collectorId);
@@ -31,10 +48,11 @@ public class CollectionListController {
         List<Contract> unpaidContracts = collectionListService.getAssignedUnpaidContractsForCollector(collectorId);
         return new ResponseEntity<>(unpaidContracts, HttpStatus.OK);
     }
-
+*/
+    /*
     @GetMapping("/{collectorId}/assigned-uncollected-contracts")
     public ResponseEntity<List<Contract>> getAssignedUncollectedContractsForCollector(@PathVariable Long collectorId) {
         List<Contract> uncollectedContracts = collectionListService.getAssignedUncollectedContractsForCollector(collectorId);
         return new ResponseEntity<>(uncollectedContracts, HttpStatus.OK);
-    }
+    }*/
 }

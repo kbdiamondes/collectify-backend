@@ -2,6 +2,7 @@ package com.capstone.collectify.controllers;
 
 import com.capstone.collectify.models.Contract;
 import com.capstone.collectify.services.ContractService;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,6 @@ public class ContractController {
     @Autowired
     private ContractService contractService;
 
-    @PostMapping
-    public Contract createContract(@RequestBody Contract contract) {
-        return contractService.createContract(contract);
-    }
 
 
     @GetMapping
@@ -34,17 +31,26 @@ public class ContractController {
         return contractService.getContractById(id);
     }
 
+
     @GetMapping("/client/{clientId}")
     public List<Contract> getClientContracts(@PathVariable Long clientId) {
-        return contractService.getClientContracts(clientId);
+        List<Contract> contracts = contractService.getClientContracts(clientId);
+
+        // Load paymentTransactions eagerly for each contract
+        contracts.forEach(contract -> {
+            Hibernate.initialize(contract.getPaymentTransactions());
+        });
+
+        return contracts;
     }
 
+    /*
     @GetMapping("/unpaid/{resellerId}")
     public ResponseEntity<List<Contract>> getUnpaidContractsForReseller(@PathVariable Long resellerId) {
         List<Contract> unpaidContracts = contractService.getUnpaidContractsForReseller(resellerId);
         return ResponseEntity.ok(unpaidContracts);
     }
-
+*/
     @GetMapping("/reseller/{resellerId}")
     public List<Contract> getResellerContracts(@PathVariable Long resellerId) {
         return contractService.getResellerContracts(resellerId);

@@ -34,13 +34,11 @@ public class CollectorController {
         return collectorService.getCollectorById(id);
     }
 
-    @PostMapping("/{collectorId}/assign-client/{clientId}")
-    public void assignCollectorToClient(@PathVariable Long collectorId, @PathVariable Long clientId) {
-        try {
-            collectorService.assignCollectorToClient(collectorId, clientId);
-        } catch (Exception e) {
-            throw new RuntimeException("Error assigning collector to client: " + e.getMessage(), e);
-        }
+    @GetMapping("/{collectorId}/total-assigned-transactions")
+    public ResponseEntity<Integer> getTotalAssignedTransactionsForCollector(@PathVariable Long collectorId) {
+        int totalTransactions = collectorService.getTotalAssignedPaymentTransactions(collectorId);
+
+        return new ResponseEntity<>(totalTransactions, HttpStatus.OK);
     }
 
     // Add other endpoints for Collector-related operations

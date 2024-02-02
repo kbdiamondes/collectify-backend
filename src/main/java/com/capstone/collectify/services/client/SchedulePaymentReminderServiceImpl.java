@@ -1,17 +1,16 @@
 package com.capstone.collectify.services.client;
 
-import com.capstone.collectify.models.Client;
-import com.capstone.collectify.models.Contract;
-import com.capstone.collectify.models.SchedulePaymentReminder;
-import com.capstone.collectify.models.SchedulePaymentReminderDTO;
+import com.capstone.collectify.models.*;
 import com.capstone.collectify.repositories.ClientRepository;
 import com.capstone.collectify.repositories.ContractRepository;
 
+import com.capstone.collectify.repositories.PaymentTransactionRepository;
 import com.capstone.collectify.repositories.SchedulePaymentReminderRepository;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +28,11 @@ public class SchedulePaymentReminderServiceImpl implements SchedulePaymentRemind
     @Autowired
     private SchedulePaymentReminderRepository schedulePaymentReminderRepository;
 
+    @Autowired
+    private PaymentTransactionRepository paymentTransactionRepository;
+
+
+
     @Override
     public List<SchedulePaymentReminderDTO> getScheduledPaymentRemindersForClient(Long clientId) {
         List<SchedulePaymentReminder> reminders = schedulePaymentReminderRepository.findRemindersByClientId(clientId);
@@ -43,41 +47,42 @@ public class SchedulePaymentReminderServiceImpl implements SchedulePaymentRemind
         dto.setReminderTitle(reminder.getReminderTitle());
         dto.setReminderDateTime(reminder.getReminderDateTime());
 
-        Contract contract = reminder.getContract();
-        if (contract != null) {
-            dto.setDueAmount(contract.getDueAmount());
-            dto.setPaid(contract.isPaid());
-            // Add more contract-related information if needed
+        PaymentTransaction paymentTransaction = reminder.getPaymentTransaction();
+        if (paymentTransaction != null) {
+            // Set the dueAmount in the DTO from PaymentTransaction's amount due
+            dto.setDueAmount(BigDecimal.valueOf(paymentTransaction.getAmountdue()));
+            dto.setPaid(paymentTransaction.isPaid());
         }
 
         return dto;
     }
+
     @Override
-    public void schedulePaymentReminder(Long clientId, Long contractId, String reminderTitle, LocalDateTime reminderDateTime) throws AccessDeniedException {
+    public void schedulePaymentReminder(Long clientId, Long paymentTransactionId, String reminderTitle, LocalDateTime reminderDateTime) throws AccessDeniedException {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
 
-        Contract contract = contractRepository.findById(contractId)
-                .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + contractId));
+        PaymentTransaction paymentTransaction = paymentTransactionRepository.findById(paymentTransactionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Payment transaction not found with id: " + paymentTransactionId));
 
-        if (contract.getClient().equals(client)) {
+        if (paymentTransaction.getContract().getClient().equals(client)) {
             SchedulePaymentReminder reminder = new SchedulePaymentReminder();
-            reminder.setContract(contract);
+            reminder.setPaymentTransaction(paymentTransaction);
             reminder.setReminderTitle(reminderTitle);
             reminder.setReminderDateTime(reminderDateTime);
             schedulePaymentReminderRepository.save(reminder);
         } else {
-            throw new AccessDeniedException("You don't have permission to set a reminder for this contract.");
+            throw new AccessDeniedException("You don't have permission to set a reminder for this payment transaction.");
         }
     }
 
+
     @Override
     public void deleteSchedulePaymentReminder(Long clientId, Long reminderId) throws AccessDeniedException {
-        // Validate if the reminder belongs to the given client
         SchedulePaymentReminder reminder = schedulePaymentReminderRepository.findById(reminderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reminder not found with id: " + reminderId));
 
-        if (reminder.getContract().getClient().getClient_id().equals(clientId)) {
+        if (reminder.getPaymentTransaction().getContract().getClient().getClient_id().equals(clientId)) {
             schedulePaymentReminderRepository.deleteById(reminderId);
         } else {
             throw new AccessDeniedException("You don't have permission to delete this reminder.");

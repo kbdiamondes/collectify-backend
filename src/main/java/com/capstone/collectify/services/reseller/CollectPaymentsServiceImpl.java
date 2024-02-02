@@ -3,6 +3,7 @@ package com.capstone.collectify.services.reseller;
 import com.capstone.collectify.models.*;
 import com.capstone.collectify.repositories.CollectionHistoryRepository;
 import com.capstone.collectify.repositories.ContractRepository;
+import com.capstone.collectify.repositories.PaymentTransactionRepository;
 import com.capstone.collectify.repositories.ResellerRepository;
 import com.capstone.collectify.services.filehandling.FileStorageService;
 import org.apache.velocity.exception.ResourceNotFoundException;
@@ -22,19 +23,151 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
     private final ContractRepository contractRepository;
     private final CollectionHistoryRepository collectionHistoryRepository;
 
+    private final PaymentTransactionRepository paymentTransactionRepository;
     private final FileStorageService fileStorageService;
 
     @Autowired
     public CollectPaymentsServiceImpl(
             ResellerRepository resellerRepository,
             ContractRepository contractRepository,
-            CollectionHistoryRepository collectionHistoryRepository, FileStorageService fileStorageService) {
+            CollectionHistoryRepository collectionHistoryRepository, PaymentTransactionRepository paymentTransactionRepository, FileStorageService fileStorageService) {
         this.resellerRepository = resellerRepository;
         this.contractRepository = contractRepository;
         this.collectionHistoryRepository = collectionHistoryRepository;
+        this.paymentTransactionRepository = paymentTransactionRepository;
         this.fileStorageService = fileStorageService;
     }
 
+    public void collectPayments(Long resellerId, Long paymentTransactionId, String paymentType, String base64ImageData, String fileName, String contentType)
+            throws AccessDeniedException, IOException {
+
+        // Your existing logic to ensure access and other necessary checks can be added here
+
+        Reseller reseller = resellerRepository.findById(resellerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Reseller not found with id: " + resellerId));
+
+        PaymentTransaction paymentTransaction = paymentTransactionRepository.findById(paymentTransactionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Payment Transaction not found with id: " + paymentTransactionId));
+
+        if (paymentTransaction.getReseller().equals(reseller)) {
+            if (paymentTransaction.isPaid()) {
+                if (paymentTransaction.getCollector() == null){
+                    if (paymentTransaction.getReseller().getReseller_id().equals(resellerId) && !paymentTransaction.isCollected()) {
+                        // Process payment collection logic as described previously
+
+                        // Example: Save file to storage service
+                        FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
+
+                        // Update the payment transaction
+                        paymentTransaction.setCollected(true);
+                        paymentTransactionRepository.save(paymentTransaction);
+
+                        // Record the collection history
+                        CollectionHistory history = new CollectionHistory();
+                        history.setCollectedAmount(BigDecimal.valueOf(paymentTransaction.getAmountdue()));
+                        history.setCollectionDate(LocalDateTime.now());
+                        history.setReseller(reseller);
+                        history.setPaymentType(paymentType);
+                        history.setTransactionProof(fileDB);
+                        // Other fields for history entity
+
+                        if (paymentTransaction.getContract().getOrderid()!=null){
+                            history.setOrderid(paymentTransaction.getContract().getOrderid());
+                        }
+
+                        if (paymentTransaction.getContract().getItemName()!=null) {
+                            history.setItemName(paymentTransaction.getContract().getItemName());
+                        }
+
+                        if (paymentTransaction.getContract().getReseller().getFullName() != null) {
+                            history.setResellerName(paymentTransaction.getContract().getReseller().getFullName());
+                        }
+
+                        if (paymentTransaction.getContract().getClient().getFullName() != null) {
+                            history.setClientName(paymentTransaction.getContract().getClient().getFullName());
+                        }
+
+
+                        collectionHistoryRepository.save(history);
+                        System.out.println("Payment collected successfully");
+                        }else {
+                            throw new IllegalStateException("The payment transaction has already been paid ");
+                        }
+                    } else {
+                     throw new IllegalStateException("The payment transaction is currently assigned to a collector ");
+                    }
+                } else {
+                    throw new IllegalStateException("The payment transaction is not yet paid.");
+                }
+            }else{
+             throw new AccessDeniedException("You don't have permission to collect payment for this transaction.");
+            }
+        }
+
+    @Override
+    public void collectPaymentsFromAllContracts(Long resellerId, String paymentType, String base64ImageData, String fileName, String contentType)
+            throws AccessDeniedException, IOException {
+
+        Reseller reseller = resellerRepository.findById(resellerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Reseller not found with id: " + resellerId));
+
+        List<PaymentTransaction> paymentTransactions = paymentTransactionRepository.findByResellerAndCollectorIsNullAndIsPaidIsTrueAndIsCollectedIsFalse(reseller);
+
+        for (PaymentTransaction paymentTransaction : paymentTransactions) {
+            try {
+                if (paymentTransaction.getReseller().equals(reseller)) {
+                    // Process payment collection logic similar to individual collection function
+                    if (paymentTransaction.getCollector() == null) {
+                        // Example: Save file to storage service
+                        FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
+
+                        // Update the payment transaction
+                        paymentTransaction.setCollected(true);
+                        paymentTransactionRepository.save(paymentTransaction);
+
+                        // Record the collection history
+                        CollectionHistory history = new CollectionHistory();
+                        history.setCollectedAmount(BigDecimal.valueOf(paymentTransaction.getAmountdue()));
+                        history.setCollectionDate(LocalDateTime.now());
+                        history.setReseller(reseller);
+                        history.setPaymentType(paymentType);
+                        history.setTransactionProof(fileDB);
+                        // Other fields for history entity
+
+                        if (paymentTransaction.getContract().getOrderid()!=null){
+                            history.setOrderid(paymentTransaction.getContract().getOrderid());
+                        }
+
+                        if (paymentTransaction.getContract().getItemName()!=null) {
+                            history.setItemName(paymentTransaction.getContract().getItemName());
+                        }
+
+                        if (paymentTransaction.getContract().getReseller().getFullName() != null) {
+                            history.setResellerName(paymentTransaction.getContract().getReseller().getFullName());
+                        }
+
+                        if (paymentTransaction.getContract().getClient().getFullName() != null) {
+                            history.setClientName(paymentTransaction.getContract().getClient().getFullName());
+                        }
+
+
+                        collectionHistoryRepository.save(history);
+                        System.out.println("Payment collected successfully for transaction ID: " + paymentTransaction.getPayment_transactionid());
+                    } else {
+                        throw new IllegalStateException("The payment transaction is currently assigned to a collector");
+                    }
+                } else {
+                    throw new AccessDeniedException("You don't have permission to collect payment for this transaction.");
+                }
+            } catch (Exception e) {
+                // Log or handle exceptions for individual payment transaction collection
+                System.out.println("Failed to collect payment for transaction ID: " + paymentTransaction.getPayment_transactionid() + ". Reason: " + e.getMessage());
+            }
+        }
+    }
+
+}
+    /*
     @Override
     public void collectPayments(Long resellerId, Long contractId, String paymentType, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException {
         Reseller reseller = resellerRepository.findById(resellerId)
@@ -100,7 +233,9 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
             throw new AccessDeniedException("You don't have permission to collect payment for this contract.");
         }
     }
+*/
 
+    /*
     @Override
     public void collectPaymentsFromAllContracts(Long resellerId, String paymentType, String base64ImageData, String fileName, String contentType) throws AccessDeniedException, IOException {
         Reseller reseller = resellerRepository.findById(resellerId)
@@ -143,8 +278,8 @@ public class CollectPaymentsServiceImpl implements CollectPaymentsService {
             }
         }
     }
+*/
 
-}
 /*
 
 version 1

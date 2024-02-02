@@ -8,6 +8,7 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,10 +17,13 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.Optional;
 
 
 @Service
@@ -49,6 +53,12 @@ public class ContractServiceImpl implements ContractService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private PaymentTransactionRepository paymentTransactionRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private String base64ImageData;
     private String fileName;
     private String contentType;
@@ -57,17 +67,13 @@ public class ContractServiceImpl implements ContractService {
         this.fileStorageService = fileStorageService;
     }
 
-    @Override
-    public Contract createContract(Contract contract) {
-        // Implement the logic to create a new contract
-        return contractRepository.save(contract);
-    }
 
+    /*
     @Override
     public List<Contract> getUnpaidContractsForReseller(Long resellerId) {
         return contractRepository.findUnpaidContractsForReseller(resellerId);
     }
-
+*/
     @Override
     public Contract getContractById(Long id) {
         return contractRepository.findById(id)
@@ -117,6 +123,33 @@ public class ContractServiceImpl implements ContractService {
         return contractRepository.findAll();
     }
 
+    @Scheduled(cron = "0 0 0 */15 * ?") // Run every 15 days at midnight
+    public void checkPaymentStatus() {
+        LocalDate currentDate = LocalDate.now();
+
+        // Fetch contracts with payment transactions
+        List<Contract> contracts = contractRepository.findAll();
+
+        for (Contract contract : contracts) {
+            List<PaymentTransaction> paymentTransactions = contract.getPaymentTransactions();
+
+            for (PaymentTransaction paymentTransaction : paymentTransactions) {
+                if (!paymentTransaction.isPaid() && currentDate.isAfter(paymentTransaction.getEnddate())) {
+                    // Payment is overdue, increase amountdue by penaltyrate
+                    double penaltyAmount = paymentTransaction.getAmountdue() * contract.getPenaltyrate();
+                    paymentTransaction.setAmountdue(paymentTransaction.getAmountdue() + penaltyAmount);
+
+                    // Set other attributes as needed
+                    paymentTransaction.setPaid(false); // Optionally, reset the paid status
+                    paymentTransaction.setCollected(false); // Optionally, reset the collected status
+
+                    // Save the updated payment transaction
+                    paymentTransactionRepository.save(paymentTransaction);
+                }
+            }
+        }
+    }
+    /*
     @Scheduled(cron = "0 0 0 1 * ?") // Run at midnight on the 1st day of each month
     public void processMonthlyPayments() throws IOException {
 
@@ -157,7 +190,6 @@ public class ContractServiceImpl implements ContractService {
 
                         // Set the lastPaymentDate to nextPaymentDate
                         contract.setLastPaymentDate(nextPaymentDate);
-                        contract.setCollected(false);
 
                         // Save the contract and collection history
                         contractRepository.save(contract);
@@ -173,7 +205,7 @@ public class ContractServiceImpl implements ContractService {
             }
         }
     }
-
+*/
 
     @Value("${api.endpoint.getOrders}")
     private String apiUrl;
@@ -181,162 +213,425 @@ public class ContractServiceImpl implements ContractService {
     @PersistenceContext
     private EntityManager entityManager;
 
-        public void fetchDataAndSaveToDatabase() {
-            RestTemplate restTemplate = new RestTemplate();
-            Contract[] contracts = restTemplate.getForObject(apiUrl, Contract[].class);
 
+    /*
+    public void fetchDataAndSaveToDatabase() {
+        RestTemplate restTemplate = new RestTemplate();
+        Contract[] contracts = restTemplate.getForObject(apiUrl, Contract[].class);
 
+        if (contracts != null) {
+            for (Contract externalContract : contracts) {
+                String externalOrderId = externalContract.getOrderid();
 
-            if (contracts != null) {
-                for (Contract externalContract : contracts) {
-                    String externalOrderId = externalContract.getOrderid();
+                // Check if the contract already exists in the database using the external order ID
+                Optional<Contract> existingContractOptional = contractRepository.findByOrderid(externalOrderId);
 
-                    // Check if the contract already exists in the database using the external order ID
-                    if (!contractRepository.existsByOrderid(externalOrderId)) {
-                        // Create a new Contract entity
-                        Contract contract = new Contract();
-
-
-                        // Check if the distributor (reseller) information exists in the external data
-                        Reseller externalDistributor = externalContract.getReseller();
-                        if (externalDistributor != null) {
-                            Reseller reseller = new Reseller();
-                            // Map and set distributor attributes
-                            String username = externalDistributor.getFirstname()+"."+externalDistributor.getLastname();
-
-                            reseller.setFullName(externalDistributor.getFirstname()+" " + externalDistributor.getMiddlename()+" "+externalDistributor.getLastname());
-                            reseller.setUsername(username);
-                            reseller.setFirstname(externalDistributor.getFirstname());
-                            reseller.setMiddlename(externalDistributor.getMiddlename());
-                            reseller.setLastname(externalDistributor.getLastname());
-                            reseller.setEmail(externalDistributor.getEmail());
-                            reseller.setAddress(externalDistributor.getAddress());
-                            reseller.setPassword(externalDistributor.getPassword());
-
-                            // ...
-                            resellerRepository.save(reseller);
-                            contract.setReseller(reseller);
-                            System.out.println("External Reseller: " + reseller);
-                        } else {
-                            // External distributor is null, set the field to null
-                            contract.setReseller(null);
-                            System.out.println("External Reseller is null.");
-                        }
-
-                        // Check if the dealer (client) information exists in the external data
-                        Client externalDealer = externalContract.getClient();
-                        if (externalDealer != null) {
-                            Client client = new Client();
-                            // Map and set dealer attributes
-
-                            String username = externalDealer.getFirstname()+"."+externalDealer.getLastname();
-
-                            client.setFullName(externalDealer.getFirstname()+" " + externalDealer.getMiddlename()+" "+externalDealer.getLastname());
-                            client.setUsername(username);
-                            client.setFirstname(externalDealer.getFirstname());
-                            client.setMiddlename(externalDealer.getMiddlename());
-                            client.setLastname(externalDealer.getLastname());
-                            client.setEmail(externalDealer.getEmail());
-                            client.setAddress(externalDealer.getAddress());
-                            client.setPassword(externalDealer.getPassword());
-
-                            //Set Contract Client's username
-                            contract.setUsername(username);
-
-                            // ...
-                            clientRepository.save(client);
-                            contract.setClient(client);
-                            System.out.println("External Client: " + client);
-                        } else {
-                            // External client is null, set the field to null
-                            contract.setClient(null);
-                            System.out.println("External Client is null.");
-                        }
-
-                        // Map fields from the external API data to your Contract entity
-                        contract.setOrderid(externalOrderId);
-                        contract.setOrderdate(externalContract.getOrderdate());
-                        contract.setDistributiondate(externalContract.getDistributiondate());
-                        contract.setPenaltyrate(externalContract.getPenaltyrate());
-                        contract.setPaymentterms(externalContract.getPaymentterms());
-                        contract.setOrderamount(externalContract.getOrderamount());
-                        contract.setCollected(false);
-
-                        // Set other attributes based on your business logic
-                        // For relationships, you'll need to populate them as well based on the API data.
-
-                        List<OrderedProduct> orderedProducts = externalContract.getOrderedProducts();
-                        System.out.println("Contracts: " + Arrays.toString(contracts));
-                        System.out.println("Ordered Products: " + orderedProducts);
-                        if (orderedProducts != null) {
-                            for (OrderedProduct externalOrderedProduct : orderedProducts) {
-                                OrderedProduct orderedProduct = new OrderedProduct();
-
-                                // Map fields from the external API data to your OrderedProduct entity
-                                orderedProduct.setOrderedproductid(externalOrderedProduct.getOrderedproductid());
-                                orderedProduct.setQuantity(externalOrderedProduct.getQuantity());
-                                orderedProduct.setSubtotal(externalOrderedProduct.getSubtotal());
-
-                                // Assuming that OrderedProduct has a ManyToOne relationship with Product
-                                // Check if the product information exists in the external data
-                                Product externalProduct = externalOrderedProduct.getProduct();
-                                if (externalProduct != null) {
-
-                                    Product product = new Product();
-                                    System.out.println("External Product Name: " + externalProduct.getName());
-                                    product.setName(externalProduct.getName());
-                                    product.setUnit(externalProduct.getUnit());
-                                    product.setPrice(externalProduct.getPrice());
-                                    product.setCommissionrate(externalProduct.getCommissionrate());
-
-                                    //Extra functions
-                                    Long fullPrice = (long) externalProduct.getPrice() * externalOrderedProduct.getQuantity();
-                                    int installmentduration = externalContract.getPaymentterms();
-
-                                    //Set dueAmount, fullPrice, itemName and installment_duration(paymentterms)
-                                    contract.setItemName(externalProduct.getName());
-                                    contract.setFullPrice(fullPrice);
-                                    contract.setInstallmentDuration(installmentduration);
-                                    contract.setDueAmount(BigDecimal.valueOf(fullPrice/installmentduration));
-                                    contract.setCollected(false);
-
-                                    if(installmentduration!=0){
-                                        contract.setIsMonthly(true);
-                                    }else{
-                                        contract.setIsMonthly(false);
-                                    }
-
-
-                                    // Set the relationship between OrderedProduct and Product
-                                    productRepository.save(product);
-
-                                    orderedProduct.setProduct(product);
-
-
-                                }else{
-                                    System.out.println("External Product is empty!");
-                                }
-
-
-                                // Set the relationship between OrderedProduct and Contract
-                                orderedProduct.setContract(contract);
-
-                                // Save the new OrderedProduct entity
-                                orderedProductRepository.save(orderedProduct);
-
-                            }
-
-                        }
-
-                        // Add the OrderedProduct entities to the Contract
-                        contract.setOrderedProducts(orderedProducts);
-
-                        // Save the new Contract entity
-                        contractRepository.save(contract);
-                    }
+                if (existingContractOptional.isPresent()) {
+                    // Contract already exists, update it with the new information
+                    Contract existingContract = existingContractOptional.get();
+                    updateExistingContract(existingContract, externalContract);
+                } else {
+                    // Contract doesn't exist, create a new one
+                    createNewContract(externalContract);
                 }
             }
         }
+    }
+
+    private void updateExistingContract(Contract existingContract, Contract externalContract) {
+        // Update the existing contract with the new information
+        // You may need to implement this method based on your business logic.
+        // For simplicity, let's assume you want to update some fields.
+
+        existingContract.setOrderdate(externalContract.getOrderdate());
+        existingContract.setDistributiondate(externalContract.getDistributiondate());
+        existingContract.setPenaltyrate(externalContract.getPenaltyrate());
+        existingContract.setPaymentterms(externalContract.getPaymentterms());
+        existingContract.setOrderamount(externalContract.getOrderamount());
+        existingContract.setClosed(externalContract.isClosed());
+
+        // Update other fields and relationships based on your business logic
+
+        // Save the updated contract
+        contractRepository.save(existingContract);
+    }
+
+    private void createNewContract(Contract externalContract) {
+        // Create a new Contract entity
+        Contract contract = new Contract();
+
+        // Check if the distributor (reseller) information exists in the external data
+        Reseller externalDistributor = externalContract.getReseller();
+        Reseller reseller = null;
+        if (externalDistributor != null) {
+            // Check if the reseller with the same username already exists
+            Optional<Reseller> existingReseller = resellerRepository.findByUsername(externalDistributor.getUsername());
+
+            reseller = existingReseller.orElse(externalDistributor);
+        }
+
+        contract.setReseller(reseller);
+        System.out.println("External Reseller: " + reseller);
+
+        // Check if the dealer (client) information exists in the external data
+        Client externalDealer = externalContract.getClient();
+        Client client = null;
+        if (externalDealer != null) {
+            // Check if the client with the same username already exists
+            Optional<Client> existingClient = clientRepository.findByUsername(externalDealer.getUsername());
+
+            client = existingClient.orElse(externalDealer);
+        }
+
+        contract.setClient(client);
+        System.out.println("External Client: " + client);
+
+        // Map fields from the external API data to your Contract entity
+        contract.setOrderid(externalContract.getOrderid());
+        contract.setOrderdate(externalContract.getOrderdate());
+        contract.setDistributiondate(externalContract.getDistributiondate());
+        contract.setPenaltyrate(externalContract.getPenaltyrate());
+        contract.setPaymentterms(externalContract.getPaymentterms());
+        contract.setOrderamount(externalContract.getOrderamount());
+        contract.setClosed(externalContract.isClosed());
+        List<PaymentTransaction> paymentTransactions = new ArrayList<>();
+
+        if (externalContract.getPaymentTransactions() != null) {
+            for (PaymentTransaction externalTransaction : externalContract.getPaymentTransactions()) {
+                PaymentTransaction transaction = new PaymentTransaction();
+                transaction.setPaymenttransactionid(externalTransaction.getPaymenttransactionid());
+                transaction.setAmountdue(externalTransaction.getAmountdue());
+                transaction.setStartingdate(externalTransaction.getStartingdate());
+                transaction.setEnddate(externalTransaction.getEnddate());
+                transaction.setInstallmentnumber(externalTransaction.getInstallmentnumber());
+                transaction.setPaid(externalTransaction.isPaid());
+                transaction.setContract(contract);
+                transaction.setCollected(false);
+                transaction.setReseller(contract.getReseller());
+                transaction.setOrderid(externalTransaction.getOrderid());
+
+                paymentTransactions.add(paymentTransactionRepository.save(transaction));
+            }
+        }
+
+        contract.setPaymentTransactions(paymentTransactions); // Update contract with payment transactions
+
+        // Set other attributes based on your business logic
+        // For relationships, you'll need to populate them as well based on the API data.
+
+        List<OrderedProduct> orderedProducts = externalContract.getOrderedProducts();
+        System.out.println("Ordered Products: " + orderedProducts);
+        if (orderedProducts != null) {
+            for (OrderedProduct externalOrderedProduct : orderedProducts) {
+                OrderedProduct orderedProduct = new OrderedProduct();
+
+                // Map fields from the external API data to your OrderedProduct entity
+                orderedProduct.setOrderedproductid(externalOrderedProduct.getOrderedproductid());
+                orderedProduct.setQuantity(externalOrderedProduct.getQuantity());
+                orderedProduct.setSubtotal(externalOrderedProduct.getSubtotal());
+
+                // Assuming that OrderedProduct has a ManyToOne relationship with Product
+                // Check if the product information exists in the external data
+                Product externalProduct = externalOrderedProduct.getProduct();
+                if (externalProduct != null) {
+                    Product product = new Product();
+                    System.out.println("External Product Name: " + externalProduct.getName());
+                    product.setName(externalProduct.getName());
+                    product.setUnit(externalProduct.getUnit());
+                    product.setPrice(externalProduct.getPrice());
+                    product.setCommissionrate(externalProduct.getCommissionrate());
+
+                    //Extra functions
+                    //Long fullPrice = (long) externalProduct.getPrice() * externalOrderedProduct.getQuantity();
+                    Long fullPrice = (long) externalContract.getOrderamount();
+
+                    //Set fullPrice, itemName, and installment_duration(paymentterms)
+                    contract.setItemName(externalProduct.getName());
+                    contract.setFullPrice(fullPrice);
+
+                    // Set the relationship between OrderedProduct and Product
+                    productRepository.save(product);
+
+                    orderedProduct.setProduct(product);
+                } else {
+                    System.out.println("External Product is empty!");
+                }
+
+                // Set the relationship between OrderedProduct and Contract
+                orderedProduct.setContract(contract);
+
+                // Save the new OrderedProduct entity
+                orderedProductRepository.save(orderedProduct);
+            }
+        }
+
+        // Add the OrderedProduct entities to the Contract
+        contract.setOrderedProducts(orderedProducts);
+
+        // Save the new Contract entity
+        contractRepository.save(contract);
+    }
+
+*/
+
+
+    public void fetchDataAndSaveToDatabase() {
+        RestTemplate restTemplate = new RestTemplate();
+        Contract[] contracts = restTemplate.getForObject(apiUrl, Contract[].class);
+
+        if (contracts != null) {
+            for (Contract externalContract : contracts) {
+                String externalOrderId = externalContract.getOrderid();
+
+                // Check if the contract already exists in the database using the external order ID
+                if (!contractRepository.existsByOrderid(externalOrderId)) {
+                    // Create a new Contract entity
+                    Contract contract = new Contract();
+
+                    // Check if the distributor (reseller) information exists in the external data
+                    Reseller externalDistributor = externalContract.getReseller();
+                    Reseller reseller = null;
+
+                    if (externalDistributor != null) {
+                        Optional<Reseller> existingReseller = resellerRepository.findByUsername(externalDistributor.getUsername());
+                        Reseller newReseller = new Reseller();
+
+                        // Map and set distributor attributes
+
+                        reseller = existingReseller.orElseGet(()->{
+
+                            String username = externalDistributor.getFirstname() + "." + externalDistributor.getLastname();
+                            newReseller.setUsername(externalDistributor.getUsername());
+                            newReseller.setFullName(externalDistributor.getFirstname() + " " + externalDistributor.getMiddlename() + " " + externalDistributor.getLastname());
+                            newReseller.setFirstname(externalDistributor.getFirstname());
+                            newReseller.setMiddlename(externalDistributor.getMiddlename());
+                            newReseller.setLastname(externalDistributor.getLastname());
+                            newReseller.setEmail(externalDistributor.getEmail());
+                            newReseller.setAddress(externalDistributor.getAddress());
+
+                            // Encrypt the password before saving
+                            String rawPassword = externalDistributor.getLastname()+"123";
+
+                            // Add null check for rawPassword
+                            if (rawPassword != null) {
+                                String encodedPassword = passwordEncoder.encode(rawPassword);
+                                newReseller.setPassword(encodedPassword);
+                            } else {
+                                // Handle the case where the password is null (e.g., throw an exception or set a default password)
+                            }
+
+
+
+                            contract.setUsername(username);
+                            return resellerRepository.save(newReseller);
+                        });
+
+                        contract.setReseller(reseller);
+                        System.out.println("External Reseller: " + reseller);
+                    } else {
+                        // External distributor is null, set the field to null
+                        contract.setReseller(null);
+                        System.out.println("External Reseller is null.");
+                    }
+
+                    // Check if the distributor (collector) information exists in the external data
+                    Collector externalCollector = externalContract.getCollector();
+                    Collector collector = null;
+
+                    if (externalCollector != null) {
+                        // Check if the collector with the same username already exists
+                        Optional<Collector> existingCollector = collectorRepository.findByUsername(externalCollector.getUsername());
+
+                        if (existingCollector.isPresent()) {
+                            // Use the existing Collector
+                            collector = existingCollector.get();
+                        } else {
+                            // Create a new Collector and save it to the database
+                            Collector newCollector = new Collector();
+                            // Map and set collector attributes
+                            newCollector.setUsername(externalCollector.getUsername());
+                            newCollector.setFullName(externalCollector.getFirstname() + " " + externalCollector.getMiddlename() + " " + externalCollector.getLastname());
+                            newCollector.setFirstname(externalCollector.getFirstname());
+                            newCollector.setMiddlename(externalCollector.getMiddlename());
+                            newCollector.setLastname(externalCollector.getLastname());
+                            newCollector.setEmail(externalCollector.getEmail());
+                            newCollector.setAddress(externalCollector.getAddress());
+
+                            // Encrypt the password before saving
+                            String rawPassword = externalCollector.getLastname()+"123";
+
+                            // Add null check for rawPassword
+                            if (rawPassword != null) {
+                                String encodedPassword = passwordEncoder.encode(rawPassword);
+                                newCollector.setPassword(encodedPassword);
+                            } else {
+                                // Handle the case where the password is null (e.g., throw an exception or set a default password)
+                            }
+
+                            // Save the new Collector to the database
+                            collector = collectorRepository.save(newCollector);
+                        }
+
+                        contract.setCollector(collector);
+                        System.out.println("External Collector: " + collector);
+                    } else {
+                        // External collector is null, set the field to null
+                        contract.setCollector(null);
+                        System.out.println("External Collector is null.");
+                    }
+
+
+                    // Check if the dealer (client) information exists in the external data
+                    Client externalDealer = externalContract.getClient();
+                    Client client = null;
+                    if (externalDealer != null) {
+                        // Check if the client with the same username already exists
+                        Optional<Client> existingClient = clientRepository.findByUsername(externalDealer.getUsername());
+
+                        client = existingClient.orElseGet(() -> {
+                            Client newClient = new Client();
+                            // Map and set dealer attributes
+                            newClient.setUsername(externalDealer.getUsername());
+
+                            String username = externalDealer.getFirstname() + "." + externalDealer.getLastname();
+
+                            newClient.setFullName(externalDealer.getFirstname() + " " + externalDealer.getMiddlename() + " " + externalDealer.getLastname());
+                            newClient.setUsername(username);
+                            newClient.setFirstname(externalDealer.getFirstname());
+                            newClient.setMiddlename(externalDealer.getMiddlename());
+                            newClient.setLastname(externalDealer.getLastname());
+                            newClient.setEmail(externalDealer.getEmail());
+                            newClient.setAddress(externalDealer.getAddress());
+                            newClient.setPassword(externalDealer.getPassword());
+
+                            // Encrypt the password before saving
+                            String rawPassword = externalDealer.getLastname() + "123";
+
+                            // Add null check for rawPassword
+                            if (rawPassword != null) {
+                                String encodedPassword = passwordEncoder.encode(rawPassword);
+                                newClient.setPassword(encodedPassword);
+                            } else {
+                                // Handle the case where the password is null (e.g., throw an exception or set a default password)
+                            }
+
+                            // Set Contract Client's username
+                            contract.setUsername(username);
+                            return clientRepository.save(newClient);
+                        });
+
+                        contract.setClient(client);
+                        System.out.println("External Client: " + client);
+                    } else {
+                        // External client is null, set the field to null
+                        contract.setClient(null);
+                        System.out.println("External Client is null.");
+                    }
+
+                    // Map fields from the external API data to your Contract entity
+                    contract.setOrderid(externalOrderId);
+                    contract.setOrderdate(externalContract.getOrderdate());
+                    contract.setDistributiondate(externalContract.getDistributiondate());
+                    contract.setPenaltyrate(externalContract.getPenaltyrate());
+                    contract.setPaymentterms(externalContract.getPaymentterms());
+                    contract.setOrderamount(externalContract.getOrderamount());
+                    contract.setClosed(externalContract.isClosed());
+                    contract.setUsername((externalDealer.getUsername()));
+                    List<PaymentTransaction> paymentTransactions = new ArrayList<>();
+
+                    if (externalContract.getPaymentTransactions() != null) {
+                        for (PaymentTransaction externalTransaction : externalContract.getPaymentTransactions()) {
+
+                            PaymentTransaction transaction = new PaymentTransaction();
+                            transaction.setPaymenttransactionid(externalTransaction.getPaymenttransactionid());
+                            transaction.setAmountdue(externalTransaction.getAmountdue());
+                            transaction.setStartingdate(externalTransaction.getStartingdate());
+                            transaction.setEnddate(externalTransaction.getEnddate());
+                            transaction.setInstallmentnumber(externalTransaction.getInstallmentnumber());
+                            transaction.setPaid(externalTransaction.isPaid());
+                            transaction.setContract(contract);
+                            transaction.setCollected(false);
+                            transaction.setReseller(reseller);
+                            transaction.setCollector(collector);
+
+                            transaction.setOrderid(externalTransaction.getOrderid());
+
+                            paymentTransactions.add(paymentTransactionRepository.save(transaction));
+                        }
+                    }
+
+
+
+                    contract.setPaymentTransactions(paymentTransactions); // Update contract with payment transactions
+
+                    // Set other attributes based on your business logic
+                    // For relationships, you'll need to populate them as well based on the API data.
+
+                    List<OrderedProduct> orderedProducts = externalContract.getOrderedProducts();
+                    System.out.println("Contracts: " + Arrays.toString(contracts));
+                    System.out.println("Ordered Products: " + orderedProducts);
+                    if (orderedProducts != null) {
+                        for (OrderedProduct externalOrderedProduct : orderedProducts) {
+                            OrderedProduct orderedProduct = new OrderedProduct();
+
+                            // Map fields from the external API data to your OrderedProduct entity
+                            orderedProduct.setOrderedproductid(externalOrderedProduct.getOrderedproductid());
+                            orderedProduct.setQuantity(externalOrderedProduct.getQuantity());
+                            orderedProduct.setSubtotal(externalOrderedProduct.getSubtotal());
+
+                            // Assuming that OrderedProduct has a ManyToOne relationship with Product
+                            // Check if the product information exists in the external data
+                            Product externalProduct = externalOrderedProduct.getProduct();
+                            if (externalProduct != null) {
+
+                                Product product = new Product();
+                                System.out.println("External Product Name: " + externalProduct.getName());
+                                product.setName(externalProduct.getName());
+                                product.setUnit(externalProduct.getUnit());
+                                product.setPrice(externalProduct.getPrice());
+                                product.setCommissionrate(externalProduct.getCommissionrate());
+
+                                //Extra functions
+                                //Long fullPrice = (long) externalProduct.getPrice() * externalOrderedProduct.getQuantity();
+                                Long fullPrice = (long) externalContract.getOrderamount();
+
+                                //Set fullPrice, itemName and installment_duration(paymentterms)
+                                contract.setItemName(externalProduct.getName());
+                                contract.setFullPrice(fullPrice);
+
+
+
+
+                                // Set the relationship between OrderedProduct and Product
+                                productRepository.save(product);
+
+                                orderedProduct.setProduct(product);
+
+
+                            }else{
+                                System.out.println("External Product is empty!");
+                            }
+
+
+                            // Set the relationship between OrderedProduct and Contract
+                            orderedProduct.setContract(contract);
+
+                            // Save the new OrderedProduct entity
+                            orderedProductRepository.save(orderedProduct);
+
+                        }
+
+                    }
+
+                    // Add the OrderedProduct entities to the Contract
+                    contract.setOrderedProducts(orderedProducts);
+
+                    // Save the new Contract entity
+                    contractRepository.save(contract);
+                }
+            }
+        }
+    }
 
     // This method will run automatically every 5 minutes
     @Scheduled(fixedRate = 5000) // 5 minutes = 300,000 milliseconds
