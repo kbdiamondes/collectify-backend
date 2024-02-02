@@ -1,96 +1,96 @@
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\messages\ResponseMessage.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\client\SchedulePaymentReminderService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\PaymentTransaction.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\ContractService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\filehandling\FileStorageService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\CollectionHistory.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\ClientServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\collector\PaymentRecordService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\others\PaymentTransactionService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\reseller\CollectPaymentsController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\repositories\SchedulePaymentReminderRepository.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\client\DuePaymentsController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\repositories\ClientRepository.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\others\OrderedProductServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\repositories\OrderedProductRepository.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\repositories\ResellerRepository.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\ResellerService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\client\SchedulePaymentReminderController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\SchedulePaymentReminderDTO.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\others\PaymentTransactionServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\DiscussionApplication.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\repositories\ContractRepository.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\reseller\CollectorCollectionService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\config\SecurityConfig.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\CollectorServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\client\TransactionHistoryServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\messages\ResponseFile.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\CollectorController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\reseller\CollectorCollectionController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\repositories\FileDBRepository.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\client\DuePaymentsServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\client\PayDuesServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\ContractController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\others\LoginService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\reseller\CollectPaymentsServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\ClientController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\client\PayDuesService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\PaymentTransactionWithClientAndItemDTO.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\client\PaymentRecordsServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\Product.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\FileDB.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\OrderedProduct.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\CollectionHistoryService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\TransactionHistory.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\collector\CollectionListServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\CollectionHistoryServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\ClientService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\exceptions\UserException.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\config\CorsConfig.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\Collector.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\collector\CollectorCollectPaymentsServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\SchedulePaymentReminder.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\client\TransactionHistoryService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\client\SchedulePaymentReminderServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\ServletInitializer.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\client\PayDuesController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\reseller\MyCollectorsServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\repositories\TransactionHistoryRepository.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\others\ProductService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\reseller\MyCollectorsService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\CollectionHistoryController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\collector\CollectorCollectPaymentsService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\filehandling\FileController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\filehandling\FileStorageServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\CollectorService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\client\PaymentRecordsService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\collector\PaymentRecordServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\Client.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\client\PaymentRecordsController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\others\LoginServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\collector\CollectionListController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\repositories\CollectionHistoryRepository.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\reseller\CollectPaymentsService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\client\DuePaymentsService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\PaymentTransactionWithItemNameDTO.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\others\OrderedProductService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\collector\CollectorCollectPaymentsController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\reseller\CollectorCollectionServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\PaymentTransactionWithCollectorDTO.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\others\ProductServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\Contract.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\client\TransactionHistoryController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\others\LoginController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\ResellerController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\repositories\PaymentTransactionRepository.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\PaymentTransactionForCollectionListDTO.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\ResellerServiceImpl.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\reseller\MyCollectorsController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\repositories\ProductRepository.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\collector\CollectionListService.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\config\FileUpload.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\collector\PaymentRecordController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\controllers\others\PaymentTransactionController.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\models\Reseller.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\repositories\CollectorRepository.java
-C:\Users\User\Documents\GitHub\Code\collectify-backend\src\main\java\com\capstone\collectify\services\ContractServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\collector\CollectorCollectPaymentsController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\client\TransactionHistoryService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\DiscussionApplication.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\client\SchedulePaymentReminderController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\reseller\MyCollectorsServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\messages\ResponseFile.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\others\ProductService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\reseller\CollectorCollectionServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\repositories\ProductRepository.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\PaymentTransactionForCollectionListDTO.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\client\SchedulePaymentReminderServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\collector\CollectionListService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\ResellerServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\client\PaymentRecordsService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\collector\PaymentRecordController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\collector\CollectorCollectPaymentsServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\client\PayDuesController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\CollectionHistoryService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\others\LoginServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\ResellerService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\reseller\CollectorCollectionService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\SchedulePaymentReminderDTO.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\config\SecurityConfig.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\client\DuePaymentsServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\CollectionHistory.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\FileDB.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\others\LoginController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\others\OrderedProductServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\ClientServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\messages\ResponseMessage.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\Client.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\Collector.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\client\DuePaymentsService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\client\PaymentRecordsServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\ContractService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\reseller\MyCollectorsController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\Product.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\Reseller.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\CollectionHistoryServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\config\FileUpload.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\Contract.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\config\CorsConfig.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\SchedulePaymentReminder.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\repositories\ClientRepository.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\ResellerController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\filehandling\FileStorageService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\CollectionHistoryController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\reseller\CollectPaymentsController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\repositories\SchedulePaymentReminderRepository.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\reseller\MyCollectorsService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\client\DuePaymentsController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\TransactionHistory.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\repositories\FileDBRepository.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\repositories\ContractRepository.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\PaymentTransactionWithClientAndItemDTO.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\repositories\PaymentTransactionRepository.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\collector\CollectionListServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\collector\PaymentRecordServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\filehandling\FileController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\others\PaymentTransactionService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\ContractController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\ContractServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\client\PaymentRecordsController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\client\PayDuesServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\ClientService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\reseller\CollectorCollectionController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\PaymentTransaction.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\repositories\OrderedProductRepository.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\others\PaymentTransactionController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\client\PayDuesService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\ClientController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\client\TransactionHistoryController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\reseller\CollectPaymentsService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\PaymentTransactionWithItemNameDTO.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\client\TransactionHistoryServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\exceptions\UserException.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\others\ProductServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\collector\CollectionListController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\PaymentTransactionWithCollectorDTO.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\others\LoginService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\others\PaymentTransactionServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\repositories\ResellerRepository.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\collector\CollectorCollectPaymentsService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\repositories\CollectionHistoryRepository.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\collector\PaymentRecordService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\models\OrderedProduct.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\filehandling\FileStorageServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\CollectorServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\reseller\CollectPaymentsServiceImpl.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\controllers\CollectorController.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\repositories\TransactionHistoryRepository.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\others\OrderedProductService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\ServletInitializer.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\CollectorService.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\repositories\CollectorRepository.java
+C:\Users\acer\Project Lobby\collectify-backend\src\main\java\com\capstone\collectify\services\client\SchedulePaymentReminderService.java
