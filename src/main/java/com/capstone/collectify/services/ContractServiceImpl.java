@@ -231,8 +231,10 @@ public class ContractServiceImpl implements ContractService {
                         Reseller newReseller = new Reseller();
                         // Map and set distributor attributes
                             reseller = existingReseller.orElseGet(()->{
+
                             String username = externalDistributor.getFirstname() + "." + externalDistributor.getLastname();
-                            newReseller.setUsername(externalDistributor.getUsername());
+                            newReseller.setUsername(username);
+
                             newReseller.setFullName(externalDistributor.getFirstname() + " " + externalDistributor.getMiddlename() + " " + externalDistributor.getLastname());
                             newReseller.setFirstname(externalDistributor.getFirstname());
                             newReseller.setMiddlename(externalDistributor.getMiddlename());
@@ -274,7 +276,11 @@ public class ContractServiceImpl implements ContractService {
                         } else {
                             // Create a new Collector and save it to the database
                             Collector newCollector = new Collector();
+
                             // Map and set collector attributes
+                             String username = externalCollector.getFirstname() + "." + externalCollector.getLastname();
+                             newCollector.setUsername(username);
+
                              newCollector.setUsername(externalCollector.getUsername());
                              newCollector.setFullName(externalCollector.getFirstname() + " " + externalCollector.getMiddlename() + " " + externalCollector.getLastname());
                              newCollector.setFirstname(externalCollector.getFirstname());
@@ -293,11 +299,9 @@ public class ContractServiceImpl implements ContractService {
                             } else {
                                 // Handle the case where the password is null (e.g., throw an exception or set a default password)
                             }
-
                             // Save the new Collector to the database
                             collector = collectorRepository.save(newCollector);
                         }
-
                         contract.setCollector(collector);
                         System.out.println("External Collector: " + collector);
                     } else {
@@ -305,30 +309,74 @@ public class ContractServiceImpl implements ContractService {
                         contract.setCollector(null);
                         System.out.println("External Collector is null.");
                     }
+
                     // Check if the dealer (client) information exists in the external data
                     Client externalDealer = externalContract.getClient();
-
                     Client client = null;
-                    if (externalDealer != null) {
-                        // Check if the client with the same username already exists
-                        Optional<Client> existingClient = clientRepository.findByUsername(externalDealer.getUsername());
+//                    if (externalDealer != null) {
+//                        // Check if the client with the same username already exists
+//                        Optional<Client> existingClient = clientRepository.findByUsername(externalDealer.getUsername());
+//
+//                        client = existingClient.orElseGet(() -> {
+//                         /*   Client newClient = new Client();
+//                            // Map and set dealer attributes
+//                            newClient.setUsername(externalDealer.getUsername());
+//                            String username = externalDealer.getUsername();
+//                            newClient.setFullName(externalDealer.getFirstname() + " " + externalDealer.getMiddlename() + " " + externalDealer.getLastname());
+//                            newClient.setUsername(externalDealer.getUsername());
+//                            newClient.setFirstname(externalDealer.getFirstname());
+//                            newClient.setMiddlename(externalDealer.getMiddlename());
+//                            newClient.setLastname(externalDealer.getLastname());
+//                            newClient.setEmail(externalDealer.getEmail());
+//                            newClient.setAddress(externalDealer.getAddress());
+//                            newClient.setPassword(externalDealer.getPassword());
+//
+//                            // Encrypt the password before saving
+//                            String rawPassword = externalDealer.getLastname() + "123";
+//
+//                            // Add null check for rawPassword
+//                            if (rawPassword != null) {
+//                                String encodedPassword = passwordEncoder.encode(rawPassword);
+//                                newClient.setPassword(encodedPassword);
+//                            } else {
+//                                // Handle the case where the password is null (e.g., throw an exception or set a default password)
+//                            }
+//                            // Set Contract Client's username
+//                            contract.setUsername(username);
+//                            return clientRepository.save(newClient);*/
+//                            return existingClient.get();
+//                        });
+//                        contract.setClient(client);
+//                        System.out.println("External Client: " + client);
+//                    } else {
+//                        // External client is null, set the field to null
+//                        contract.setClient(null);
+//                        System.out.println("External Client is null.");
+//                    }
 
-                        client = existingClient.orElseGet(() -> {
-                         /*   Client newClient = new Client();
-                            // Map and set dealer attributes
-                            newClient.setUsername(externalDealer.getUsername());
-                            String username = externalDealer.getUsername();
+                    if (externalDealer != null) {
+                        // Check if the collector with the same username already exists
+                        Optional<Client> existingClient = clientRepository.findByUsername(externalDealer.getUsername());
+                        if (existingClient.isPresent()) {
+                            // Use the existing Collector
+                            client = existingClient.get();
+                        } else {
+                            // Create a new Collector and save it to the database
+                            Client newClient = new Client();
+                            // Map and set collector attributes
+
+                            String username = externalDealer.getFirstname() + "." + externalDealer.getLastname();
+                            newClient.setUsername(username);
+
                             newClient.setFullName(externalDealer.getFirstname() + " " + externalDealer.getMiddlename() + " " + externalDealer.getLastname());
-                            newClient.setUsername(externalDealer.getUsername());
                             newClient.setFirstname(externalDealer.getFirstname());
                             newClient.setMiddlename(externalDealer.getMiddlename());
                             newClient.setLastname(externalDealer.getLastname());
                             newClient.setEmail(externalDealer.getEmail());
                             newClient.setAddress(externalDealer.getAddress());
-                            newClient.setPassword(externalDealer.getPassword());
 
                             // Encrypt the password before saving
-                            String rawPassword = externalDealer.getLastname() + "123";
+                            String rawPassword = externalDealer.getLastname()+"123";
 
                             // Add null check for rawPassword
                             if (rawPassword != null) {
@@ -337,18 +385,19 @@ public class ContractServiceImpl implements ContractService {
                             } else {
                                 // Handle the case where the password is null (e.g., throw an exception or set a default password)
                             }
-                            // Set Contract Client's username
-                            contract.setUsername(username);
-                            return clientRepository.save(newClient);*/
-                            return existingClient.get();
-                        });
+                            // Save the new Collector to the database
+                            client = clientRepository.save(newClient);
+                        }
+
                         contract.setClient(client);
-                        System.out.println("External Client: " + client);
+                        System.out.println("External Collector: " + client);
                     } else {
-                        // External client is null, set the field to null
+                        // External collector is null, set the field to null
                         contract.setClient(null);
                         System.out.println("External Client is null.");
                     }
+
+
                     // Map fields from the external API data to your Contract entity
                     contract.setOrderid(externalOrderId);
                     contract.setOrderdate(externalContract.getOrderdate());
@@ -405,46 +454,34 @@ public class ContractServiceImpl implements ContractService {
 
                                 //Extra functions
                                 //Long fullPrice = (long) externalProduct.getPrice() * externalOrderedProduct.getQuantity();
-                                Long fullPrice = (long) externalContract.getOrderamount();
 
+                                Long fullPrice = (long) externalContract.getOrderamount();
                                 //Set fullPrice, itemName and installment_duration(paymentterms)
+
                                 contract.setItemName(externalProduct.getName());
                                 contract.setFullPrice(fullPrice);
 
-
-
-
                                 // Set the relationship between OrderedProduct and Product
                                 productRepository.save(product);
-
                                 orderedProduct.setProduct(product);
-
 
                             }else{
                                 System.out.println("External Product is empty!");
                             }
-
-
                             // Set the relationship between OrderedProduct and Contract
                             orderedProduct.setContract(contract);
-
                             // Save the new OrderedProduct entity
                             orderedProductRepository.save(orderedProduct);
-
                         }
-
                     }
-
                     // Add the OrderedProduct entities to the Contract
                     contract.setOrderedProducts(orderedProducts);
-
                     // Save the new Contract entity
                     contractRepository.save(contract);
                 }
             }
         }
     }
-
     // This method will run automatically every 5 minutes
     @Scheduled(fixedRate = 5000) // 5 minutes = 300,000 milliseconds
     public void scheduleFetchAndSave() {
