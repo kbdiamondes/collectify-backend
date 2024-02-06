@@ -1,12 +1,9 @@
 package com.capstone.collectify.services;
 
-import com.capstone.collectify.models.Client;
 import com.capstone.collectify.models.Collector;
-import com.capstone.collectify.models.Contract;
 import com.capstone.collectify.repositories.ClientRepository;
 import com.capstone.collectify.repositories.CollectorRepository;
 import com.capstone.collectify.repositories.ContractRepository;
-import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,11 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CollectorServiceImpl implements CollectorService {
@@ -108,7 +101,6 @@ public class CollectorServiceImpl implements CollectorService {
             }
         }
     }
-
     // This method will run automatically every 5 minutes
     @Scheduled(fixedRate = 5000) // 5 minutes = 300,000 milliseconds
     public void scheduleFetchAndSave() {
