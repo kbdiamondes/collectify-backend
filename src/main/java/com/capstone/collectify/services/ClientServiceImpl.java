@@ -157,14 +157,15 @@ public class ClientServiceImpl implements ClientService {
                 String firstname = client.getFirstname();
                 String middlename = client.getMiddlename();
                 String lastname = client.getLastname();
-                String address = client.getAddress();
+                String email = client.getEmail();
                 String password = client.getPassword();
+                String address = client.getAddress();
 
                 // Concatenate first, middle, and last names into the fullName field
                 String userName = firstname + "." + lastname;
                 //String password = lastname + "123";
                 String fullName = firstname + " " + middlename + " " + lastname;
-                String email = firstname.toLowerCase() + lastname.toLowerCase() + "@example.com";
+                //String email = firstname.toLowerCase() + lastname.toLowerCase() + "@example.com";
                 //String clientAddress = address;
 
                 client.setUsername(userName);

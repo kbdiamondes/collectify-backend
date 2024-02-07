@@ -249,7 +249,7 @@ public class ContractServiceImpl implements ContractService {
                             newReseller.setAddress(externalDistributor.getAddress());
 
                             // Encrypt the password before saving
-                            String rawPassword = externalDistributor.getLastname()+"123";
+                            String rawPassword = externalDistributor.getPassword();
 
                             // Add null check for rawPassword
                             if (rawPassword != null) {
