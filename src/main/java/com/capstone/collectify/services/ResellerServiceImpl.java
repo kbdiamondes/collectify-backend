@@ -4,18 +4,12 @@ import com.capstone.collectify.models.*;
 import com.capstone.collectify.repositories.*;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -49,18 +43,12 @@ public class ResellerServiceImpl implements ResellerService {
     @Override
     public Reseller createReseller(Reseller reseller){
         String rawPassword = reseller.getPassword();
-
         // Perform password hashing using Spring Security's PasswordEncoder
         String encodedPassword = passwordEncoder.encode(rawPassword);
-
-
         reseller.setPassword(encodedPassword);
-
         resellerRepository.save(reseller);
-
         return reseller;
     }
-
     @Transactional
     public Contract createContract(Long resellerId, String clientUsername, Contract contract) {
         // Fetch the Reseller entity

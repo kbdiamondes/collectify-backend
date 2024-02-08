@@ -76,14 +76,15 @@ public class CollectorServiceImpl implements CollectorService {
                 String firstname = collector.getFirstname();
                 String middlename = collector.getMiddlename();
                 String lastname = collector.getLastname();
+                String email = collector.getEmail();
+                String password = collector.getPassword();
                 String address = collector.getAddress();
-
 
                 // Concatenate first, middle, and last names into the fullName field
                 String userName = firstname+"."+lastname;
-                String password = lastname+"123";
+                //String password = lastname+"123";
                 String fullName = firstname + " " + middlename + " " + lastname;
-                String email = firstname + lastname + "@gmail.com";
+                //String email = firstname + lastname + "@gmail.com";
                 String collectorAddress = address;
 
                 collector.setUsername(userName);
