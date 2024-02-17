@@ -1,6 +1,5 @@
 package com.capstone.collectify.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -39,6 +38,9 @@ public class Client {
     @Column
     private String lastname;
 
+
+    @Column
+    private String dealerid;
 
     // Other client-specific attributes and relationships
     @OneToMany(mappedBy = "client")
@@ -140,5 +142,13 @@ public class Client {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getDealerid() {
+        return dealerid;
+    }
+
+    public void setDealerid(String dealerid) {
+        this.dealerid = dealerid;
     }
 }

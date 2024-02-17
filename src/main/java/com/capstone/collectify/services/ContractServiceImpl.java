@@ -209,7 +209,7 @@ public class ContractServiceImpl implements ContractService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Scheduled(cron = "0 0 0 */1 * ?")
+    @Scheduled(cron = "0/10 * * * * *")
     public void fetchDataAndSaveToDatabase() {
         RestTemplate restTemplate = new RestTemplate();
         Contract[] contracts = restTemplate.getForObject(apiUrl, Contract[].class);
@@ -229,24 +229,23 @@ public class ContractServiceImpl implements ContractService {
 
                     if (externalDistributor != null) {
                         //FEB 4 - CHANGED TO A CONCAT FIRSTNAME AND LASTNAME SINCE THERE IS NO USERNAME FROM DISTRILINK
-                        Optional<Reseller> existingReseller = resellerRepository.findByUsername(externalDistributor.getFirstname() + "." + externalDistributor.getLastname());
+                        //Optional<Reseller> existingReseller = resellerRepository.findByUsername(externalDistributor.getFirstname() + "." + externalDistributor.getLastname());
+                        Optional<Reseller> distributorid = resellerRepository.findByDistributorid(externalDistributor.getDistributorid());
                         Reseller newReseller = new Reseller();
 
                         // Map and set distributor attributes
 
-                        reseller = existingReseller.orElseGet(()->{
+                        reseller = distributorid.orElseGet(()->{
 
                             //FEB 4 - NEW SETTER FOR USERNAME
                             String username = externalDistributor.getFirstname() + "." + externalDistributor.getLastname();
                             newReseller.setUsername(username);
 
-
                             newReseller.setFullName(externalDistributor.getFirstname() + " " + externalDistributor.getMiddlename() + " " + externalDistributor.getLastname());
                             newReseller.setFirstname(externalDistributor.getFirstname());
                             newReseller.setMiddlename(externalDistributor.getMiddlename());
                             newReseller.setLastname(externalDistributor.getLastname());
-                            newReseller.setEmail(externalDistributor.getEmail());
-                            newReseller.setAddress(externalDistributor.getAddress());
+                            newReseller.setDistributorid(externalDistributor.getDistributorid());
 
                             // Encrypt the password before saving
                             String rawPassword = externalDistributor.getPassword();
@@ -258,8 +257,6 @@ public class ContractServiceImpl implements ContractService {
                             } else {
                                 // Handle the case where the password is null (e.g., throw an exception or set a default password)
                             }
-
-
 
                             contract.setUsername(username);
                             return resellerRepository.save(newReseller);
@@ -280,11 +277,12 @@ public class ContractServiceImpl implements ContractService {
                     if (externalCollector != null) {
                         // Check if the collector with the same username already exists
                         //FEB 4 - CHANGED TO A CONCAT FIRSTNAME AND LASTNAME SINCE THERE IS NO USERNAME FROM DISTRILINK
-                        Optional<Collector> existingCollector = collectorRepository.findByUsername(externalCollector.getFirstname() + "." + externalCollector.getLastname());
+                        //Optional<Collector> existingCollector = collectorRepository.findByUsername(externalCollector.getFirstname() + "." + externalCollector.getLastname());
+                        Optional<Collector> employeeid = collectorRepository.findByEmployeeid(externalCollector.getEmployeeid());
 
-                        if (existingCollector.isPresent()) {
+                        if (employeeid.isPresent()) {
                             // Use the existing Collector
-                            collector = existingCollector.get();
+                            collector = employeeid.get();
                         } else {
                             // Create a new Collector and save it to the database
                             Collector newCollector = new Collector();
@@ -299,8 +297,7 @@ public class ContractServiceImpl implements ContractService {
                             newCollector.setFirstname(externalCollector.getFirstname());
                             newCollector.setMiddlename(externalCollector.getMiddlename());
                             newCollector.setLastname(externalCollector.getLastname());
-                            newCollector.setEmail(externalCollector.getEmail());
-                            newCollector.setAddress(externalCollector.getAddress());
+                            newCollector.setEmployeeid(externalCollector.getEmployeeid());
 
                             // Encrypt the password before saving
                             String rawPassword = externalCollector.getLastname()+"123";
@@ -332,9 +329,9 @@ public class ContractServiceImpl implements ContractService {
                     if (externalDealer != null) {
                         // Check if the client with the same username already exists
                         //FEB 4 - CHANGED TO A CONCAT FIRSTNAME AND LASTNAME SINCE THERE IS NO USERNAME FROM DISTRILINK
-                        Optional<Client> existingClient = clientRepository.findByUsername(externalDealer.getFirstname() + "." + externalDealer.getLastname());
-
-                        client = existingClient.orElseGet(() -> {
+                        //Optional<Client> existingClient = clientRepository.findByUsername(externalDealer.getFirstname() + "." + externalDealer.getLastname());
+                        Optional<Client> dealerid = clientRepository.findByDealerid(externalDealer.getDealerid());
+                        client = dealerid.orElseGet(() -> {
                             Client newClient = new Client();
                             // Map and set dealer attributes
                             newClient.setUsername(externalDealer.getUsername());
@@ -348,9 +345,8 @@ public class ContractServiceImpl implements ContractService {
                             newClient.setFirstname(externalDealer.getFirstname());
                             newClient.setMiddlename(externalDealer.getMiddlename());
                             newClient.setLastname(externalDealer.getLastname());
-                            newClient.setEmail(externalDealer.getEmail());
-                            newClient.setAddress(externalDealer.getAddress());
                             newClient.setPassword(externalDealer.getPassword());
+                            newClient.setDealerid(externalDealer.getDealerid());
 
                             // Encrypt the password before saving
                             String rawPassword = externalDealer.getLastname() + "123";
@@ -483,7 +479,7 @@ public class ContractServiceImpl implements ContractService {
 
 
     // This method will run automatically every 5 minutes
-    @Scheduled(fixedRate = 5000) // 5 minutes = 300,000 milliseconds
+    @Scheduled(fixedRate = 10000)// 5 minutes = 300,000 milliseconds
     public void scheduleFetchAndSave() {
         fetchDataAndSaveToDatabase();
     }

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.capstone.collectify.DiscussionApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 24.06 s - in com.capstone.collectify.DiscussionApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.758 s - in com.capstone.collectify.DiscussionApplicationTests

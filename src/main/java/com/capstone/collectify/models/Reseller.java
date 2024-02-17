@@ -1,7 +1,5 @@
 package com.capstone.collectify.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -34,6 +32,10 @@ public class Reseller {
 
     @Column
     private String email;
+
+    @Column
+    private String distributorid;
+
 
     @Column
     @JsonProperty(value = "password", access = JsonProperty.Access.WRITE_ONLY)
@@ -159,5 +161,13 @@ public class Reseller {
 
     public void setPaymentTransactions(List<PaymentTransaction> paymentTransactions) {
         this.paymentTransactions = paymentTransactions;
+    }
+
+    public String getDistributorid() {
+        return distributorid;
+    }
+
+    public void setDistributorid(String distributorid) {
+        this.distributorid = distributorid;
     }
 }

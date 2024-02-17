@@ -1,7 +1,5 @@
 package com.capstone.collectify.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -34,6 +32,9 @@ public class Collector {
 
     @Column
     private String email;
+
+    @Column
+    private String employeeid;
 
     @Column
     @JsonProperty(value = "password", access = JsonProperty.Access.WRITE_ONLY)
@@ -160,5 +161,13 @@ public class Collector {
 
     public void setResellers(List<Reseller> resellers) {
         this.resellers = resellers;
+    }
+
+    public String getEmployeeid() {
+        return employeeid;
+    }
+
+    public void setEmployeeid(String employeeid) {
+        this.employeeid = employeeid;
     }
 }

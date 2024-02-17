@@ -4,7 +4,6 @@ import com.capstone.collectify.models.Collector;
 import com.capstone.collectify.models.PaymentTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +18,9 @@ public interface CollectorRepository extends JpaRepository<Collector, Object> {
     boolean existsByEmail(String email);
 
     Optional<Collector> findByUsername(String username);
+
+
+    Optional<Collector> findByEmployeeid(String employeeid);
 
     //CollectionList
     @Query("SELECT pt FROM Collector c JOIN c.assignedPaymentTransactions pt " +
