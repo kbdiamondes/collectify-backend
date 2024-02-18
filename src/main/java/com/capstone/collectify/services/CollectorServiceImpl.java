@@ -76,7 +76,9 @@ public class CollectorServiceImpl implements CollectorService {
                 String firstname = collector.getFirstname();
                 String middlename = collector.getMiddlename();
                 String lastname = collector.getLastname();
+                String email = collector.getEmail();
                 String password = collector.getPassword();
+                String address = collector.getAddress();
                 String employeeid = collector.getEmployeeid();
 
                 // Concatenate first, middle, and last names into the fullName field
@@ -84,10 +86,13 @@ public class CollectorServiceImpl implements CollectorService {
                 //String password = lastname+"123";
                 String fullName = firstname + " " + middlename + " " + lastname;
                 //String email = firstname + lastname + "@gmail.com";
+                String collectorAddress = address;
 
                 collector.setUsername(userName);
                 collector.setFullName(fullName);
+                collector.setEmail(email);
                 collector.setPassword(passwordEncoder.encode(password));
+                collector.setAddress(collectorAddress);
                 collector.setEmployeeid(employeeid);
 
                 // Check if the collector already exists in the database using some unique identifier (e.g., username or email)

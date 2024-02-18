@@ -245,6 +245,8 @@ public class ContractServiceImpl implements ContractService {
                             newReseller.setFirstname(externalDistributor.getFirstname());
                             newReseller.setMiddlename(externalDistributor.getMiddlename());
                             newReseller.setLastname(externalDistributor.getLastname());
+                            newReseller.setEmail(externalDistributor.getEmail());
+                            newReseller.setAddress(externalDistributor.getAddress());
                             newReseller.setDistributorid(externalDistributor.getDistributorid());
 
                             // Encrypt the password before saving
@@ -297,6 +299,8 @@ public class ContractServiceImpl implements ContractService {
                             newCollector.setFirstname(externalCollector.getFirstname());
                             newCollector.setMiddlename(externalCollector.getMiddlename());
                             newCollector.setLastname(externalCollector.getLastname());
+                            newCollector.setEmail(externalCollector.getEmail());
+                            newCollector.setAddress(externalCollector.getAddress());
                             newCollector.setEmployeeid(externalCollector.getEmployeeid());
 
                             // Encrypt the password before saving
@@ -346,6 +350,8 @@ public class ContractServiceImpl implements ContractService {
                             newClient.setMiddlename(externalDealer.getMiddlename());
                             newClient.setLastname(externalDealer.getLastname());
                             newClient.setPassword(externalDealer.getPassword());
+                            newClient.setEmail(externalDealer.getEmail());
+                            newClient.setAddress(externalDealer.getAddress());
                             newClient.setDealerid(externalDealer.getDealerid());
 
                             // Encrypt the password before saving

@@ -154,7 +154,9 @@ public class ClientServiceImpl implements ClientService {
                 String firstname = client.getFirstname();
                 String middlename = client.getMiddlename();
                 String lastname = client.getLastname();
+                String email = client.getEmail();
                 String password = client.getPassword();
+                String address = client.getAddress();
                 String dealerid = client.getDealerid();
 
                 // Concatenate first, middle, and last names into the fullName field
@@ -162,11 +164,13 @@ public class ClientServiceImpl implements ClientService {
                 //String password = lastname + "123";
                 String fullName = firstname + " " + middlename + " " + lastname;
                 //String email = firstname.toLowerCase() + lastname.toLowerCase() + "@example.com";
-                //String clientAddress = address;
+                String clientAddress = address;
 
                 client.setUsername(userName);
                 client.setFullName(fullName);
+                client.setEmail(email);
                 client.setPassword(passwordEncoder.encode(password));
+                client.setAddress(address);
                 client.setDealerid(dealerid);
 
                 // Check if the client already exists in the database using some unique identifier (e.g., username or email)
