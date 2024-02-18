@@ -23,6 +23,7 @@ public class PaymentTransaction {
 
     @Column
     private LocalDate startingdate;
+    private LocalDate collectiondate;
 
     @Column
     private LocalDate enddate;
@@ -157,5 +158,14 @@ public class PaymentTransaction {
 
     public void setOrderid(String orderid) {
         this.orderid = orderid;
+    }
+
+
+    public LocalDate getCollectiondate() {
+        return collectiondate;
+    }
+
+    public void setCollectiondate(LocalDate collectiondate) {
+        this.collectiondate = collectiondate;
     }
 }

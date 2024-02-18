@@ -47,6 +47,8 @@ public class PayDuesServiceImpl implements PayDuesService {
 
             if (!paymentTransaction.isPaid()) {
                 if (amount.compareTo(BigDecimal.valueOf(paymentTransaction.getAmountdue())) == 0) {
+
+
                     paymentTransaction.setPaid(true);
                     paymentTransaction.setEnddate(LocalDate.now()); // Set the end date to mark the completion of the payment
 

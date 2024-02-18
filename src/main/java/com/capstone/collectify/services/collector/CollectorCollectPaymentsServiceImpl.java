@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -58,8 +59,8 @@ public class CollectorCollectPaymentsServiceImpl implements CollectorCollectPaym
                 // Check if the payment transaction is not collected and the collector matches
                 if (paymentTransaction.getCollector().getCollector_id().equals(collectorId) && !paymentTransaction.isCollected()) {
                     // Save the file to the storage service
+                    paymentTransaction.setCollectiondate(LocalDate.now());
                     FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
-
                     // Update the payment transaction as collected
                     paymentTransaction.setCollected(true);
                     paymentTransactionRepository.save(paymentTransaction);
@@ -96,6 +97,7 @@ public class CollectorCollectPaymentsServiceImpl implements CollectorCollectPaym
                 // Ensure that the payment transaction is paid and not yet collected
                 if (paymentTransaction.isPaid() && !paymentTransaction.isCollected()) {
                     // Save the file to the storage service
+                    paymentTransaction.setCollectiondate(LocalDate.now());
                     FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
 
                     // Update the payment transaction as collected

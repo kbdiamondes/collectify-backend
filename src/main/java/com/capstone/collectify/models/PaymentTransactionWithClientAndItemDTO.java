@@ -9,6 +9,8 @@ public class PaymentTransactionWithClientAndItemDTO {
     private String paymenttransactionid;
     private double amountdue;
     private LocalDate startingdate;
+
+    private LocalDate collectiondate;
     private LocalDate enddate;
     private int installmentnumber;
     private boolean paid;
@@ -26,6 +28,7 @@ public class PaymentTransactionWithClientAndItemDTO {
         this.paymenttransactionid = paymentTransaction.getPaymenttransactionid();
         this.amountdue = paymentTransaction.getAmountdue();
         this.startingdate = paymentTransaction.getStartingdate();
+        this.collectiondate = paymentTransaction.getCollectiondate();
         this.enddate = paymentTransaction.getEnddate();
         this.installmentnumber = paymentTransaction.getInstallmentnumber();
         this.paid = paymentTransaction.isPaid();
@@ -77,6 +80,14 @@ public class PaymentTransactionWithClientAndItemDTO {
 
     public void setStartingdate(LocalDate startingdate) {
         this.startingdate = startingdate;
+    }
+
+    public LocalDate getCollectiondate() {
+        return collectiondate;
+    }
+
+    public void setCollectiondate(LocalDate collectiondate) {
+        this.collectiondate = collectiondate;
     }
 
     public LocalDate getEnddate() {

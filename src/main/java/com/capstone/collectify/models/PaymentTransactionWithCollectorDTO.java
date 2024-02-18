@@ -8,6 +8,7 @@ public class PaymentTransactionWithCollectorDTO {
     private String paymenttransactionid;
     private double amountdue;
     private LocalDate startingdate;
+    private LocalDate collectiondate;
     private LocalDate enddate;
     private int installmentnumber;
     private boolean paid;
@@ -55,6 +56,14 @@ public class PaymentTransactionWithCollectorDTO {
 
     public void setStartingdate(LocalDate startingdate) {
         this.startingdate = startingdate;
+    }
+
+    public LocalDate getCollectiondate() {
+        return collectiondate;
+    }
+
+    public void setCollectiondate(LocalDate collectiondate) {
+        this.collectiondate = collectiondate;
     }
 
     public LocalDate getEnddate() {
