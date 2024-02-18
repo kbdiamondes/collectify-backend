@@ -396,7 +396,7 @@ public class ContractServiceImpl implements ContractService {
                             transaction.setPaymenttransactionid(externalTransaction.getPaymenttransactionid());
                             transaction.setAmountdue(externalTransaction.getAmountdue());
                             transaction.setStartingdate(externalTransaction.getStartingdate());
-                            transaction.setCollectiondate(externalTransaction.getCollectiondate());
+                            transaction.setCollectiondate(null);
                             transaction.setEnddate(externalTransaction.getEnddate());
                             transaction.setInstallmentnumber(externalTransaction.getInstallmentnumber());
                             transaction.setPaid(externalTransaction.isPaid());
