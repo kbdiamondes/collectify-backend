@@ -304,7 +304,7 @@ public class ContractServiceImpl implements ContractService {
                             newCollector.setEmployeeid(externalCollector.getEmployeeid());
 
                             // Encrypt the password before saving
-                            String rawPassword = externalCollector.getLastname()+"123";
+                            String rawPassword = externalCollector.getPassword();
 
                             // Add null check for rawPassword
                             if (rawPassword != null) {
@@ -345,7 +345,6 @@ public class ContractServiceImpl implements ContractService {
                             newClient.setUsername(username);
 
                             newClient.setFullName(externalDealer.getFirstname() + " " + externalDealer.getMiddlename() + " " + externalDealer.getLastname());
-
                             newClient.setFirstname(externalDealer.getFirstname());
                             newClient.setMiddlename(externalDealer.getMiddlename());
                             newClient.setLastname(externalDealer.getLastname());
@@ -355,7 +354,7 @@ public class ContractServiceImpl implements ContractService {
                             newClient.setDealerid(externalDealer.getDealerid());
 
                             // Encrypt the password before saving
-                            String rawPassword = externalDealer.getLastname() + "123";
+                            String rawPassword = externalDealer.getPassword();
 
                             // Add null check for rawPassword
                             if (rawPassword != null) {
@@ -489,6 +488,5 @@ public class ContractServiceImpl implements ContractService {
     public void scheduleFetchAndSave() {
         fetchDataAndSaveToDatabase();
     }
-
 }
 
