@@ -22,7 +22,6 @@ public class PaymentTransactionWithItemNameDTO {
         this.paymenttransactionid = paymentTransaction.getPaymenttransactionid();
         this.amountdue = paymentTransaction.getAmountdue();
         this.startingdate = paymentTransaction.getStartingdate();
-
         this.enddate = paymentTransaction.getEnddate();
         this.installmentnumber = paymentTransaction.getInstallmentnumber();
         this.paid = paymentTransaction.isPaid();

@@ -404,7 +404,6 @@ public class ContractServiceImpl implements ContractService {
                             transaction.setCollected(false);
                             transaction.setReseller(reseller);
                             transaction.setCollector(collector);
-
                             transaction.setOrderid(externalTransaction.getOrderid());
 
                             paymentTransactions.add(paymentTransactionRepository.save(transaction));

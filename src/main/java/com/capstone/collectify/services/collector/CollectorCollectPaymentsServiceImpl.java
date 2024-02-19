@@ -63,6 +63,7 @@ public class CollectorCollectPaymentsServiceImpl implements CollectorCollectPaym
                     FileDB fileDB = fileStorageService.store(base64ImageData, fileName, contentType);
                     // Update the payment transaction as collected
                     paymentTransaction.setCollected(true);
+                    paymentTransaction.setTransactionProof(fileDB);
                     paymentTransactionRepository.save(paymentTransaction);
 
                     // Create and save the collection history
@@ -102,6 +103,7 @@ public class CollectorCollectPaymentsServiceImpl implements CollectorCollectPaym
 
                     // Update the payment transaction as collected
                     paymentTransaction.setCollected(true);
+                    paymentTransaction.setTransactionProof(fileDB);
                     paymentTransactionRepository.save(paymentTransaction);
 
                     // Create and save the collection history

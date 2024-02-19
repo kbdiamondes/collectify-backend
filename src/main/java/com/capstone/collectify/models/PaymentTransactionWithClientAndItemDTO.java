@@ -9,7 +9,6 @@ public class PaymentTransactionWithClientAndItemDTO {
     private String paymenttransactionid;
     private double amountdue;
     private LocalDate startingdate;
-
     private LocalDate collectiondate;
     private LocalDate enddate;
     private int installmentnumber;
