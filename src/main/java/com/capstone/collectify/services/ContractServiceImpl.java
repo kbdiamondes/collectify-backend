@@ -257,13 +257,15 @@ public class ContractServiceImpl implements ContractService {
                                 String encodedPassword = passwordEncoder.encode(rawPassword);
                                 newReseller.setPassword(encodedPassword);
                             } else {
+                                String encodedPassword = passwordEncoder.encode("Password");
+                                newReseller.setPassword(encodedPassword);
                                 // Handle the case where the password is null (e.g., throw an exception or set a default password)
                             }
-
                             contract.setUsername(username);
-                            return resellerRepository.save(newReseller);
+                           return newReseller;
+                           //
                         });
-
+                        resellerRepository.save(reseller);
                         contract.setReseller(reseller);
                         System.out.println("External Reseller: " + reseller);
                     } else {
@@ -272,7 +274,7 @@ public class ContractServiceImpl implements ContractService {
                         System.out.println("External Reseller is null.");
                     }
 
-                    // Check if the distributor (collector) information exists in the external data
+                    // Check if the collector information exists in the external data
                     Collector externalCollector = externalContract.getCollector();
                     Collector collector = null;
 
@@ -311,13 +313,17 @@ public class ContractServiceImpl implements ContractService {
                                 String encodedPassword = passwordEncoder.encode(rawPassword);
                                 newCollector.setPassword(encodedPassword);
                             } else {
+                                String encodedPassword = passwordEncoder.encode("Password");
+                                newCollector.setPassword(encodedPassword);
+
                                 // Handle the case where the password is null (e.g., throw an exception or set a default password)
                             }
 
                             // Save the new Collector to the database
-                            collector = collectorRepository.save(newCollector);
+                           // collector = collectorRepository.save(newCollector);
+                            collector = newCollector;
                         }
-
+                        collectorRepository.save(collector);
                         contract.setCollector(collector);
                         System.out.println("External Collector: " + collector);
                     } else {
@@ -335,6 +341,7 @@ public class ContractServiceImpl implements ContractService {
                         //FEB 4 - CHANGED TO A CONCAT FIRSTNAME AND LASTNAME SINCE THERE IS NO USERNAME FROM DISTRILINK
                         //Optional<Client> existingClient = clientRepository.findByUsername(externalDealer.getFirstname() + "." + externalDealer.getLastname());
                         Optional<Client> dealerid = clientRepository.findByDealerid(externalDealer.getDealerid());
+
                         client = dealerid.orElseGet(() -> {
                             Client newClient = new Client();
                             // Map and set dealer attributes
@@ -361,14 +368,18 @@ public class ContractServiceImpl implements ContractService {
                                 String encodedPassword = passwordEncoder.encode(rawPassword);
                                 newClient.setPassword(encodedPassword);
                             } else {
+                                String encodedPassword = passwordEncoder.encode("Password");
+                                newClient.setPassword(encodedPassword);
+
                                 // Handle the case where the password is null (e.g., throw an exception or set a default password)
                             }
 
                             // Set Contract Client's username
                             contract.setUsername(username);
-                            return clientRepository.save(newClient);
+                           return newClient;
                         });
 
+                        clientRepository.save(client);
                         contract.setClient(client);
                         System.out.println("External Client: " + client);
                     } else {
@@ -399,6 +410,11 @@ public class ContractServiceImpl implements ContractService {
                             transaction.setEnddate(externalTransaction.getEnddate());
                             transaction.setInstallmentnumber(externalTransaction.getInstallmentnumber());
                             transaction.setPaid(externalTransaction.isPaid());
+
+                            if(transaction.isPaid()){
+                                transaction.setCollected(true);
+                            }
+
                             transaction.setContract(contract);
                             transaction.setCollected(false);
                             transaction.setReseller(reseller);
