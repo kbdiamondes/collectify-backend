@@ -125,7 +125,7 @@ public class PaymentTransaction {
     }
 
     public void setCollected(boolean collected) {
-        isCollected = collected;
+        this.isCollected = collected;
     }
 
     public FileDB getTransactionProof() {
