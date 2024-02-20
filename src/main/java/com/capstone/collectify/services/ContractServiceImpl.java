@@ -411,16 +411,15 @@ public class ContractServiceImpl implements ContractService {
                             transaction.setInstallmentnumber(externalTransaction.getInstallmentnumber());
                             transaction.setPaid(externalTransaction.isPaid());
 
-                            if(transaction.isPaid()){
+                            if(transaction.isPaid() == true){
                                 transaction.setCollected(true);
+                            }else {
+                                transaction.setCollected(false);
                             }
-
                             transaction.setContract(contract);
-                            transaction.setCollected(false);
                             transaction.setReseller(reseller);
                             transaction.setCollector(collector);
                             transaction.setOrderid(externalTransaction.getOrderid());
-
                             paymentTransactions.add(paymentTransactionRepository.save(transaction));
                         }
                     }
