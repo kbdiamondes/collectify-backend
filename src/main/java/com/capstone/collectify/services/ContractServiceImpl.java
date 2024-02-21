@@ -376,7 +376,7 @@ public class ContractServiceImpl implements ContractService {
                             }
 
                             // Set Contract Client's username
-                            contract.setUsername(username);
+                           //contract.setUsername(username);
                             return newClient;
                         });
 
