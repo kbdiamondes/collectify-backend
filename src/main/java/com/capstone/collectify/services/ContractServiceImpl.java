@@ -261,16 +261,17 @@ public class ContractServiceImpl implements ContractService {
                                 newReseller.setPassword(encodedPassword);
                                 // Handle the case where the password is null (e.g., throw an exception or set a default password)
                             }
-                            contract.setUsername(username);
                            return newReseller;
                            //
                         });
                         resellerRepository.save(reseller);
+                        contract.setUsername(externalDistributor.getFirstname() + "." + externalDistributor.getLastname());
                         contract.setReseller(reseller);
                         System.out.println("External Reseller: " + reseller);
                     } else {
                         // External distributor is null, set the field to null
                         contract.setReseller(null);
+                        contract.setUsername("Test");
                         System.out.println("External Reseller is null.");
                     }
 
@@ -396,7 +397,7 @@ public class ContractServiceImpl implements ContractService {
                     contract.setPaymentterms(externalContract.getPaymentterms());
                     contract.setOrderamount(externalContract.getOrderamount());
                     contract.setClosed(externalContract.isClosed());
-                    contract.setUsername(externalDealer.getUsername());
+                    //contract.setUsername(externalDealer.getUsername());
                     List<PaymentTransaction> paymentTransactions = new ArrayList<>();
 
                     if (externalContract.getPaymentTransactions() != null) {
@@ -462,9 +463,6 @@ public class ContractServiceImpl implements ContractService {
                                 //Set fullPrice, itemName and installment_duration(paymentterms)
                                 contract.setItemName(externalProduct.getName());
                                 contract.setFullPrice(fullPrice);
-
-
-
 
                                 // Set the relationship between OrderedProduct and Product
                                 productRepository.save(product);
