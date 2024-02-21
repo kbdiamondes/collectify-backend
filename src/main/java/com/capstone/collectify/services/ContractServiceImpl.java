@@ -396,7 +396,7 @@ public class ContractServiceImpl implements ContractService {
                     contract.setPaymentterms(externalContract.getPaymentterms());
                     contract.setOrderamount(externalContract.getOrderamount());
                     contract.setClosed(externalContract.isClosed());
-                    contract.setUsername((externalDealer.getUsername()));
+                    contract.setUsername(externalDealer.getUsername());
                     List<PaymentTransaction> paymentTransactions = new ArrayList<>();
 
                     if (externalContract.getPaymentTransactions() != null) {
