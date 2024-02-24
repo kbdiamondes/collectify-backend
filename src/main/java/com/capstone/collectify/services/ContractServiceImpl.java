@@ -265,7 +265,7 @@ public class ContractServiceImpl implements ContractService {
                            //
                         });
                         resellerRepository.save(reseller);
-                        contract.setUsername(externalDistributor.getFirstname() + "." + externalDistributor.getLastname());
+                        //contract.setUsername(externalDistributor.getFirstname() + "." + externalDistributor.getLastname());
                         contract.setReseller(reseller);
                         System.out.println("External Reseller: " + reseller);
                     } else {
@@ -376,7 +376,7 @@ public class ContractServiceImpl implements ContractService {
                             }
 
                             // Set Contract Client's username
-                           //contract.setUsername(username);
+                           contract.setUsername(username);
                             return newClient;
                         });
 
@@ -397,7 +397,7 @@ public class ContractServiceImpl implements ContractService {
                     contract.setPaymentterms(externalContract.getPaymentterms());
                     contract.setOrderamount(externalContract.getOrderamount());
                     contract.setClosed(externalContract.isClosed());
-                    //contract.setUsername(externalDealer.getUsername());
+                    contract.setUsername(externalDealer.getUsername());
                     List<PaymentTransaction> paymentTransactions = new ArrayList<>();
 
                     if (externalContract.getPaymentTransactions() != null) {
@@ -424,8 +424,6 @@ public class ContractServiceImpl implements ContractService {
                             paymentTransactions.add(paymentTransactionRepository.save(transaction));
                         }
                     }
-
-
 
                     contract.setPaymentTransactions(paymentTransactions); // Update contract with payment transactions
 
