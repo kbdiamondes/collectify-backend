@@ -4,8 +4,7 @@ _This backend is officially used for the Mobile Application "Collectify", a mobi
 
 ## Original & Current Developer
 
-> Their days and weeks worth of work is less than 5 hours to me.
-Keith Brylle Diamante
+> Work, Take Mistakes, Learn from Mistakes, Code it , and Repeat
 
 ## Features
 
@@ -246,3 +245,13 @@ This documentation provides information on how to use the API endpoints provided
 ### Postman Workspace
 
 https://orange-comet-568586.postman.co/workspace/Research-%26-Capstone---Mongoose~51e037a9-5bb0-4615-82a1-08e74799080b/collection/21217716-59c730f4-671f-4ff1-8728-53354db1b23c?action=share&creator=21217716
+
+
+### To the Future Devs Assign to this Project
+Please Contact Keith Brylle Diamante For concerns and full review from the changes Contact Francis Manto ~ QA Jasper
+### Future plans
+1. App optimization[No Delays when using app]
+2. Insaction Encryption
+3. In BE, From Distrilink, Create new API-ENPOINT that check if the payment is confirmed. Should reflect in contract
+4. In BE, need API-ENPOINT that use less storage in image capturing
+5. System upgrade and Chat System CLI to COL
